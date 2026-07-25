@@ -75,7 +75,7 @@
           <article class="stat-card featured">
             <span>개당 중앙값</span>
             <strong id="medianPrice">—</strong>
-            <small>메소</small>
+            <small>개당가를 정렬한 가운데 값<br />이상 거래에 덜 흔들리는 대표 시세</small>
           </article>
           <article class="stat-card">
             <span>평균 개당가</span>
@@ -116,9 +116,12 @@
             <div class="panel-heading">
               <div>
                 <h3>일자별 시세</h3>
-                <p>개당 중앙값 기준</p>
+                <div class="chart-legend">
+                  <span class="price-legend">개당 중앙값</span>
+                  <span class="count-legend">거래건수</span>
+                </div>
               </div>
-              <span class="unit-label">단위: 메소</span>
+              <span class="unit-label">가격 · 거래건수</span>
             </div>
             <div class="chart-wrap">
               <canvas id="priceChart" aria-label="일자별 가격 추이 차트"></canvas>
@@ -176,6 +179,6 @@
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260726-2"></script>
+    <script src="app.js?v=20260726-3"></script>
   </body>
 </html>

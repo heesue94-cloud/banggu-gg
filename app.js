@@ -370,7 +370,11 @@ function renderChart(records) {
   });
   chartPoints = [...groups.values()]
     .sort((a, b) => a.time - b.time)
-    .map(({ label, values }) => ({ label, value: median(values) }));
+    .map(({ label, values }) => ({
+      label,
+      value: median(values),
+      count: values.length,
+    }));
   drawChart();
 }
 
@@ -385,8 +389,9 @@ function drawChart() {
   ctx.scale(dpr, dpr);
   const width = rect.width;
   const height = rect.height;
-  const pad = { left: 8, right: 8, top: 18, bottom: 28 };
+  const pad = { left: 8, right: 38, top: 18, bottom: 28 };
   const values = chartPoints.map((point) => point.value);
+  const maxCount = Math.max(...chartPoints.map((point) => point.count), 1);
   let min = Math.min(...values);
   let max = Math.max(...values);
   const range = Math.max(max - min, max * .08, 1);
@@ -402,6 +407,29 @@ function drawChart() {
   }
   const xAt = (i) => pad.left + (width - pad.left - pad.right) * (chartPoints.length === 1 ? .5 : i / (chartPoints.length - 1));
   const yAt = (value) => pad.top + (max - value) / (max - min) * (height - pad.top - pad.bottom);
+  const countYAt = (count) => pad.top + (1 - count / maxCount) * (height - pad.top - pad.bottom);
+
+  ctx.fillStyle = "#8a7469";
+  ctx.textAlign = "right";
+  for (let i = 0; i < 4; i++) {
+    const count = Math.round(maxCount * (3 - i) / 3);
+    const y = pad.top + (height - pad.top - pad.bottom) * i / 3;
+    ctx.fillText(`${number.format(count)}건`, width - 3, y + 3);
+  }
+
+  ctx.beginPath();
+  chartPoints.forEach((point, i) =>
+    i ? ctx.lineTo(xAt(i), countYAt(point.count)) : ctx.moveTo(xAt(i), countYAt(point.count)));
+  ctx.strokeStyle = "#ff9a62";
+  ctx.lineWidth = 1.8;
+  ctx.stroke();
+  chartPoints.forEach((point, i) => {
+    const x = xAt(i), y = countYAt(point.count);
+    ctx.beginPath();
+    ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#ff9a62";
+    ctx.fill();
+  });
 
   const gradient = ctx.createLinearGradient(0, pad.top, 0, height - pad.bottom);
   gradient.addColorStop(0, "rgba(226,255,100,.24)");
@@ -422,7 +450,7 @@ function drawChart() {
     ctx.fillStyle = "#74808a"; ctx.textAlign = "center";
     ctx.fillText(point.label, x, height - 7);
   });
-  canvas._chart = { xAt, yAt };
+  canvas._chart = { xAt, yAt, countYAt };
 }
 
 function parseLog(text, source) {
@@ -522,11 +550,12 @@ els.chart.addEventListener("mousemove", (event) => {
   if (!els.chart._chart || !chartPoints.length) return;
   const rect = els.chart.getBoundingClientRect();
   const x = event.clientX - rect.left;
-  const index = chartPoints.length === 1 ? 0 : Math.round((x - 8) / (rect.width - 16) * (chartPoints.length - 1));
-  const point = chartPoints[Math.max(0, Math.min(chartPoints.length - 1, index))];
+  const rawIndex = chartPoints.length === 1 ? 0 : Math.round((x - 8) / (rect.width - 46) * (chartPoints.length - 1));
+  const index = Math.max(0, Math.min(chartPoints.length - 1, rawIndex));
+  const point = chartPoints[index];
   const px = els.chart._chart.xAt(index);
   const py = els.chart._chart.yAt(point.value);
-  els.tooltip.textContent = `${point.label} · ${won(point.value)}`;
+  els.tooltip.textContent = `${point.label} · ${won(point.value)} 메소 · ${number.format(point.count)}건`;
   els.tooltip.style.left = `${px}px`; els.tooltip.style.top = `${py}px`; els.tooltip.hidden = false;
 });
 els.chart.addEventListener("mouseleave", () => els.tooltip.hidden = true);
