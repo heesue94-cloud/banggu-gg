@@ -254,8 +254,12 @@ function renderResult(records) {
     chartPoints = []; drawChart();
     return;
   }
-  const min = Math.min(...unitPrices);
-  const max = Math.max(...unitPrices);
+  let min = Infinity;
+  let max = -Infinity;
+  for (const price of unitPrices) {
+    if (price < min) min = price;
+    if (price > max) max = price;
+  }
   els.median.textContent = won(median(unitPrices));
   els.average.textContent = won(totalValue / totalQuantity);
   els.range.textContent = `${compact(min)} — ${compact(max)}`;
