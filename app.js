@@ -20,6 +20,7 @@ const els = {
   median: $("#medianPrice"), average: $("#averagePrice"), range: $("#priceRange"),
   count: $("#tradeCount"), quantity: $("#quantityTotal"), rows: $("#tradeRows"),
   dailyAverage: $("#dailyAverage"),
+  weeklyComparison: $("#weeklyComparison"), averagePeriod: $("#averagePeriod"),
   distribution: $("#distribution"), chart: $("#priceChart"), tooltip: $("#chartTooltip"),
   status: $("#headerStatus"), footer: $("#footerMeta"), toast: $("#toast"),
   latest: $("#headerLatest"),
@@ -108,6 +109,9 @@ function applyDataset(data) {
   els.status.textContent = `${number.format(data.meta.recordCount)}건 분석 완료`;
   const from = new Date(data.meta.from * 1000);
   const to = new Date(data.meta.to * 1000);
+  const yearMonth = (date) =>
+    `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}`;
+  els.averagePeriod.textContent = `${yearMonth(from)} ~ ${yearMonth(to)}`;
   els.latest.textContent = `최신 로그 ${to.getFullYear()}.${to.getMonth() + 1}.${to.getDate()}`;
   const sourceCount = data.meta.sourceFiles?.length || String(data.meta.source || "").split(",").filter(Boolean).length;
   els.footer.textContent = `${sourceCount}개 로그 · ${from.getFullYear()}.${from.getMonth() + 1}.${from.getDate()} — ${to.getFullYear()}.${to.getMonth() + 1}.${to.getDate()} · ${number.format(data.meta.itemCount)}개 아이템`;
@@ -264,6 +268,7 @@ function renderResult(records) {
     els.median.textContent = "—"; els.average.textContent = "—"; els.range.textContent = "—";
     els.count.textContent = "0"; els.quantity.textContent = "조건에 맞는 거래 없음";
     els.dailyAverage.textContent = "0건";
+    els.weeklyComparison.hidden = true;
     els.rows.innerHTML = `<tr><td colspan="5" class="no-results">선택한 옵션 조건에 맞는 거래가 없습니다.</td></tr>`;
     els.distribution.innerHTML = "";
     chartPoints = []; drawChart();
@@ -275,8 +280,22 @@ function renderResult(records) {
     if (price < min) min = price;
     if (price > max) max = price;
   }
-  els.median.textContent = recentQuantity ? won(recentValue / recentQuantity) : "—";
-  els.average.textContent = won(totalValue / totalQuantity);
+  const recentAverage = recentQuantity ? recentValue / recentQuantity : null;
+  const allTimeAverage = totalValue / totalQuantity;
+  els.median.textContent = recentAverage === null ? "—" : won(recentAverage);
+  els.average.textContent = won(allTimeAverage);
+  if (recentAverage === null) {
+    els.weeklyComparison.hidden = true;
+  } else {
+    const differenceRate = (recentAverage - allTimeAverage) / allTimeAverage * 100;
+    const direction = Math.abs(differenceRate) < .05 ? "same" : differenceRate > 0 ? "up" : "down";
+    const icon = direction === "up" ? "▲" : direction === "down" ? "▼" : "―";
+    const wording = direction === "up" ? "비쌈" : direction === "down" ? "쌈" : "동일";
+    els.weeklyComparison.className = `comparison-badge ${direction}`;
+    els.weeklyComparison.textContent =
+      `${icon} ${Math.abs(differenceRate).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}% ${wording}`;
+    els.weeklyComparison.hidden = false;
+  }
   els.range.textContent = `${compact(min)} — ${compact(max)}`;
   els.count.textContent = number.format(records.length);
   els.quantity.textContent = `총 ${number.format(totalQuantity)}개 거래`;

@@ -74,13 +74,16 @@
         <div class="stats-grid">
           <article class="stat-card featured">
             <span>최근 1주일 평균가</span>
-            <strong id="medianPrice">—</strong>
+            <div class="stat-value-row">
+              <strong id="medianPrice">—</strong>
+              <small id="weeklyComparison" class="comparison-badge" hidden></small>
+            </div>
             <small>최근 7일 총 거래금액 ÷ 총수량<br />실제 수량을 반영한 개당 평균가</small>
           </article>
           <article class="stat-card">
             <span>전체 기간 평균가</span>
             <strong id="averagePrice">—</strong>
-            <small>메소</small>
+            <small id="averagePeriod">전체 로그 기간</small>
           </article>
           <article class="stat-card">
             <span>최저 — 최고</span>
@@ -179,6 +182,6 @@
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260726-5"></script>
+    <script src="app.js?v=20260726-6"></script>
   </body>
 </html>
