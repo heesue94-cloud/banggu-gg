@@ -69,22 +69,12 @@ kbd { padding: 3px 8px; border: 1px solid #cbd1ce; border-radius: 5px; color: #7
 .chip { padding: 6px 11px; border: 1px solid var(--line); border-radius: 99px; color: #aeb7bf; background: transparent; font-size: 12px; cursor: pointer; }
 .chip:hover { border-color: #596876; color: var(--text); }
 
-.empty-panel { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 190px; padding: 28px 170px; overflow: hidden; text-align: center; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(23,33,43,.72), rgba(15,21,28,.5)); }
+.empty-panel { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 190px; padding: 28px; overflow: hidden; text-align: center; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(23,33,43,.72), rgba(15,21,28,.5)); }
 .empty-panel h2 { margin: 14px 0 6px; font-size: 20px; }
 .empty-panel p { margin: 0; color: var(--muted); font-size: 14px; }
-.empty-character { position: absolute; bottom: -10px; width: 112px; height: auto; pointer-events: none; user-select: none; }
-.empty-character-left { left: 34px; }
-.empty-character-right { right: 34px; transform: scaleX(-1); }
 .empty-orbit { display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid #465360; border-radius: 50%; }
 .empty-orbit::before { content:""; position:absolute; width: 78px; height: 26px; border: 1px solid #2e3944; border-radius: 50%; transform: rotate(-25deg); }
 .empty-orbit span { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 18px var(--accent); }
-
-@media (max-width: 720px) {
-  .empty-panel { padding-inline: 92px; }
-  .empty-character { bottom: -5px; width: 74px; }
-  .empty-character-left { left: 8px; }
-  .empty-character-right { right: 8px; }
-}
 
 .result { padding-top: 15px; }
 .result-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 24px; }
