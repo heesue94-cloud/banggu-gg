@@ -168,7 +168,8 @@ async function selectItem(name) {
       let bucket = bucketCache.get(descriptor.bucket);
       if (!bucket) {
       const filename = String(descriptor.bucket).padStart(2, "0");
-      const response = await fetch(`data/buckets/${filename}.json`);
+      const version = encodeURIComponent(dataset.meta.generatedAt || dataset.meta.recordCount);
+      const response = await fetch(`data/buckets/${filename}.json?v=${version}`, { cache: "no-store" });
       if (!response.ok) throw new Error("아이템 거래 데이터를 읽지 못했습니다.");
       bucket = await response.json();
       bucketCache.set(descriptor.bucket, bucket);
