@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0f14" />
+    <meta
+      name="description"
+      content="공식 옥션 로그를 기반으로 아이템별 개당 시세와 거래 추이를 빠르게 검색합니다."
+    />
+    <title>방구지지 — 로나월드 옥션기록 검색기</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="방구지지 홈">
+        <span class="brand-mark"><img src="assets/wheelchair-logo-blue.png" alt="" /></span>
+        <span>방구지지</span>
+      </a>
+      <div class="data-status">
+        <span class="status-dot"></span>
+        <span class="status-copy">
+          <strong id="headerStatus">데이터 준비 중</strong>
+          <small id="headerLatest">최신 로그 확인 중</small>
+        </span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">OFFICIAL AUCTION LOG ANALYTICS</p>
+        <h1>장애 쌀먹러들을 위한,<br /><em>로나월드 옥션기록 검색기</em></h1>
+        <div class="search-shell">
+          <label class="sr-only" for="searchInput">아이템 이름 검색</label>
+          <span class="search-icon" aria-hidden="true"></span>
+          <input
+            id="searchInput"
+            type="search"
+            autocomplete="off"
+            placeholder="아이템 이름을 입력하세요"
+            disabled
+          />
+          <kbd>/</kbd>
+          <div id="suggestions" class="suggestions" hidden></div>
+        </div>
+
+        <div id="popular" class="popular"></div>
+      </section>
+
+      <section id="emptyState" class="empty-panel">
+        <div class="empty-orbit"><span></span></div>
+        <h2>찾고 싶은 아이템을 검색해보세요</h2>
+        <p>거래 횟수, 개당 중앙값, 가격 범위와 일자별 추이를 한눈에 볼 수 있습니다.</p>
+      </section>
+
+      <section id="result" class="result" hidden>
+        <div class="result-heading">
+          <div>
+            <p class="eyebrow">SEARCH RESULT</p>
+            <h2 id="itemName"></h2>
+          </div>
+          <button id="copyButton" class="ghost-button" type="button">링크 복사</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card featured">
+            <span>개당 중앙값</span>
+            <strong id="medianPrice">—</strong>
+            <small>메소</small>
+          </article>
+          <article class="stat-card">
+            <span>평균 개당가</span>
+            <strong id="averagePrice">—</strong>
+            <small>메소</small>
+          </article>
+          <article class="stat-card">
+            <span>최저 — 최고</span>
+            <strong id="priceRange">—</strong>
+            <small>메소</small>
+          </article>
+          <article class="stat-card">
+            <span>거래 기록</span>
+            <strong id="tradeCount">—</strong>
+            <small id="quantityTotal">—</small>
+          </article>
+        </div>
+
+        <article id="optionPanel" class="panel option-panel" hidden>
+          <div class="panel-heading">
+            <div>
+              <h3>장비 옵션 필터</h3>
+              <p>최솟값 또는 최댓값을 입력하면 모든 결과에 즉시 반영됩니다.</p>
+            </div>
+            <button id="resetFilters" class="text-button" type="button">필터 초기화</button>
+          </div>
+          <div id="optionFilters" class="option-filters"></div>
+          <p id="filterSummary" class="filter-summary"></p>
+        </article>
+
+        <div class="content-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>일자별 시세</h3>
+                <p>개당 중앙값 기준</p>
+              </div>
+              <span class="unit-label">단위: 메소</span>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="priceChart" aria-label="일자별 가격 추이 차트"></canvas>
+              <div id="chartTooltip" class="chart-tooltip" hidden></div>
+            </div>
+          </article>
+
+          <article class="panel distribution-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>가격 분포</h3>
+                <p>개당가 구간별 거래 수</p>
+              </div>
+            </div>
+            <div id="distribution" class="distribution"></div>
+          </article>
+        </div>
+
+        <article class="panel trades-panel">
+          <div class="panel-heading">
+            <div>
+              <h3>최근 거래</h3>
+              <p id="tradesCaption">최신 기록 50건</p>
+            </div>
+            <button id="sortButton" class="text-button" type="button">최신순 ↓</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>거래 시각</th><th>옵션</th><th>수량</th><th>총액</th><th>개당가</th></tr>
+              </thead>
+              <tbody id="tradeRows"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="upload-section">
+        <div>
+          <p class="eyebrow">AUTOMATIC DATA LOAD</p>
+          <h2>로그는 자동으로 읽습니다.</h2>
+          <p><code>db</code> 폴더에 기간별 TXT 로그를 추가하고 새로고침하면 모두 합쳐서 분석합니다.</p>
+        </div>
+        <div class="drop-zone static-log">
+          <span class="upload-arrow">↻</span>
+          <strong>db/7.13-7.19.txt · db/7.20-7.26.txt · …</strong>
+          <small>기간 형식 파일 자동 탐색 · 중복 거래 제외</small>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>MESO PRICE ARCHIVE</span>
+      <span id="footerMeta">공식 배포 로그 기반</span>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
