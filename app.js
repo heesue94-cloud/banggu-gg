@@ -40,8 +40,18 @@ async function loadBuiltIn() {
     }
     els.status.textContent = "전체 옥션 로그 색인 불러오는 중…";
     const response = await fetch("data/index.json", { cache: "no-store" });
-    if (!response.ok) throw new Error("전체 로그 색인을 읽지 못했습니다.");
-    applyDataset(await response.json());
+    if (response.ok) {
+      applyDataset(await response.json());
+      return;
+    }
+    const files = await discoverLogFiles();
+    if (!files.length) throw new Error("전체 로그 색인을 읽지 못했습니다.");
+    const responses = await Promise.all(files.map(async (file) => {
+      const logResponse = await fetch(file, { cache: "no-store" });
+      if (!logResponse.ok) throw new Error(`${file} 파일을 읽지 못했습니다.`);
+      return logResponse.text();
+    }));
+    applyDataset(parseLog(responses.join("\n"), files.join(", ")));
   } catch (error) {
     els.status.textContent = "로그 파일 확인 필요";
     els.search.placeholder = "기간별 TXT 파일을 확인하세요";
@@ -98,7 +108,8 @@ function applyDataset(data) {
   const from = new Date(data.meta.from * 1000);
   const to = new Date(data.meta.to * 1000);
   els.latest.textContent = `최신 로그 ${to.getFullYear()}.${to.getMonth() + 1}.${to.getDate()}`;
-  els.footer.textContent = `${data.meta.sourceFiles.length}개 로그 · ${from.getMonth() + 1}.${from.getDate()} — ${to.getMonth() + 1}.${to.getDate()} · ${number.format(data.meta.itemCount)}개 아이템`;
+  const sourceCount = data.meta.sourceFiles?.length || String(data.meta.source || "").split(",").filter(Boolean).length;
+  els.footer.textContent = `${sourceCount}개 로그 · ${from.getMonth() + 1}.${from.getDate()} — ${to.getMonth() + 1}.${to.getDate()} · ${number.format(data.meta.itemCount)}개 아이템`;
   renderPopular();
 
   const requested = decodeURIComponent(location.hash.slice(1));
@@ -106,8 +117,9 @@ function applyDataset(data) {
 }
 
 function renderPopular() {
+  const tradeCount = (name) => dataset.items[name].count ?? dataset.items[name].length;
   const names = [...itemNames]
-    .sort((a, b) => dataset.items[b].count - dataset.items[a].count)
+    .sort((a, b) => tradeCount(b) - tradeCount(a))
     .slice(0, 5);
   els.popular.innerHTML = `<span>거래 많은 아이템</span>${names.map((name) =>
     `<button class="chip" data-name="${escapeHtml(name)}">${escapeHtml(name)}</button>`).join("")}`;
@@ -121,7 +133,7 @@ function findMatches(query) {
     .sort((a, b) => {
       const ax = a.toLocaleLowerCase("ko").startsWith(q) ? 0 : 1;
       const bx = b.toLocaleLowerCase("ko").startsWith(q) ? 0 : 1;
-      return ax - bx || dataset.items[b].count - dataset.items[a].count;
+      return ax - bx || (dataset.items[b].count ?? dataset.items[b].length) - (dataset.items[a].count ?? dataset.items[a].length);
     })
     .slice(0, 12);
 }
@@ -135,7 +147,7 @@ function renderSuggestions() {
   els.suggestions.innerHTML = matches.map((name, index) =>
     `<button class="suggestion${index === 0 ? " active" : ""}" data-name="${escapeHtml(name)}">
       <span>${highlight(name, els.search.value)}</span>
-      <small>${number.format(dataset.items[name].count)}건</small>
+      <small>${number.format(dataset.items[name].count ?? dataset.items[name].length)}건</small>
     </button>`).join("");
   els.suggestions.hidden = false;
 }
@@ -150,16 +162,20 @@ async function selectItem(name) {
   els.status.textContent = `${name} 거래 불러오는 중…`;
   try {
     const descriptor = dataset.items[name];
-    let bucket = bucketCache.get(descriptor.bucket);
-    if (!bucket) {
+    if (Array.isArray(descriptor)) {
+      selectedRecords = descriptor;
+    } else {
+      let bucket = bucketCache.get(descriptor.bucket);
+      if (!bucket) {
       const filename = String(descriptor.bucket).padStart(2, "0");
       const response = await fetch(`data/buckets/${filename}.json`);
       if (!response.ok) throw new Error("아이템 거래 데이터를 읽지 못했습니다.");
       bucket = await response.json();
       bucketCache.set(descriptor.bucket, bucket);
+      }
+      selectedRecords = bucket[name] || [];
     }
     if (selectedName !== requestedName) return;
-    selectedRecords = bucket[name] || [];
   } catch (error) {
     showToast(error.message);
     return;
