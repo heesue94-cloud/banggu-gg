@@ -19,6 +19,7 @@ const els = {
   result: $("#result"), empty: $("#emptyState"), name: $("#itemName"),
   median: $("#medianPrice"), average: $("#averagePrice"), range: $("#priceRange"),
   count: $("#tradeCount"), quantity: $("#quantityTotal"), rows: $("#tradeRows"),
+  dailyAverage: $("#dailyAverage"),
   distribution: $("#distribution"), chart: $("#priceChart"), tooltip: $("#chartTooltip"),
   status: $("#headerStatus"), footer: $("#footerMeta"), toast: $("#toast"),
   latest: $("#headerLatest"),
@@ -251,6 +252,7 @@ function renderResult(records) {
   if (!records.length) {
     els.median.textContent = "—"; els.average.textContent = "—"; els.range.textContent = "—";
     els.count.textContent = "0"; els.quantity.textContent = "조건에 맞는 거래 없음";
+    els.dailyAverage.textContent = "0건";
     els.rows.innerHTML = `<tr><td colspan="5" class="no-results">선택한 옵션 조건에 맞는 거래가 없습니다.</td></tr>`;
     els.distribution.innerHTML = "";
     chartPoints = []; drawChart();
@@ -267,6 +269,19 @@ function renderResult(records) {
   els.range.textContent = `${compact(min)} — ${compact(max)}`;
   els.count.textContent = number.format(records.length);
   els.quantity.textContent = `총 ${number.format(totalQuantity)}개 거래`;
+  const latestDay = new Date(dataset.meta.to * 1000);
+  const recentWeekEnd = new Date(
+    latestDay.getFullYear(),
+    latestDay.getMonth(),
+    latestDay.getDate() + 1,
+  ).getTime() / 1000;
+  const recentWeekStart = recentWeekEnd - (7 * 24 * 60 * 60);
+  const recentWeekCount = records.reduce((count, [time]) =>
+    count + (time >= recentWeekStart && time < recentWeekEnd ? 1 : 0), 0);
+  els.dailyAverage.textContent = `${(recentWeekCount / 7).toLocaleString("ko-KR", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  })}건`;
   renderTrades();
   renderDistribution(unitPrices);
   renderChart(records);

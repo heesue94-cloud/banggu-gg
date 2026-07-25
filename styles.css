@@ -83,7 +83,7 @@ kbd { padding: 3px 8px; border: 1px solid #cbd1ce; border-radius: 5px; color: #7
 .ghost-button, .text-button { border: 0; background: transparent; cursor: pointer; }
 .ghost-button { padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; color: #bac3ca; font-size: 12px; }
 .ghost-button:hover { border-color: var(--accent); color: var(--accent); }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 .stat-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
 .stat-card span { display: block; margin-bottom: 17px; color: var(--muted); font-size: 12px; }
 .stat-card strong { display: block; overflow: hidden; text-overflow: ellipsis; font-size: clamp(19px, 2.4vw, 30px); letter-spacing: -.045em; white-space: nowrap; }
@@ -149,6 +149,9 @@ footer { display: flex; justify-content: space-between; padding: 25px clamp(24px
   .content-grid { grid-template-columns: 1fr; }
   .option-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .upload-section { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 1050px) and (min-width: 851px) {
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 540px) {
   main { width: min(100% - 24px, 1180px); }
