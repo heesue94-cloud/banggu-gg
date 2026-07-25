@@ -1,7 +1,7 @@
 const $ = (selector) => document.querySelector(selector);
 const number = new Intl.NumberFormat("ko-KR");
 const dateTime = new Intl.DateTimeFormat("ko-KR", {
-  month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
+  year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
 });
 
 let dataset = null;
@@ -109,7 +109,7 @@ function applyDataset(data) {
   const to = new Date(data.meta.to * 1000);
   els.latest.textContent = `최신 로그 ${to.getFullYear()}.${to.getMonth() + 1}.${to.getDate()}`;
   const sourceCount = data.meta.sourceFiles?.length || String(data.meta.source || "").split(",").filter(Boolean).length;
-  els.footer.textContent = `${sourceCount}개 로그 · ${from.getMonth() + 1}.${from.getDate()} — ${to.getMonth() + 1}.${to.getDate()} · ${number.format(data.meta.itemCount)}개 아이템`;
+  els.footer.textContent = `${sourceCount}개 로그 · ${from.getFullYear()}.${from.getMonth() + 1}.${from.getDate()} — ${to.getFullYear()}.${to.getMonth() + 1}.${to.getDate()} · ${number.format(data.meta.itemCount)}개 아이템`;
   renderPopular();
 
   const requested = decodeURIComponent(location.hash.slice(1));
@@ -331,11 +331,19 @@ function renderChart(records) {
   const groups = new Map();
   records.forEach(([time, quantity, total]) => {
     const date = new Date(time * 1000);
-    const key = `${date.getMonth() + 1}.${date.getDate()}`;
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(total / quantity);
+    const key = `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+    if (!groups.has(key)) {
+      groups.set(key, {
+        time: new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(),
+        label: `${String(date.getFullYear()).slice(-2)}.${date.getMonth() + 1}.${date.getDate()}`,
+        values: [],
+      });
+    }
+    groups.get(key).values.push(total / quantity);
   });
-  chartPoints = [...groups].map(([label, values]) => ({ label, value: median(values) }));
+  chartPoints = [...groups.values()]
+    .sort((a, b) => a.time - b.time)
+    .map(({ label, values }) => ({ label, value: median(values) }));
   drawChart();
 }
 
