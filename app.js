@@ -550,14 +550,24 @@ els.chart.addEventListener("mousemove", (event) => {
   if (!els.chart._chart || !chartPoints.length) return;
   const rect = els.chart.getBoundingClientRect();
   const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
   const rawIndex = chartPoints.length === 1 ? 0 : Math.round((x - 8) / (rect.width - 46) * (chartPoints.length - 1));
   const index = Math.max(0, Math.min(chartPoints.length - 1, rawIndex));
   const point = chartPoints[index];
   const px = els.chart._chart.xAt(index);
-  const py = els.chart._chart.yAt(point.value);
-  els.tooltip.textContent = `${point.label} · ${won(point.value)} 메소 · ${number.format(point.count)}건`;
+  const priceY = els.chart._chart.yAt(point.value);
+  const countY = els.chart._chart.countYAt(point.count);
+  const showCount = Math.abs(y - countY) < Math.abs(y - priceY);
+  const py = showCount ? countY : priceY;
+  els.tooltip.classList.toggle("count-tooltip", showCount);
+  els.tooltip.textContent = showCount
+    ? `${point.label} · 거래 ${number.format(point.count)}건`
+    : `${point.label} · ${won(point.value)} 메소`;
   els.tooltip.style.left = `${px}px`; els.tooltip.style.top = `${py}px`; els.tooltip.hidden = false;
 });
-els.chart.addEventListener("mouseleave", () => els.tooltip.hidden = true);
+els.chart.addEventListener("mouseleave", () => {
+  els.tooltip.hidden = true;
+  els.tooltip.classList.remove("count-tooltip");
+});
 
 loadBuiltIn();
