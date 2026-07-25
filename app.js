@@ -204,6 +204,8 @@ function setupOptionFilters(records) {
   });
   optionRanges = {};
   const keys = [...valuesByKey.keys()].sort((a, b) =>
+    optionDisplayRank(a) - optionDisplayRank(b) ||
+    a.localeCompare(b, "ko") ||
     valuesByKey.get(b).length - valuesByKey.get(a).length);
   els.optionPanel.hidden = !keys.length;
   els.optionFilters.innerHTML = keys.map((key) => {
@@ -287,7 +289,8 @@ function renderTrades() {
 function renderOptionTags(options = {}) {
   const entries = Object.entries(options)
     .filter(([key]) => key !== "물리방어력")
-    .sort(([a], [b]) => optionDisplayRank(a) - optionDisplayRank(b));
+    .sort(([a], [b]) =>
+      optionDisplayRank(a) - optionDisplayRank(b) || a.localeCompare(b, "ko"));
   if (!entries.length) return '<span class="option-tags">—</span>';
   return `<span class="option-tags">${entries.map(([key, value]) =>
     `<span class="option-tag">${escapeHtml(key)} ${strip(value)}</span>`).join("")}</span>`;
@@ -299,9 +302,18 @@ function optionDisplayRank(key) {
     DEX: 20,
     INT: 30,
     LUK: 40,
+    HP: 50,
+    MP: 60,
+    공격력: 70,
+    마력: 80,
+    명중률: 90,
+    회피율: 100,
+    이동속도: 110,
+    점프력: 120,
+    마법방어력: 130,
     "업그레이드 가능 횟수": 1000,
   };
-  return fixedOrder[key] ?? 100;
+  return fixedOrder[key] ?? 500;
 }
 
 function renderDistribution(prices) {
