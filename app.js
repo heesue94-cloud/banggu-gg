@@ -293,7 +293,7 @@ function renderResult(records) {
     const wording = direction === "up" ? "비쌈" : direction === "down" ? "쌈" : "동일";
     els.weeklyComparison.className = `comparison-badge ${direction}`;
     els.weeklyComparison.textContent =
-      `${icon} ${Math.abs(differenceRate).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}% ${wording}`;
+      `${icon} ${Math.abs(differenceRate).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}% ${wording} (평균가 대비)`;
     els.weeklyComparison.hidden = false;
   }
   els.range.textContent = `${compact(min)} — ${compact(max)}`;

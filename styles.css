@@ -91,11 +91,10 @@ kbd { padding: 3px 8px; border: 1px solid #cbd1ce; border-radius: 5px; color: #7
 .stat-card span { display: block; margin-bottom: 17px; color: var(--muted); font-size: 12px; }
 .stat-card strong { display: block; overflow: hidden; text-overflow: ellipsis; font-size: clamp(19px, 2.4vw, 30px); letter-spacing: -.045em; white-space: nowrap; }
 .stat-card small { display: block; margin-top: 5px; color: #65717c; font-size: 11px; line-height: 1.45; }
-.stat-value-row { display: flex; align-items: center; gap: 9px; min-width: 0; }
-.stat-value-row strong { flex: 1; min-width: 0; }
-.stat-value-row .comparison-badge { flex: none; margin: 0; padding: 4px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; white-space: nowrap; }
-.comparison-badge.up { color: #ff9a80; background: rgba(255, 112, 90, .12); }
-.comparison-badge.down { color: #76bfff; background: rgba(80, 160, 255, .12); }
+.stat-value-row { min-width: 0; }
+.stat-value-row .comparison-badge { display: inline-block; margin: 6px 0 0; padding: 4px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.comparison-badge.up { color: #ff705a; background: rgba(255, 112, 90, .12); }
+.comparison-badge.down { color: #55aaff; background: rgba(80, 160, 255, .12); }
 .comparison-badge.same { color: #aeb7bf; background: rgba(174, 183, 191, .1); }
 .stat-card.featured { border-color: rgba(226,255,100,.33); background: var(--accent-soft); }
 .stat-card.featured strong { color: var(--accent); }
