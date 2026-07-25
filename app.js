@@ -247,6 +247,17 @@ function renderResult(records) {
   const unitPrices = records.map(([, quantity, total]) => total / quantity);
   const totalQuantity = records.reduce((sum, [, quantity]) => sum + quantity, 0);
   const totalValue = records.reduce((sum, [, , total]) => sum + total, 0);
+  const latestDay = new Date(dataset.meta.to * 1000);
+  const recentWeekEnd = new Date(
+    latestDay.getFullYear(),
+    latestDay.getMonth(),
+    latestDay.getDate() + 1,
+  ).getTime() / 1000;
+  const recentWeekStart = recentWeekEnd - (7 * 24 * 60 * 60);
+  const recentRecords = records.filter(([time]) =>
+    time >= recentWeekStart && time < recentWeekEnd);
+  const recentQuantity = recentRecords.reduce((sum, [, quantity]) => sum + quantity, 0);
+  const recentValue = recentRecords.reduce((sum, [, , total]) => sum + total, 0);
 
   els.name.textContent = selectedName;
   if (!records.length) {
@@ -264,20 +275,12 @@ function renderResult(records) {
     if (price < min) min = price;
     if (price > max) max = price;
   }
-  els.median.textContent = won(median(unitPrices));
+  els.median.textContent = recentQuantity ? won(recentValue / recentQuantity) : "—";
   els.average.textContent = won(totalValue / totalQuantity);
   els.range.textContent = `${compact(min)} — ${compact(max)}`;
   els.count.textContent = number.format(records.length);
   els.quantity.textContent = `총 ${number.format(totalQuantity)}개 거래`;
-  const latestDay = new Date(dataset.meta.to * 1000);
-  const recentWeekEnd = new Date(
-    latestDay.getFullYear(),
-    latestDay.getMonth(),
-    latestDay.getDate() + 1,
-  ).getTime() / 1000;
-  const recentWeekStart = recentWeekEnd - (7 * 24 * 60 * 60);
-  const recentWeekCount = records.reduce((count, [time]) =>
-    count + (time >= recentWeekStart && time < recentWeekEnd ? 1 : 0), 0);
+  const recentWeekCount = recentRecords.length;
   els.dailyAverage.textContent = `${(recentWeekCount / 7).toLocaleString("ko-KR", {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
