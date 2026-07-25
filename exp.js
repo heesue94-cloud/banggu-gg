@@ -21,6 +21,11 @@ const experience = [
 const rows = document.querySelector("#expRows");
 const search = document.querySelector("#levelSearch");
 const format = new Intl.NumberFormat("ko-KR");
+const currentLevel = document.querySelector("#currentLevel");
+const targetLevel = document.querySelector("#targetLevel");
+const expPerTenMinutes = document.querySelector("#expPerTenMinutes");
+const calculatorResult = document.querySelector("#calculatorResult");
+const calculatorError = document.querySelector("#calculatorError");
 
 rows.innerHTML = experience.map((value, index) => {
   const level = index + 1;
@@ -47,4 +52,67 @@ search.addEventListener("keydown", (event) => {
 document.querySelector(".exp-jumps").addEventListener("click", (event) => {
   const button = event.target.closest("button[data-level]");
   if (button) goToLevel(button.dataset.level);
+});
+
+function calculateEstimatedTime() {
+  const current = Number(currentLevel.value);
+  const target = Number(targetLevel.value);
+  const gain = Number(expPerTenMinutes.value.replace(/[^0-9]/g, ""));
+
+  calculatorError.textContent = "";
+  if (!Number.isInteger(current) || current < 1 || current > 199) {
+    calculatorError.textContent = "현재 레벨은 1~199 사이로 입력하세요.";
+    calculatorResult.hidden = true;
+    return;
+  }
+  if (!Number.isInteger(target) || target <= current || target > 200) {
+    calculatorError.textContent = "목표 레벨은 현재 레벨보다 높고 200 이하여야 합니다.";
+    calculatorResult.hidden = true;
+    return;
+  }
+  if (!Number.isFinite(gain) || gain <= 0) {
+    calculatorError.textContent = "10분당 획득 경험치를 입력하세요.";
+    calculatorResult.hidden = true;
+    return;
+  }
+
+  const required = experience.slice(current - 1, target - 1)
+    .reduce((sum, value) => sum + value, 0);
+  const sessions = required / gain;
+  const totalMinutes = sessions * 10;
+  const hours = totalMinutes / 60;
+  const days = hours / 24;
+
+  document.querySelector("#requiredExp").textContent = format.format(required);
+  document.querySelector("#requiredSessions").textContent = sessions.toLocaleString("ko-KR", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+  document.querySelector("#estimatedTime").textContent = formatDuration(totalMinutes);
+  document.querySelector("#estimatedDetail").textContent =
+    `${hours.toLocaleString("ko-KR", { maximumFractionDigits: 1 })}시간 · ${days.toLocaleString("ko-KR", { maximumFractionDigits: 2 })}일`;
+  calculatorResult.hidden = false;
+}
+
+function formatDuration(totalMinutes) {
+  const rounded = Math.ceil(totalMinutes);
+  const days = Math.floor(rounded / 1440);
+  const hours = Math.floor((rounded % 1440) / 60);
+  const minutes = rounded % 60;
+  return [
+    days ? `${format.format(days)}일` : "",
+    hours ? `${hours}시간` : "",
+    minutes || (!days && !hours) ? `${minutes}분` : "",
+  ].filter(Boolean).join(" ");
+}
+
+expPerTenMinutes.addEventListener("input", () => {
+  const digits = expPerTenMinutes.value.replace(/[^0-9]/g, "");
+  expPerTenMinutes.value = digits ? format.format(Number(digits)) : "";
+});
+document.querySelector("#calculateTime").addEventListener("click", calculateEstimatedTime);
+[currentLevel, targetLevel, expPerTenMinutes].forEach((input) => {
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") calculateEstimatedTime();
+  });
 });

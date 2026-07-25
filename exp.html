@@ -31,6 +31,50 @@
         <p>현재 레벨에서 다음 레벨까지 필요한 경험치입니다.</p>
       </section>
 
+      <section class="panel exp-calculator">
+        <div class="panel-heading">
+          <div>
+            <h3>목표 레벨 예상 시간</h3>
+            <p>현재 레벨 경험치 0% 기준으로 계산합니다.</p>
+          </div>
+          <span class="unit-label">10분 측정 기준</span>
+        </div>
+        <div class="calculator-fields">
+          <label>
+            <span>현재 레벨</span>
+            <input id="currentLevel" type="number" min="1" max="199" value="100" />
+          </label>
+          <span class="calculator-arrow">→</span>
+          <label>
+            <span>목표 레벨</span>
+            <input id="targetLevel" type="number" min="2" max="200" value="101" />
+          </label>
+          <label class="exp-gain-field">
+            <span>10분당 획득 경험치</span>
+            <input id="expPerTenMinutes" type="text" inputmode="numeric" placeholder="예: 1,000,000" />
+          </label>
+          <button id="calculateTime" type="button">계산하기</button>
+        </div>
+        <div id="calculatorResult" class="calculator-result" hidden>
+          <article>
+            <span>목표까지 필요 경험치</span>
+            <strong id="requiredExp">—</strong>
+            <small>EXP</small>
+          </article>
+          <article class="featured-result">
+            <span>예상 소요시간</span>
+            <strong id="estimatedTime">—</strong>
+            <small id="estimatedDetail">—</small>
+          </article>
+          <article>
+            <span>필요한 10분 사냥 횟수</span>
+            <strong id="requiredSessions">—</strong>
+            <small>회</small>
+          </article>
+        </div>
+        <p id="calculatorError" class="calculator-error" role="alert"></p>
+      </section>
+
       <section class="exp-tools panel">
         <label for="levelSearch">레벨 바로 찾기</label>
         <div class="level-search">
@@ -67,6 +111,6 @@
     </main>
 
     <footer><span>LEVEL EXPERIENCE ARCHIVE</span><span>레벨 1–200</span></footer>
-    <script src="exp.js?v=20260726-1"></script>
+    <script src="exp.js?v=20260726-2"></script>
   </body>
 </html>

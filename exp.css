@@ -3,6 +3,20 @@
 .exp-hero h1 { font-size: clamp(42px, 6vw, 68px); }
 .exp-hero > p:last-child { margin: 18px 0 0; color: var(--muted); }
 .header-link.active { color: #10160c; border-color: var(--accent); background: var(--accent); }
+.exp-calculator { margin-bottom: 12px; padding: 26px; }
+.calculator-fields { display: grid; grid-template-columns: 120px auto 120px minmax(220px, 1fr) auto; gap: 10px; align-items: end; margin-top: 22px; }
+.calculator-fields label > span { display: block; margin-bottom: 8px; color: #aeb9c2; font-size: 11px; }
+.calculator-fields input { width: 100%; height: 44px; padding: 0 12px; color: var(--text); background: #0d141b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
+.calculator-fields input:focus { border-color: var(--accent); }
+.calculator-arrow { align-self: center; margin-top: 20px; color: #5f6b75; }
+#calculateTime { height: 44px; padding: 0 18px; color: #11160c; background: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-weight: 700; cursor: pointer; }
+.calculator-result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+.calculator-result article { padding: 18px; border: 1px solid var(--line); border-radius: 11px; background: #0e151c; }
+.calculator-result article.featured-result { border-color: rgba(226,255,100,.35); background: var(--accent-soft); }
+.calculator-result span, .calculator-result small { display: block; color: var(--muted); font-size: 11px; }
+.calculator-result strong { display: block; margin: 9px 0 5px; overflow-wrap: anywhere; font-size: clamp(19px, 2.3vw, 27px); }
+.calculator-result .featured-result strong { color: var(--accent); }
+.calculator-error { min-height: 16px; margin: 12px 0 0; color: #ff9a62; font-size: 12px; }
 .exp-tools { display: flex; align-items: center; gap: 14px; padding: 18px 22px; }
 .exp-tools > label { color: #cbd3d9; font-size: 13px; font-weight: 600; }
 .level-search { display: flex; gap: 7px; }
@@ -31,6 +45,11 @@
   .exp-main { width: min(100% - 24px, 980px); }
   .exp-hero { padding: 55px 0 32px; }
   .exp-tools { align-items: stretch; flex-direction: column; }
+  .exp-calculator { padding: 20px; }
+  .calculator-fields { grid-template-columns: 1fr 24px 1fr; }
+  .exp-gain-field { grid-column: 1 / -1; }
+  #calculateTime { grid-column: 1 / -1; }
+  .calculator-result { grid-template-columns: 1fr; }
   .level-search input { flex: 1; width: auto; }
   .exp-jumps { margin-left: 0; }
   .exp-jumps button { flex: 1; padding-inline: 5px; }
