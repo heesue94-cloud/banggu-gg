@@ -13,10 +13,13 @@ let optionRanges = {};
 let filteredRecords = [];
 let selectedRecords = [];
 const bucketCache = new Map();
+const itemImageCache = new Map();
+const MAPLESTORY_IO_BASE = "https://maplestory.io/api/KMS/latest";
 
 const els = {
   search: $("#searchInput"), suggestions: $("#suggestions"), popular: $("#popular"),
   result: $("#result"), empty: $("#emptyState"), name: $("#itemName"),
+  itemIcon: $("#itemIcon"), itemIconWrap: $("#itemIconWrap"),
   median: $("#medianPrice"), average: $("#averagePrice"), range: $("#priceRange"),
   count: $("#tradeCount"), quantity: $("#quantityTotal"), rows: $("#tradeRows"),
   dailyAverage: $("#dailyAverage"),
@@ -192,10 +195,56 @@ async function selectItem(name) {
   els.empty.hidden = true;
   els.result.hidden = false;
   history.replaceState(null, "", `#${encodeURIComponent(name)}`);
+  loadItemImage(name);
 
   setupOptionFilters(selectedRecords);
   applyFilters();
   els.result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function loadItemImage(name) {
+  els.itemIconWrap.hidden = true;
+  els.itemIcon.removeAttribute("src");
+  els.itemIcon.alt = "";
+
+  if (itemImageCache.has(name)) {
+    showItemImage(name, itemImageCache.get(name));
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${MAPLESTORY_IO_BASE}/item?searchFor=${encodeURIComponent(name)}`,
+      { cache: "force-cache" },
+    );
+    if (!response.ok) throw new Error("MapleStory.IO search failed");
+    const payload = await response.json();
+    const items = Array.isArray(payload) ? payload : (payload.items || payload.data || []);
+    const match = items.find((item) =>
+      String(item.name || item.itemName || "").trim() === name
+    );
+    const itemId = match?.id ?? match?.itemId;
+    const iconUrl = itemId == null
+      ? null
+      : `${MAPLESTORY_IO_BASE}/item/${encodeURIComponent(itemId)}/icon`;
+    itemImageCache.set(name, iconUrl);
+    if (selectedName === name) showItemImage(name, iconUrl);
+  } catch {
+    itemImageCache.set(name, null);
+  }
+}
+
+function showItemImage(name, iconUrl) {
+  if (!iconUrl || selectedName !== name) return;
+  els.itemIcon.onload = () => {
+    if (selectedName === name) els.itemIconWrap.hidden = false;
+  };
+  els.itemIcon.onerror = () => {
+    els.itemIconWrap.hidden = true;
+    els.itemIcon.removeAttribute("src");
+  };
+  els.itemIcon.alt = `${name} 아이템 이미지`;
+  els.itemIcon.src = iconUrl;
 }
 
 function setupOptionFilters(records) {

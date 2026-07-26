@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260726-1" />
+    <link rel="stylesheet" href="styles.css?v=20260727-1" />
   </head>
   <body>
     <header class="topbar">
@@ -64,9 +64,14 @@
 
       <section id="result" class="result" hidden>
         <div class="result-heading">
-          <div>
-            <p class="eyebrow">SEARCH RESULT</p>
-            <h2 id="itemName"></h2>
+          <div class="result-identity">
+            <div id="itemIconWrap" class="item-icon-wrap" hidden>
+              <img id="itemIcon" alt="" width="64" height="64" />
+            </div>
+            <div>
+              <p class="eyebrow">SEARCH RESULT</p>
+              <h2 id="itemName"></h2>
+            </div>
           </div>
           <button id="copyButton" class="ghost-button" type="button">링크 복사</button>
         </div>
@@ -182,6 +187,6 @@
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260726-7"></script>
+    <script src="app.js?v=20260727-1"></script>
   </body>
 </html>
