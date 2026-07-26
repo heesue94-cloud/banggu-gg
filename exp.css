@@ -2,7 +2,6 @@
 .exp-hero { padding: 76px 0 42px; text-align: center; }
 .exp-hero h1 { font-size: clamp(42px, 6vw, 68px); }
 .exp-hero > p:last-child { margin: 18px 0 0; color: var(--muted); }
-.header-link.active { color: #10160c; border-color: var(--accent); background: var(--accent); }
 .exp-calculator { margin-bottom: 12px; padding: 26px; }
 .calculator-fields { display: grid; grid-template-columns: 120px auto 120px minmax(220px, 1fr) auto; gap: 10px; align-items: end; margin-top: 22px; }
 .calculator-fields label > span { display: block; margin-bottom: 8px; color: #aeb9c2; font-size: 11px; }
