@@ -7,7 +7,7 @@ const dateTime = new Intl.DateTimeFormat("ko-KR", {
 let dataset = null;
 let itemNames = [];
 let selectedName = "";
-let sortNewest = true;
+let tradeSort = "newest";
 let chartPoints = [];
 let optionRanges = {};
 let filteredRecords = [];
@@ -364,8 +364,7 @@ function renderTrades() {
   const totalPages = Math.max(1, Math.ceil(filteredRecords.length / TRADE_PAGE_SIZE));
   tradePage = Math.min(Math.max(1, tradePage), totalPages);
   const start = (tradePage - 1) * TRADE_PAGE_SIZE;
-  const records = [...filteredRecords].sort((a, b) =>
-    sortNewest ? b[0] - a[0] : a[0] - b[0])
+  const records = [...filteredRecords].sort(compareTrades)
     .slice(start, start + TRADE_PAGE_SIZE);
   const firstRecord = filteredRecords.length ? start + 1 : 0;
   const lastRecord = Math.min(start + TRADE_PAGE_SIZE, filteredRecords.length);
@@ -380,6 +379,13 @@ function renderTrades() {
       <td>${won(total / quantity)}</td>
     </tr>`).join("");
   renderTradePagination(totalPages);
+}
+
+function compareTrades(a, b) {
+  if (tradeSort === "oldest") return a[0] - b[0];
+  if (tradeSort === "price-high") return (b[2] / b[1]) - (a[2] / a[1]) || b[0] - a[0];
+  if (tradeSort === "price-low") return (a[2] / a[1]) - (b[2] / b[1]) || b[0] - a[0];
+  return b[0] - a[0];
 }
 
 function renderTradePagination(totalPages) {
@@ -615,10 +621,9 @@ document.addEventListener("click", (event) => {
   if (target) selectItem(target.dataset.name);
   else if (!event.target.closest(".search-shell")) els.suggestions.hidden = true;
 });
-$("#sortButton").addEventListener("click", (event) => {
-  sortNewest = !sortNewest;
+$("#sortSelect").addEventListener("change", (event) => {
+  tradeSort = event.currentTarget.value;
   tradePage = 1;
-  event.currentTarget.textContent = sortNewest ? "최신순 ↓" : "오래된순 ↑";
   renderTrades();
 });
 els.tradePagination.addEventListener("click", (event) => {
