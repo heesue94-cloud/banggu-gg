@@ -10,6 +10,7 @@ let selectedName = "";
 let tradeSort = "newest";
 let chartPoints = [];
 let optionRanges = {};
+let attackMainStat = "주스텟";
 let filteredRecords = [];
 let selectedRecords = [];
 let tradePage = 1;
@@ -275,12 +276,43 @@ function setupOptionFilters(records) {
     });
   });
   optionRanges = {};
+  attackMainStat = "주스텟";
   const keys = [...valuesByKey.keys()].sort((a, b) =>
     optionDisplayRank(a) - optionDisplayRank(b) ||
     a.localeCompare(b, "ko") ||
     valuesByKey.get(b).length - valuesByKey.get(a).length);
   els.optionPanel.hidden = !keys.length;
-  els.optionFilters.innerHTML = keys.map((key) => {
+  const derivedFilters = [];
+  if (valuesByKey.has("마력")) {
+    derivedFilters.push(`<label class="option-filter derived-option-filter">
+      <span>합마력 <small>마력 + INT</small></span>
+      <span class="range-inputs">
+        <input type="number" step="any" data-option="__totalMagic" data-bound="min" placeholder="최소" aria-label="합마력 최솟값">
+        <span>–</span>
+        <input type="number" step="any" data-option="__totalMagic" data-bound="max" placeholder="최대" aria-label="합마력 최댓값">
+      </span>
+    </label>`);
+  }
+  if (valuesByKey.has("공격력")) {
+    derivedFilters.push(`<label class="option-filter derived-option-filter">
+      <span class="derived-filter-title">
+        <b>합공격력</b>
+        <select id="attackMainStat" aria-label="합공격력 주스탯">
+          <option value="주스텟">주스텟</option>
+          <option value="STR">STR</option>
+          <option value="DEX">DEX</option>
+          <option value="LUK">LUK</option>
+        </select>
+        <small>× 0.2 + 공격력</small>
+      </span>
+      <span class="range-inputs">
+        <input type="number" step="any" data-option="__totalAttack" data-bound="min" placeholder="최소" aria-label="합공격력 최솟값">
+        <span>–</span>
+        <input type="number" step="any" data-option="__totalAttack" data-bound="max" placeholder="최대" aria-label="합공격력 최댓값">
+      </span>
+    </label>`);
+  }
+  const regularFilters = keys.map((key) => {
     const values = valuesByKey.get(key);
     const min = Math.min(...values);
     const max = Math.max(...values);
@@ -292,7 +324,20 @@ function setupOptionFilters(records) {
         <input type="number" step="any" data-option="${escapeHtml(key)}" data-bound="max" placeholder="최대 ${strip(max)}" aria-label="${escapeHtml(key)} 최댓값">
       </span>
     </label>`;
-  }).join("");
+  });
+  els.optionFilters.innerHTML = [...derivedFilters, ...regularFilters].join("");
+}
+
+function optionValueForFilter(options, key) {
+  if (key === "__totalMagic") {
+    if (options.마력 === undefined) return undefined;
+    return options.마력 + (options.INT || 0);
+  }
+  if (key === "__totalAttack") {
+    if (options.공격력 === undefined) return undefined;
+    return options.공격력 + (options[attackMainStat] || 0) * 0.2;
+  }
+  return options[key];
 }
 
 function applyFilters() {
@@ -303,7 +348,7 @@ function applyFilters() {
   filteredRecords = source.filter((record) => {
     const options = record[3] || {};
     return active.every(([key, range]) => {
-      const value = options[key];
+      const value = optionValueForFilter(options, key);
       if (value === undefined) return false;
       return (range.min === undefined || value >= range.min) &&
         (range.max === undefined || value <= range.max);
@@ -667,9 +712,18 @@ els.optionFilters.addEventListener("input", (event) => {
   else optionRanges[key][bound] = Number(input.value);
   applyFilters();
 });
+els.optionFilters.addEventListener("change", (event) => {
+  if (event.target.matches("#attackMainStat")) {
+    attackMainStat = event.target.value;
+    applyFilters();
+  }
+});
 $("#resetFilters").addEventListener("click", () => {
   optionRanges = {};
+  attackMainStat = "주스텟";
   els.optionFilters.querySelectorAll("input").forEach((input) => { input.value = ""; });
+  const mainStatSelect = els.optionFilters.querySelector("#attackMainStat");
+  if (mainStatSelect) mainStatSelect.value = attackMainStat;
   applyFilters();
 });
 $("#copyButton").addEventListener("click", async () => {
