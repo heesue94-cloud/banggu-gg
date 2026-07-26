@@ -186,6 +186,11 @@ document.querySelector("#calculateAccuracy").addEventListener("click", calculate
 });
 accuracyBuffs.forEach((buff) => {
   buff.addEventListener("change", () => {
+    const accuracyPill = accuracyBuffs.find((item) => item.dataset.buffName === "명중 알약");
+    const rainbowMilk = accuracyBuffs.find((item) => item.dataset.buffName === "레인보우 우유");
+    if (rainbowMilk.checked) {
+      accuracyPill.checked = false;
+    }
     if (!accuracyResult.hidden) calculateRequiredAccuracy();
   });
 });
