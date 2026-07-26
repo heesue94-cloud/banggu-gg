@@ -141,14 +141,12 @@ td:last-child { color: #fff; font-size: 16px; font-weight: 700; }
 .option-tags { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 6px; min-width: 300px; }
 .option-tag { padding: 5px 8px; color: #d1d9df; background: #24313c; border: 1px solid #2d3d49; border-radius: 5px; font-size: 11px; font-weight: 500; white-space: nowrap; }
 .no-results { padding: 30px !important; color: var(--muted) !important; text-align: center !important; }
-.trade-pagination { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.trade-pagination { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 18px; }
 .trade-pagination[hidden] { display: none; }
-.trade-pagination button { min-width: 38px; height: 36px; padding: 0 11px; color: #b9c4cc; background: #17212a; border: 1px solid var(--line); border-radius: 7px; font-size: 12px; }
-.trade-pagination button:hover:not(:disabled), .trade-pagination button.active { color: #11160c; background: var(--accent); border-color: var(--accent); }
-.trade-pagination button:disabled { opacity: .35; cursor: default; }
-.pagination-pages { display: flex; align-items: center; gap: 6px; }
-.pagination-ellipsis { padding: 0 2px; color: var(--muted); }
-.pagination-status { margin-left: 7px; color: var(--muted); font-size: 11px; }
+.trade-pagination button { width: 28px; height: 28px; padding: 0; color: var(--accent); background: transparent; border: 0; border-radius: 5px; font-size: 17px; cursor: pointer; }
+.trade-pagination button:hover:not(:disabled) { background: var(--accent-soft); }
+.trade-pagination button:disabled { color: var(--muted); opacity: .3; cursor: default; }
+.pagination-status { min-width: 68px; color: #b9c4cc; font-size: 12px; font-weight: 600; text-align: center; }
 
 .upload-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin: 90px 0 45px; padding: 50px clamp(28px, 5vw, 60px); border: 1px solid var(--line); border-radius: 18px; background: #0f151c; }
 .upload-section .eyebrow { margin-bottom: 11px; }
@@ -193,9 +191,7 @@ footer { display: flex; justify-content: space-between; padding: 25px clamp(24px
   .stat-card strong { font-size: 19px; }
   .result-heading { align-items: center; }
   .chart-panel, .distribution-panel, .trades-panel { padding: 17px; }
-  .trade-pagination { gap: 6px; }
-  .trade-pagination button { min-width: 34px; height: 34px; padding: 0 8px; }
-  .pagination-status { flex-basis: 100%; margin: 3px 0 0; text-align: center; }
+  .trade-pagination { gap: 4px; }
   .option-panel { padding: 17px; }
   .option-filters { grid-template-columns: 1fr; }
   .upload-section { margin-top: 55px; padding: 28px 20px; }

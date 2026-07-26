@@ -389,25 +389,10 @@ function renderTradePagination(totalPages) {
     return;
   }
 
-  const pages = new Set([1, totalPages]);
-  for (let page = Math.max(1, tradePage - 2); page <= Math.min(totalPages, tradePage + 2); page++) {
-    pages.add(page);
-  }
-  const sortedPages = [...pages].sort((a, b) => a - b);
-  let previousPage = 0;
-  const pageButtons = sortedPages.map((page) => {
-    const gap = previousPage && page - previousPage > 1
-      ? '<span class="pagination-ellipsis" aria-hidden="true">…</span>'
-      : "";
-    previousPage = page;
-    return `${gap}<button type="button" data-page="${page}"${page === tradePage ? ' class="active" aria-current="page"' : ""}>${number.format(page)}</button>`;
-  }).join("");
-
   els.tradePagination.innerHTML = `
-    <button type="button" data-page="${tradePage - 1}" ${tradePage === 1 ? "disabled" : ""} aria-label="이전 페이지">이전</button>
-    <span class="pagination-pages">${pageButtons}</span>
-    <button type="button" data-page="${tradePage + 1}" ${tradePage === totalPages ? "disabled" : ""} aria-label="다음 페이지">다음</button>
-    <span class="pagination-status">${number.format(tradePage)} / ${number.format(totalPages)} 페이지</span>`;
+    <button type="button" data-page="${tradePage - 1}" ${tradePage === 1 ? "disabled" : ""} aria-label="이전 페이지">←</button>
+    <span class="pagination-status">${number.format(tradePage)} / ${number.format(totalPages)}</span>
+    <button type="button" data-page="${tradePage + 1}" ${tradePage === totalPages ? "disabled" : ""} aria-label="다음 페이지">→</button>`;
 }
 
 function renderOptionTags(options = {}) {
