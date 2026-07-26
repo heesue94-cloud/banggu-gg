@@ -14,7 +14,7 @@ let filteredRecords = [];
 let selectedRecords = [];
 const bucketCache = new Map();
 const itemImageCache = new Map();
-const MAPLESTORY_IO_BASE = "https://maplestory.io/api/KMS/latest";
+let itemIconIndexPromise = null;
 
 const els = {
   search: $("#searchInput"), suggestions: $("#suggestions"), popular: $("#popular"),
@@ -213,20 +213,13 @@ async function loadItemImage(name) {
   }
 
   try {
-    const response = await fetch(
-      `${MAPLESTORY_IO_BASE}/item?searchFor=${encodeURIComponent(name)}`,
-      { cache: "force-cache" },
-    );
-    if (!response.ok) throw new Error("MapleStory.IO search failed");
-    const payload = await response.json();
-    const items = Array.isArray(payload) ? payload : (payload.items || payload.data || []);
-    const match = items.find((item) =>
-      String(item.name || item.itemName || "").trim() === name
-    );
-    const itemId = match?.id ?? match?.itemId;
+    itemIconIndexPromise ||= fetch("data/item-icons.json", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : {});
+    const itemId = (await itemIconIndexPromise)[name];
+    const source = `maplestory.io/api/gms/62/item/${encodeURIComponent(itemId)}/icon`;
     const iconUrl = itemId == null
       ? null
-      : `${MAPLESTORY_IO_BASE}/item/${encodeURIComponent(itemId)}/icon`;
+      : `https://images.weserv.nl/?url=${encodeURIComponent(source)}&output=png`;
     itemImageCache.set(name, iconUrl);
     if (selectedName === name) showItemImage(name, iconUrl);
   } catch {
