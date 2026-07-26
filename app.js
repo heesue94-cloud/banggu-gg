@@ -13,6 +13,7 @@ let optionRanges = {};
 let filteredRecords = [];
 let selectedRecords = [];
 let tradePage = 1;
+let useKoreanPriceUnits = false;
 const TRADE_PAGE_SIZE = 50;
 const bucketCache = new Map();
 const itemImageCache = new Map();
@@ -35,6 +36,23 @@ const els = {
 };
 
 const won = (value) => number.format(Math.round(value));
+const koreanPrice = (value) => {
+  let remaining = Math.round(value);
+  const parts = [];
+  const billions = Math.floor(remaining / 100000000);
+  if (billions) {
+    parts.push(`${billions}억`);
+    remaining %= 100000000;
+  }
+  const tenThousands = Math.floor(remaining / 10000);
+  if (tenThousands) {
+    parts.push(`${tenThousands}만`);
+    remaining %= 10000;
+  }
+  if (remaining || !parts.length) parts.push(String(remaining));
+  return parts.join(" ");
+};
+const tradePrice = (value) => useKoreanPriceUnits ? koreanPrice(value) : won(value);
 const median = (values) => {
   const sorted = [...values].sort((a, b) => a - b);
   const middle = Math.floor(sorted.length / 2);
@@ -375,8 +393,8 @@ function renderTrades() {
       <td>${dateTime.format(new Date(time * 1000))}</td>
       <td>${renderOptionTags(options)}</td>
       <td>${number.format(quantity)}개</td>
-      <td>${number.format(total)}</td>
-      <td>${won(total / quantity)}</td>
+      <td>${tradePrice(total)}</td>
+      <td>${tradePrice(total / quantity)}</td>
     </tr>`).join("");
   renderTradePagination(totalPages);
 }
@@ -624,6 +642,12 @@ document.addEventListener("click", (event) => {
 $("#sortSelect").addEventListener("change", (event) => {
   tradeSort = event.currentTarget.value;
   tradePage = 1;
+  renderTrades();
+});
+$("#unitToggle").addEventListener("click", (event) => {
+  useKoreanPriceUnits = !useKoreanPriceUnits;
+  event.currentTarget.setAttribute("aria-pressed", String(useKoreanPriceUnits));
+  event.currentTarget.textContent = `한글 단위 ${useKoreanPriceUnits ? "ON" : "OFF"}`;
   renderTrades();
 });
 els.tradePagination.addEventListener("click", (event) => {

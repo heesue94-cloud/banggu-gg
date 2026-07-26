@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260727-3" />
+    <link rel="stylesheet" href="styles.css?v=20260727-4" />
   </head>
   <body>
     <header class="topbar">
@@ -154,15 +154,18 @@
               <h3>최근 거래</h3>
               <p id="tradesCaption">최신 기록 50건</p>
             </div>
-            <label class="sort-control">
-              <span class="sr-only">거래내역 정렬</span>
-              <select id="sortSelect" aria-label="거래내역 정렬">
-                <option value="newest">최신순</option>
-                <option value="oldest">오래된순</option>
-                <option value="price-high">가격 높은순</option>
-                <option value="price-low">가격 낮은순</option>
-              </select>
-            </label>
+            <div class="trade-controls">
+              <label class="sort-control">
+                <span class="sr-only">거래내역 정렬</span>
+                <select id="sortSelect" aria-label="거래내역 정렬">
+                  <option value="newest">최신순</option>
+                  <option value="oldest">오래된순</option>
+                  <option value="price-high">가격 높은순</option>
+                  <option value="price-low">가격 낮은순</option>
+                </select>
+              </label>
+              <button id="unitToggle" class="unit-toggle" type="button" aria-pressed="false">한글 단위 OFF</button>
+            </div>
           </div>
           <div class="table-wrap">
             <table>
@@ -196,6 +199,6 @@
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260727-6"></script>
+    <script src="app.js?v=20260727-7"></script>
   </body>
 </html>
