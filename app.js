@@ -10,7 +10,8 @@ let selectedName = "";
 let tradeSort = "newest";
 let chartPoints = [];
 let optionRanges = {};
-let attackMainStat = "주스텟";
+let attackMainStat = "STR";
+let derivedFilterModes = { __totalAttack: "exact", __totalMagic: "exact" };
 let filteredRecords = [];
 let selectedRecords = [];
 let tradePage = 1;
@@ -276,7 +277,8 @@ function setupOptionFilters(records) {
     });
   });
   optionRanges = {};
-  attackMainStat = "주스텟";
+  attackMainStat = "STR";
+  derivedFilterModes = { __totalAttack: "exact", __totalMagic: "exact" };
   const keys = [...valuesByKey.keys()].sort((a, b) =>
     optionDisplayRank(a) - optionDisplayRank(b) ||
     a.localeCompare(b, "ko") ||
@@ -286,10 +288,9 @@ function setupOptionFilters(records) {
   if (valuesByKey.has("마력")) {
     derivedFilters.push(`<label class="option-filter derived-option-filter">
       <span>합마력 <small>마력 + INT</small></span>
-      <span class="range-inputs">
-        <input type="number" step="any" data-option="__totalMagic" data-bound="min" placeholder="최소" aria-label="합마력 최솟값">
-        <span>–</span>
-        <input type="number" step="any" data-option="__totalMagic" data-bound="max" placeholder="최대" aria-label="합마력 최댓값">
+      <span class="derived-filter-input">
+        <input type="number" step="any" data-option="__totalMagic" data-bound="exact" placeholder="합마력 입력" aria-label="합마력">
+        <button type="button" class="derived-mode-toggle" data-derived-mode="__totalMagic" aria-pressed="false">정확히 일치</button>
       </span>
     </label>`);
   }
@@ -298,17 +299,15 @@ function setupOptionFilters(records) {
       <span class="derived-filter-title">
         <b>합공격력</b>
         <select id="attackMainStat" aria-label="합공격력 주스탯">
-          <option value="주스텟">주스텟</option>
           <option value="STR">STR</option>
           <option value="DEX">DEX</option>
           <option value="LUK">LUK</option>
         </select>
         <small>× 0.2 + 공격력</small>
       </span>
-      <span class="range-inputs">
-        <input type="number" step="any" data-option="__totalAttack" data-bound="min" placeholder="최소" aria-label="합공격력 최솟값">
-        <span>–</span>
-        <input type="number" step="any" data-option="__totalAttack" data-bound="max" placeholder="최대" aria-label="합공격력 최댓값">
+      <span class="derived-filter-input">
+        <input type="number" step="any" data-option="__totalAttack" data-bound="exact" placeholder="공격력급 입력" aria-label="공격력급">
+        <button type="button" class="derived-mode-toggle" data-derived-mode="__totalAttack" aria-pressed="false">정확히 일치</button>
       </span>
     </label>`);
   }
@@ -335,7 +334,8 @@ function optionValueForFilter(options, key) {
   }
   if (key === "__totalAttack") {
     if (options.공격력 === undefined) return undefined;
-    return options.공격력 + (options[attackMainStat] || 0) * 0.2;
+    const mainStat = options.주스텟 ?? options[attackMainStat] ?? 0;
+    return options.공격력 + mainStat * 0.2;
   }
   return options[key];
 }
@@ -344,12 +344,17 @@ function applyFilters() {
   tradePage = 1;
   const source = selectedRecords;
   const active = Object.entries(optionRanges).filter(([, range]) =>
-    range.min !== undefined || range.max !== undefined);
+    range.min !== undefined || range.max !== undefined || range.exact !== undefined);
   filteredRecords = source.filter((record) => {
     const options = record[3] || {};
     return active.every(([key, range]) => {
       const value = optionValueForFilter(options, key);
       if (value === undefined) return false;
+      if (range.exact !== undefined) {
+        return derivedFilterModes[key] === "minimum"
+          ? value >= range.exact
+          : Math.abs(value - range.exact) < 0.000001;
+      }
       return (range.min === undefined || value >= range.min) &&
         (range.max === undefined || value <= range.max);
     });
@@ -718,12 +723,27 @@ els.optionFilters.addEventListener("change", (event) => {
     applyFilters();
   }
 });
+els.optionFilters.addEventListener("click", (event) => {
+  const toggle = event.target.closest("button[data-derived-mode]");
+  if (!toggle) return;
+  const key = toggle.dataset.derivedMode;
+  const useMinimum = derivedFilterModes[key] !== "minimum";
+  derivedFilterModes[key] = useMinimum ? "minimum" : "exact";
+  toggle.setAttribute("aria-pressed", String(useMinimum));
+  toggle.textContent = useMinimum ? "이상 포함" : "정확히 일치";
+  applyFilters();
+});
 $("#resetFilters").addEventListener("click", () => {
   optionRanges = {};
-  attackMainStat = "주스텟";
+  attackMainStat = "STR";
+  derivedFilterModes = { __totalAttack: "exact", __totalMagic: "exact" };
   els.optionFilters.querySelectorAll("input").forEach((input) => { input.value = ""; });
   const mainStatSelect = els.optionFilters.querySelector("#attackMainStat");
   if (mainStatSelect) mainStatSelect.value = attackMainStat;
+  els.optionFilters.querySelectorAll("button[data-derived-mode]").forEach((button) => {
+    button.setAttribute("aria-pressed", "false");
+    button.textContent = "정확히 일치";
+  });
   applyFilters();
 });
 $("#copyButton").addEventListener("click", async () => {
