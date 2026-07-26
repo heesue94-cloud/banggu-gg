@@ -125,6 +125,7 @@ const monsterSearch = document.querySelector("#monsterSearch");
 const monsterOptions = document.querySelector("#monsterOptions");
 const accuracyResult = document.querySelector("#accuracyResult");
 const accuracyError = document.querySelector("#accuracyError");
+const accuracyBuffs = [...document.querySelectorAll(".buff-toggle input")];
 
 monsterOptions.innerHTML = monsterData.map((monster) =>
   `<option value="${monster.name}" label="Lv.${monster.level} · 회피율 ${monster.avoid}"></option>`
@@ -157,8 +158,15 @@ function calculateRequiredAccuracy() {
   const baseAccuracy = monster.avoid * 55 / 15;
   const rawPenalty = levelGap * monster.avoid * 2 / 15;
   const required = Math.round(baseAccuracy + rawPenalty);
+  const buffTotal = accuracyBuffs
+    .filter((buff) => buff.checked)
+    .reduce((sum, buff) => sum + Number(buff.value), 0);
+  const adjustedRequired = Math.max(0, required - buffTotal);
+  const buffReduction = document.querySelector("#buffReduction");
 
-  document.querySelector("#requiredAccuracy").textContent = format.format(required);
+  document.querySelector("#requiredAccuracy").textContent = format.format(adjustedRequired);
+  buffReduction.textContent = `(-${format.format(buffTotal)})`;
+  buffReduction.hidden = buffTotal === 0;
   document.querySelector("#selectedMonster").textContent = monster.name;
   document.querySelector("#monsterStats").textContent =
     `Lv.${monster.level} · 회피율 ${monster.avoid}`;
@@ -174,5 +182,10 @@ document.querySelector("#calculateAccuracy").addEventListener("click", calculate
 [accuracyLevel, monsterSearch].forEach((input) => {
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") calculateRequiredAccuracy();
+  });
+});
+accuracyBuffs.forEach((buff) => {
+  buff.addEventListener("change", () => {
+    if (!accuracyResult.hidden) calculateRequiredAccuracy();
   });
 });

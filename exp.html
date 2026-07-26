@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260727-5" />
-    <link rel="stylesheet" href="exp.css?v=20260727-3" />
+    <link rel="stylesheet" href="exp.css?v=20260727-4" />
   </head>
   <body>
     <header class="topbar">
@@ -97,10 +97,31 @@
           </label>
           <button id="calculateAccuracy" type="button">필요 명중률 계산</button>
         </div>
+        <div class="accuracy-buffs" aria-label="명중률 버프">
+          <span class="buff-heading">명중 버프</span>
+          <label class="buff-toggle">
+            <input type="checkbox" value="20" data-buff-name="블레스" />
+            <span class="toggle-track" aria-hidden="true"><i></i></span>
+            <b>블레스</b><small>+20</small>
+          </label>
+          <label class="buff-toggle">
+            <input type="checkbox" value="10" data-buff-name="명중 알약" />
+            <span class="toggle-track" aria-hidden="true"><i></i></span>
+            <b>명중 알약</b><small>+10</small>
+          </label>
+          <label class="buff-toggle">
+            <input type="checkbox" value="40" data-buff-name="레인보우유" />
+            <span class="toggle-track" aria-hidden="true"><i></i></span>
+            <b>레인보우유</b><small>+40</small>
+          </label>
+        </div>
         <div id="accuracyResult" class="accuracy-result" hidden>
           <article class="accuracy-main-result">
             <span>필요 명중률</span>
-            <strong id="requiredAccuracy">—</strong>
+            <div class="required-accuracy-line">
+              <strong id="requiredAccuracy">—</strong>
+              <em id="buffReduction" hidden>—</em>
+            </div>
             <small>이 수치 이상이면 100% 명중</small>
           </article>
           <article>
@@ -155,6 +176,6 @@
 
     <footer><span>LEVEL EXPERIENCE ARCHIVE</span><span>레벨 1–200</span></footer>
     <script src="monster-data.js?v=20260727-1"></script>
-    <script src="exp.js?v=20260727-3"></script>
+    <script src="exp.js?v=20260727-4"></script>
   </body>
 </html>
