@@ -12,6 +12,8 @@ let chartPoints = [];
 let optionRanges = {};
 let filteredRecords = [];
 let selectedRecords = [];
+let tradePage = 1;
+const TRADE_PAGE_SIZE = 50;
 const bucketCache = new Map();
 const itemImageCache = new Map();
 let itemIconIndexPromise = null;
@@ -29,6 +31,7 @@ const els = {
   latest: $("#headerLatest"),
   optionPanel: $("#optionPanel"), optionFilters: $("#optionFilters"),
   filterSummary: $("#filterSummary"), tradesCaption: $("#tradesCaption"),
+  tradePagination: $("#tradePagination"),
 };
 
 const won = (value) => number.format(Math.round(value));
@@ -197,6 +200,7 @@ async function selectItem(name) {
   history.replaceState(null, "", `#${encodeURIComponent(name)}`);
   loadItemImage(name);
 
+  tradePage = 1;
   setupOptionFilters(selectedRecords);
   applyFilters();
   els.result.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -215,8 +219,11 @@ async function loadItemImage(name) {
   try {
     itemIconIndexPromise ||= fetch("data/item-icons.json", { cache: "no-store" })
       .then((response) => response.ok ? response.json() : {});
-    const itemId = (await itemIconIndexPromise)[name];
-    const source = `maplestory.io/api/gms/62/item/${encodeURIComponent(itemId)}/icon`;
+    const itemEntry = (await itemIconIndexPromise)[name];
+    const itemId = typeof itemEntry === "object" ? itemEntry.id : itemEntry;
+    const region = typeof itemEntry === "object" ? itemEntry.region || "gms" : "gms";
+    const version = typeof itemEntry === "object" ? itemEntry.version || "62" : "62";
+    const source = `maplestory.io/api/${region}/${version}/item/${encodeURIComponent(itemId)}/icon`;
     const iconUrl = itemId == null
       ? null
       : `https://images.weserv.nl/?url=${encodeURIComponent(source)}&output=png`;
@@ -271,6 +278,7 @@ function setupOptionFilters(records) {
 }
 
 function applyFilters() {
+  tradePage = 1;
   const source = selectedRecords;
   const active = Object.entries(optionRanges).filter(([, range]) =>
     range.min !== undefined || range.max !== undefined);
@@ -312,6 +320,7 @@ function renderResult(records) {
     els.dailyAverage.textContent = "0건";
     els.weeklyComparison.hidden = true;
     els.rows.innerHTML = `<tr><td colspan="5" class="no-results">선택한 옵션 조건에 맞는 거래가 없습니다.</td></tr>`;
+    els.tradePagination.hidden = true;
     els.distribution.innerHTML = "";
     chartPoints = []; drawChart();
     return;
@@ -352,9 +361,16 @@ function renderResult(records) {
 }
 
 function renderTrades() {
+  const totalPages = Math.max(1, Math.ceil(filteredRecords.length / TRADE_PAGE_SIZE));
+  tradePage = Math.min(Math.max(1, tradePage), totalPages);
+  const start = (tradePage - 1) * TRADE_PAGE_SIZE;
   const records = [...filteredRecords].sort((a, b) =>
-    sortNewest ? b[0] - a[0] : a[0] - b[0]).slice(0, 50);
-  els.tradesCaption.textContent = `필터 결과 ${number.format(filteredRecords.length)}건 · 최대 50건 표시`;
+    sortNewest ? b[0] - a[0] : a[0] - b[0])
+    .slice(start, start + TRADE_PAGE_SIZE);
+  const firstRecord = filteredRecords.length ? start + 1 : 0;
+  const lastRecord = Math.min(start + TRADE_PAGE_SIZE, filteredRecords.length);
+  els.tradesCaption.textContent =
+    `필터 결과 ${number.format(filteredRecords.length)}건 · ${number.format(firstRecord)}–${number.format(lastRecord)}건 표시`;
   els.rows.innerHTML = records.map(([time, quantity, total, options]) => `
     <tr>
       <td>${dateTime.format(new Date(time * 1000))}</td>
@@ -363,6 +379,35 @@ function renderTrades() {
       <td>${number.format(total)}</td>
       <td>${won(total / quantity)}</td>
     </tr>`).join("");
+  renderTradePagination(totalPages);
+}
+
+function renderTradePagination(totalPages) {
+  els.tradePagination.hidden = totalPages <= 1;
+  if (totalPages <= 1) {
+    els.tradePagination.innerHTML = "";
+    return;
+  }
+
+  const pages = new Set([1, totalPages]);
+  for (let page = Math.max(1, tradePage - 2); page <= Math.min(totalPages, tradePage + 2); page++) {
+    pages.add(page);
+  }
+  const sortedPages = [...pages].sort((a, b) => a - b);
+  let previousPage = 0;
+  const pageButtons = sortedPages.map((page) => {
+    const gap = previousPage && page - previousPage > 1
+      ? '<span class="pagination-ellipsis" aria-hidden="true">…</span>'
+      : "";
+    previousPage = page;
+    return `${gap}<button type="button" data-page="${page}"${page === tradePage ? ' class="active" aria-current="page"' : ""}>${number.format(page)}</button>`;
+  }).join("");
+
+  els.tradePagination.innerHTML = `
+    <button type="button" data-page="${tradePage - 1}" ${tradePage === 1 ? "disabled" : ""} aria-label="이전 페이지">이전</button>
+    <span class="pagination-pages">${pageButtons}</span>
+    <button type="button" data-page="${tradePage + 1}" ${tradePage === totalPages ? "disabled" : ""} aria-label="다음 페이지">다음</button>
+    <span class="pagination-status">${number.format(tradePage)} / ${number.format(totalPages)} 페이지</span>`;
 }
 
 function renderOptionTags(options = {}) {
@@ -587,8 +632,16 @@ document.addEventListener("click", (event) => {
 });
 $("#sortButton").addEventListener("click", (event) => {
   sortNewest = !sortNewest;
+  tradePage = 1;
   event.currentTarget.textContent = sortNewest ? "최신순 ↓" : "오래된순 ↑";
   renderTrades();
+});
+els.tradePagination.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-page]");
+  if (!button || button.disabled) return;
+  tradePage = Number(button.dataset.page);
+  renderTrades();
+  els.rows.closest(".trades-panel").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 els.optionFilters.addEventListener("input", (event) => {
   const input = event.target.closest("input[data-option]");
