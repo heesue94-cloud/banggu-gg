@@ -116,3 +116,63 @@ document.querySelector("#calculateTime").addEventListener("click", calculateEsti
     if (event.key === "Enter") calculateEstimatedTime();
   });
 });
+
+const monsterData = Array.isArray(window.MONSTER_ACCURACY_DATA)
+  ? window.MONSTER_ACCURACY_DATA
+  : [];
+const accuracyLevel = document.querySelector("#accuracyLevel");
+const monsterSearch = document.querySelector("#monsterSearch");
+const monsterOptions = document.querySelector("#monsterOptions");
+const accuracyResult = document.querySelector("#accuracyResult");
+const accuracyError = document.querySelector("#accuracyError");
+
+monsterOptions.innerHTML = monsterData.map((monster) =>
+  `<option value="${monster.name}" label="Lv.${monster.level} · 회피율 ${monster.avoid}"></option>`
+).join("");
+
+function normalizeMonsterName(value) {
+  return String(value || "").replace(/\s+/g, "").toLocaleLowerCase("ko-KR");
+}
+
+function calculateRequiredAccuracy() {
+  const playerLevel = Number(accuracyLevel.value);
+  const query = normalizeMonsterName(monsterSearch.value);
+  const monster = monsterData.find((candidate) =>
+    normalizeMonsterName(candidate.name) === query
+  );
+
+  accuracyError.textContent = "";
+  if (!Number.isInteger(playerLevel) || playerLevel < 1 || playerLevel > 200) {
+    accuracyError.textContent = "내 레벨은 1~200 사이로 입력하세요.";
+    accuracyResult.hidden = true;
+    return;
+  }
+  if (!monster) {
+    accuracyError.textContent = "목록에서 몬스터를 선택하세요. 이름을 입력하면 검색할 수 있습니다.";
+    accuracyResult.hidden = true;
+    return;
+  }
+
+  const levelGap = Math.max(0, monster.level - playerLevel);
+  const baseAccuracy = monster.avoid * 55 / 15;
+  const rawPenalty = levelGap * monster.avoid * 2 / 15;
+  const required = Math.round(baseAccuracy + rawPenalty);
+
+  document.querySelector("#requiredAccuracy").textContent = format.format(required);
+  document.querySelector("#selectedMonster").textContent = monster.name;
+  document.querySelector("#monsterStats").textContent =
+    `Lv.${monster.level} · 회피율 ${monster.avoid}`;
+  document.querySelector("#accuracyPenalty").textContent =
+    levelGap ? `+${rawPenalty.toLocaleString("ko-KR", { maximumFractionDigits: 2 })}` : "없음";
+  document.querySelector("#accuracyFormula").textContent = levelGap
+    ? `레벨 차이 ${levelGap} × 패널티 ${(monster.avoid * 2 / 15).toLocaleString("ko-KR", { maximumFractionDigits: 3 })}`
+    : "내 레벨이 몬스터 레벨 이상";
+  accuracyResult.hidden = false;
+}
+
+document.querySelector("#calculateAccuracy").addEventListener("click", calculateRequiredAccuracy);
+[accuracyLevel, monsterSearch].forEach((input) => {
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") calculateRequiredAccuracy();
+  });
+});
