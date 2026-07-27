@@ -30,6 +30,7 @@ const els = {
   dailyAverage: $("#dailyAverage"),
   weeklyComparison: $("#weeklyComparison"), averagePeriod: $("#averagePeriod"),
   distribution: $("#distribution"), chart: $("#priceChart"), tooltip: $("#chartTooltip"),
+  chartPanel: $("#chartPanel"), chartContent: $("#chartContent"), chartToggle: $("#chartToggle"),
   status: $("#headerStatus"), footer: $("#footerMeta"), toast: $("#toast"),
   latest: $("#headerLatest"),
   optionPanel: $("#optionPanel"), optionFilters: $("#optionFilters"),
@@ -751,6 +752,15 @@ $("#copyButton").addEventListener("click", async () => {
   showToast("검색 링크를 복사했습니다.");
 });
 window.addEventListener("resize", drawChart);
+els.chartToggle.addEventListener("click", () => {
+  const isExpanded = els.chartToggle.getAttribute("aria-expanded") === "true";
+  els.chartToggle.setAttribute("aria-expanded", String(!isExpanded));
+  els.chartToggle.textContent = isExpanded ? "펼치기" : "접기";
+  els.chartContent.hidden = isExpanded;
+  els.chartPanel.classList.toggle("is-collapsed", isExpanded);
+  els.tooltip.hidden = true;
+  if (!isExpanded) requestAnimationFrame(drawChart);
+});
 els.chart.addEventListener("mousemove", (event) => {
   if (!els.chart._chart || !chartPoints.length) return;
   const rect = els.chart.getBoundingClientRect();

@@ -77,6 +77,7 @@ kbd { padding: 3px 8px; border: 1px solid #cbd1ce; border-radius: 5px; color: #7
 .chip:hover { border-color: #596876; color: var(--text); }
 
 .empty-panel { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 190px; padding: 28px; overflow: hidden; text-align: center; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(23,33,43,.72), rgba(15,21,28,.5)); }
+.empty-panel[hidden] { display: none; }
 .empty-panel h2 { margin: 14px 0 6px; font-size: 20px; }
 .empty-panel p { margin: 0; color: var(--muted); font-size: 14px; }
 .empty-orbit { display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid #465360; border-radius: 50%; }
@@ -136,6 +137,10 @@ kbd { padding: 3px 8px; border: 1px solid #cbd1ce; border-radius: 5px; color: #7
 .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .chart-legend span::before { content: ""; width: 15px; height: 3px; border-radius: 99px; background: var(--accent); }
 .chart-legend .count-legend::before { background: var(--orange); }
+.chart-toggle { flex: 0 0 auto; }
+.chart-unit-label { margin-top: -20px; color: var(--muted); font-size: 12px; text-align: right; }
+.chart-content[hidden] { display: none; }
+.chart-panel.is-collapsed { align-self: start; }
 .chart-wrap { position: relative; height: 260px; margin-top: 25px; }
 #priceChart { width: 100%; height: 100%; }
 .chart-tooltip { position: absolute; padding: 8px 10px; pointer-events: none; color: #11160c; background: var(--accent); border-radius: 7px; font-size: 11px; font-weight: 700; transform: translate(-50%, -115%); }

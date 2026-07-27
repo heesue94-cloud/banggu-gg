@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260727-7" />
+    <link rel="stylesheet" href="styles.css?v=20260727-8" />
   </head>
   <body>
     <header class="topbar">
@@ -123,7 +123,7 @@
         </article>
 
         <div class="content-grid">
-          <article class="panel chart-panel">
+          <article id="chartPanel" class="panel chart-panel">
             <div class="panel-heading">
               <div>
                 <h3>일자별 시세</h3>
@@ -132,11 +132,14 @@
                   <span class="count-legend">거래건수</span>
                 </div>
               </div>
-              <span class="unit-label">가격 · 거래건수</span>
+              <button id="chartToggle" class="text-button chart-toggle" type="button" aria-expanded="true" aria-controls="chartContent">접기</button>
             </div>
-            <div class="chart-wrap">
-              <canvas id="priceChart" aria-label="일자별 가격 추이 차트"></canvas>
-              <div id="chartTooltip" class="chart-tooltip" hidden></div>
+            <div id="chartContent" class="chart-content">
+              <div class="chart-unit-label">가격 · 거래건수</div>
+              <div class="chart-wrap">
+                <canvas id="priceChart" aria-label="일자별 가격 추이 차트"></canvas>
+                <div id="chartTooltip" class="chart-tooltip" hidden></div>
+              </div>
             </div>
           </article>
 
@@ -202,6 +205,6 @@
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260727-9"></script>
+    <script src="app.js?v=20260727-10"></script>
   </body>
 </html>
