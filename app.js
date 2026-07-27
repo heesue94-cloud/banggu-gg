@@ -31,6 +31,7 @@ const els = {
   weeklyComparison: $("#weeklyComparison"), averagePeriod: $("#averagePeriod"),
   distribution: $("#distribution"), chart: $("#priceChart"), tooltip: $("#chartTooltip"),
   chartPanel: $("#chartPanel"), chartContent: $("#chartContent"), chartToggle: $("#chartToggle"),
+  distributionPanel: $(".distribution-panel"),
   status: $("#headerStatus"), footer: $("#footerMeta"), toast: $("#toast"),
   latest: $("#headerLatest"),
   optionPanel: $("#optionPanel"), optionFilters: $("#optionFilters"),
@@ -757,7 +758,9 @@ els.chartToggle.addEventListener("click", () => {
   els.chartToggle.setAttribute("aria-expanded", String(!isExpanded));
   els.chartToggle.textContent = isExpanded ? "펼치기" : "접기";
   els.chartContent.hidden = isExpanded;
+  els.distributionPanel.hidden = isExpanded;
   els.chartPanel.classList.toggle("is-collapsed", isExpanded);
+  els.chartPanel.parentElement.classList.toggle("is-chart-collapsed", isExpanded);
   els.tooltip.hidden = true;
   if (!isExpanded) requestAnimationFrame(drawChart);
 });
