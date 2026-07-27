@@ -398,11 +398,15 @@ async function loadItemDetails(name) {
 
     const equipment = catalogData?.equipment?.find((item) => item.name === name);
     const statEntries = Object.entries(detail.stats || {});
+    const category = equipment?.slot || detail.category || "아이템";
+    const badge = detail.level ? `Lv.${detail.level}` : category;
     const meta = [
-      ["착용 레벨", `Lv.${detail.level || "—"}`],
-      ["직업", detail.job || "—"],
-      ["분류", equipment?.slot || "장비"],
+      ...(detail.job ? [["직업", detail.job]] : []),
+      ["분류", category],
     ];
+    const sourceText = detail.source === "mapledb"
+      ? "MapleDB 기준 · 괄호 안은 가능한 옵션 범위"
+      : "옥션 로그 기준 분류 · 공개된 기본 옵션 없음";
 
     els.itemInfoTooltip.innerHTML = `
       <div class="item-tooltip-head">
@@ -410,10 +414,10 @@ async function loadItemDetails(name) {
           <small>ITEM INFORMATION</small>
           <strong>${escapeHtml(name)}</strong>
         </div>
-        <span class="item-tooltip-level">${escapeHtml(meta[0][1])}</span>
+        <span class="item-tooltip-level">${escapeHtml(badge)}</span>
       </div>
       <dl class="item-tooltip-meta">
-        ${meta.slice(1).map(([label, value]) =>
+        ${meta.map(([label, value]) =>
           `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(String(value))}</dd></div>`).join("")}
       </dl>
       ${statEntries.length ? `
@@ -422,7 +426,7 @@ async function loadItemDetails(name) {
           ${statEntries.map(([label, value]) =>
             `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(String(value))}</dd></div>`).join("")}
         </dl>` : `<p class="item-tooltip-empty">표시할 기본 옵션이 없습니다.</p>`}
-      <p class="item-tooltip-source">MapleDB 기준 · 괄호 안은 가능한 옵션 범위</p>`;
+      <p class="item-tooltip-source">${escapeHtml(sourceText)}</p>`;
     els.itemInfo.hidden = false;
   } catch {
     els.itemInfo.hidden = true;
