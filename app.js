@@ -20,6 +20,7 @@ const TRADE_PAGE_SIZE = 50;
 const bucketCache = new Map();
 const itemImageCache = new Map();
 let itemIconIndexPromise = null;
+let itemDetailsPromise = null;
 let catalogData = null;
 const catalogState = {
   mode: "scroll",
@@ -34,6 +35,8 @@ const els = {
   search: $("#searchInput"), suggestions: $("#suggestions"), popular: $("#popular"),
   result: $("#result"), empty: $("#emptyState"), name: $("#itemName"),
   itemIcon: $("#itemIcon"), itemIconWrap: $("#itemIconWrap"),
+  itemInfo: $("#itemInfo"), itemInfoButton: $("#itemInfoButton"),
+  itemInfoTooltip: $("#itemInfoTooltip"),
   median: $("#medianPrice"), average: $("#averagePrice"), range: $("#priceRange"),
   count: $("#tradeCount"), quantity: $("#quantityTotal"), rows: $("#tradeRows"),
   dailyAverage: $("#dailyAverage"),
@@ -332,6 +335,7 @@ async function selectItem(name) {
   els.result.hidden = false;
   history.replaceState(null, "", `#${encodeURIComponent(name)}`);
   loadItemImage(name);
+  loadItemDetails(name);
 
   tradePage = 1;
   setupOptionFilters(selectedRecords);
@@ -378,6 +382,51 @@ function showItemImage(name, iconUrl) {
   };
   els.itemIcon.alt = `${name} 아이템 이미지`;
   els.itemIcon.src = iconUrl;
+}
+
+async function loadItemDetails(name) {
+  els.itemInfo.hidden = true;
+  els.itemInfo.classList.remove("is-open");
+  els.itemInfoButton.setAttribute("aria-expanded", "false");
+  els.itemInfoTooltip.replaceChildren();
+
+  try {
+    itemDetailsPromise ||= fetch("data/item-details.json", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : {});
+    const detail = (await itemDetailsPromise)[name];
+    if (!detail || selectedName !== name) return;
+
+    const equipment = catalogData?.equipment?.find((item) => item.name === name);
+    const statEntries = Object.entries(detail.stats || {});
+    const meta = [
+      ["착용 레벨", `Lv.${detail.level || "—"}`],
+      ["직업", detail.job || "—"],
+      ["분류", equipment?.slot || "장비"],
+    ];
+
+    els.itemInfoTooltip.innerHTML = `
+      <div class="item-tooltip-head">
+        <div>
+          <small>ITEM INFORMATION</small>
+          <strong>${escapeHtml(name)}</strong>
+        </div>
+        <span class="item-tooltip-level">${escapeHtml(meta[0][1])}</span>
+      </div>
+      <dl class="item-tooltip-meta">
+        ${meta.slice(1).map(([label, value]) =>
+          `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(String(value))}</dd></div>`).join("")}
+      </dl>
+      ${statEntries.length ? `
+        <div class="item-tooltip-divider"><span>기본 옵션</span></div>
+        <dl class="item-tooltip-stats">
+          ${statEntries.map(([label, value]) =>
+            `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(String(value))}</dd></div>`).join("")}
+        </dl>` : `<p class="item-tooltip-empty">표시할 기본 옵션이 없습니다.</p>`}
+      <p class="item-tooltip-source">MapleDB 기준 · 괄호 안은 가능한 옵션 범위</p>`;
+    els.itemInfo.hidden = false;
+  } catch {
+    els.itemInfo.hidden = true;
+  }
 }
 
 function setupOptionFilters(records) {
@@ -793,14 +842,26 @@ els.search.addEventListener("keydown", (event) => {
   if (event.key === "Escape") els.suggestions.hidden = true;
 });
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !els.itemInfo.hidden) {
+    els.itemInfo.classList.remove("is-open");
+    els.itemInfoButton.setAttribute("aria-expanded", "false");
+  }
   if (event.key === "/" && document.activeElement !== els.search) {
     event.preventDefault(); els.search.focus();
   }
 });
 document.addEventListener("click", (event) => {
+  if (!event.target.closest(".item-info")) {
+    els.itemInfo.classList.remove("is-open");
+    els.itemInfoButton.setAttribute("aria-expanded", "false");
+  }
   const target = event.target.closest("[data-name]");
   if (target) selectItem(target.dataset.name);
   else if (!event.target.closest(".search-shell")) els.suggestions.hidden = true;
+});
+els.itemInfoButton.addEventListener("click", () => {
+  const isOpen = els.itemInfo.classList.toggle("is-open");
+  els.itemInfoButton.setAttribute("aria-expanded", String(isOpen));
 });
 $("#sortSelect").addEventListener("change", (event) => {
   tradeSort = event.currentTarget.value;

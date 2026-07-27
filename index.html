@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260727-11" />
+    <link rel="stylesheet" href="styles.css?v=20260727-12" />
   </head>
   <body>
     <header class="topbar">
@@ -95,7 +95,15 @@
             </div>
             <div>
               <p class="eyebrow">SEARCH RESULT</p>
-              <h2 id="itemName"></h2>
+              <div class="result-title-row">
+                <h2 id="itemName"></h2>
+                <div id="itemInfo" class="item-info" hidden>
+                  <button id="itemInfoButton" class="item-info-button" type="button" aria-expanded="false" aria-describedby="itemInfoTooltip">
+                    정보 <span aria-hidden="true">ⓘ</span>
+                  </button>
+                  <article id="itemInfoTooltip" class="item-info-tooltip" role="tooltip"></article>
+                </div>
+              </div>
             </div>
           </div>
           <button id="copyButton" class="ghost-button" type="button">링크 복사</button>
@@ -234,6 +242,6 @@
     </a>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260727-13"></script>
+    <script src="app.js?v=20260727-14"></script>
   </body>
 </html>
