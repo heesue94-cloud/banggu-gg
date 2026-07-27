@@ -11,6 +11,29 @@
 .quick-keywords { display: flex; justify-content: center; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
 .quick-keywords button { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; color: #aab8c2; background: transparent; cursor: pointer; font-size: 11px; }
 .quick-keywords button:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.second-job-panel { margin-bottom: 13px; padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: rgba(12,23,36,.9); }
+.second-job-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+.second-job-heading .eyebrow { margin-bottom: 7px; }
+.second-job-heading h2 { margin: 0; font-size: 24px; }
+.second-job-heading p:not(.eyebrow) { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+.second-job-heading > span { padding: 7px 11px; color: var(--accent); border: 1px solid rgba(117,217,255,.35); border-radius: 999px; background: var(--accent-soft); font-size: 11px; font-weight: 700; }
+.job-location-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; margin-top: 21px; }
+.job-location { position: relative; overflow: hidden; padding: 17px; border: 1px solid #1e3b51; border-radius: 13px; background: #091522; }
+.job-location::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--job-color, var(--accent)); }
+.job-location > strong { color: var(--job-color, var(--accent)); font-size: 11px; }
+.job-location h3 { margin: 8px 0 3px; font-size: 17px; }
+.job-location p { margin: 0 0 13px; color: var(--muted); font-size: 11px; }
+.job-location div { padding-top: 11px; border-top: 1px solid rgba(255,255,255,.07); color: #b8c7d2; font-size: 11px; }
+.job-location div b { margin-right: 5px; color: #698aa0; }
+.job-location small { display: block; margin-top: 10px; color: #668195; font-size: 9px; line-height: 1.55; }
+.job-location.warrior { --job-color: #ff8077; }
+.job-location.magician { --job-color: #8ba7ff; }
+.job-location.bowman { --job-color: #83d89b; }
+.job-location.thief { --job-color: #c79cff; }
+.second-job-flow { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-top: 12px; padding: 13px 15px; border: 1px solid rgba(117,217,255,.13); border-radius: 11px; background: rgba(117,217,255,.035); }
+.second-job-flow span { color: #aebdca; font-size: 10px; }
+.second-job-flow span b { display: inline-grid; place-items: center; width: 19px; height: 19px; margin-right: 5px; color: #06131d; background: var(--accent); border-radius: 50%; font-size: 9px; }
+.second-job-flow i { color: #405e73; font-style: normal; }
 .quiz-panel { padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: rgba(12,23,36,.9); }
 .quiz-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 19px; border-bottom: 1px solid rgba(255,255,255,.07); }
 .quiz-heading h2 { margin: 0 0 5px; font-size: 22px; }
@@ -30,13 +53,23 @@ mark { padding: 0 2px; color: #07111a; background: var(--accent); border-radius:
 .quiz-notice strong { flex: 0 0 auto; color: var(--accent); font-size: 12px; }
 .quiz-notice p { flex: 1; margin: 0; color: var(--muted); font-size: 11px; }
 .quiz-notice a { flex: 0 0 auto; color: #a9bac6; font-size: 11px; }
+.location-source { margin: 10px 3px 0; color: #536c7e; font-size: 9px; text-align: right; }
+.location-source a { color: #718da1; }
 @media (max-width: 650px) {
   .job-main { width: min(100% - 24px, 980px); }
   .job-hero { padding: 52px 0 31px; }
   .job-hero > p:not(.eyebrow) { font-size: 12px; }
   .quiz-search { height: 58px; margin-top: 25px; }
   .quiz-panel { padding: 17px; }
+  .second-job-panel { padding: 17px; }
+  .second-job-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .job-location-grid { grid-template-columns: 1fr 1fr; }
+  .second-job-flow { align-items: stretch; flex-direction: column; }
+  .second-job-flow i { display: none; }
   .quiz-card { grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 13px; }
   .quiz-answer { grid-column: 2; justify-self: start; max-width: 100%; text-align: left; }
   .quiz-notice { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
+@media (max-width: 410px) {
+  .job-location-grid { grid-template-columns: 1fr; }
 }
