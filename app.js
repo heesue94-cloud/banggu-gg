@@ -20,6 +20,15 @@ const TRADE_PAGE_SIZE = 50;
 const bucketCache = new Map();
 const itemImageCache = new Map();
 let itemIconIndexPromise = null;
+let catalogData = null;
+const catalogState = {
+  mode: "scroll",
+  scrollGroup: "무기",
+  scrollTarget: "전체",
+  equipmentJob: "전사",
+  equipmentSlot: "투구",
+  equipmentLevel: "전체",
+};
 
 const els = {
   search: $("#searchInput"), suggestions: $("#suggestions"), popular: $("#popular"),
@@ -37,6 +46,9 @@ const els = {
   optionPanel: $("#optionPanel"), optionFilters: $("#optionFilters"),
   filterSummary: $("#filterSummary"), tradesCaption: $("#tradesCaption"),
   tradePagination: $("#tradePagination"),
+  catalogPanel: $("#catalogPanel"), catalogPrimary: $("#catalogPrimary"),
+  catalogSecondary: $("#catalogSecondary"), catalogLevels: $("#catalogLevels"),
+  catalogItems: $("#catalogItems"), catalogSummary: $("#catalogSummary"),
 };
 
 const won = (value) => number.format(Math.round(value));
@@ -72,6 +84,7 @@ async function loadBuiltIn() {
     const response = await fetch("data/index.json", { cache: "no-store" });
     if (response.ok) {
       applyDataset(await response.json());
+      await loadCatalog();
       return;
     }
     const files = await discoverLogFiles();
@@ -82,11 +95,109 @@ async function loadBuiltIn() {
       return logResponse.text();
     }));
     applyDataset(parseLog(responses.join("\n"), files.join(", ")));
+    await loadCatalog();
   } catch (error) {
     els.status.textContent = "로그 파일 확인 필요";
     els.search.placeholder = "기간별 TXT 파일을 확인하세요";
     showToast(error.message);
   }
+}
+
+async function loadCatalog() {
+  try {
+    const response = await fetch("data/catalog.json", { cache: "no-store" });
+    if (!response.ok) return;
+    catalogData = await response.json();
+    els.catalogPanel.hidden = false;
+    renderCatalog();
+  } catch {}
+}
+
+function catalogButton(label, key, value, active) {
+  return `<button type="button" class="${active ? "active" : ""}" data-catalog-key="${key}" data-catalog-value="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
+}
+
+function renderCatalog() {
+  if (!catalogData) return;
+  const scrollMode = catalogState.mode === "scroll";
+  document.querySelectorAll("[data-catalog-mode]").forEach((button) => {
+    const active = button.dataset.catalogMode === catalogState.mode;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+
+  if (scrollMode) renderScrollCatalog();
+  else renderEquipmentCatalog();
+}
+
+function renderScrollCatalog() {
+  const groups = ["무기", "방어구", "특수"];
+  els.catalogPrimary.innerHTML = groups.map((group) =>
+    catalogButton(group, "scrollGroup", group, catalogState.scrollGroup === group)).join("");
+
+  const groupItems = catalogData.scrolls.filter((item) => item.group === catalogState.scrollGroup);
+  const targets = [...new Set(groupItems.map((item) => item.target))].sort((a, b) => a.localeCompare(b, "ko"));
+  if (catalogState.scrollTarget !== "전체" && !targets.includes(catalogState.scrollTarget)) {
+    catalogState.scrollTarget = "전체";
+  }
+  els.catalogSecondary.innerHTML = [
+    catalogButton("전체", "scrollTarget", "전체", catalogState.scrollTarget === "전체"),
+    ...targets.map((target) => catalogButton(target, "scrollTarget", target, catalogState.scrollTarget === target)),
+  ].join("");
+  els.catalogLevels.hidden = true;
+
+  const items = groupItems.filter((item) =>
+    catalogState.scrollTarget === "전체" || item.target === catalogState.scrollTarget);
+  renderCatalogItems(items, (item) => item.percent ? `${item.percent}% · ${number.format(item.trades)}건` : `${number.format(item.trades)}건`);
+}
+
+function renderEquipmentCatalog() {
+  const jobs = ["전사", "마법사", "궁수", "도적", "해적", "공용", "기타"];
+  const availableJobs = jobs.filter((job) => catalogData.equipment.some((item) => item.job === job));
+  if (!availableJobs.includes(catalogState.equipmentJob)) catalogState.equipmentJob = availableJobs[0];
+  els.catalogPrimary.innerHTML = availableJobs.map((job) =>
+    catalogButton(job, "equipmentJob", job, catalogState.equipmentJob === job)).join("");
+
+  const jobItems = catalogData.equipment.filter((item) => item.job === catalogState.equipmentJob);
+  const slots = [...new Set(jobItems.map((item) => item.slot))].sort((a, b) => a.localeCompare(b, "ko"));
+  if (catalogState.equipmentSlot !== "전체" && !slots.includes(catalogState.equipmentSlot)) {
+    catalogState.equipmentSlot = slots.includes("투구") ? "투구" : "전체";
+  }
+  els.catalogSecondary.innerHTML = [
+    catalogButton("전체", "equipmentSlot", "전체", catalogState.equipmentSlot === "전체"),
+    ...slots.map((slot) => catalogButton(slot, "equipmentSlot", slot, catalogState.equipmentSlot === slot)),
+  ].join("");
+
+  const slotItems = jobItems.filter((item) =>
+    catalogState.equipmentSlot === "전체" || item.slot === catalogState.equipmentSlot);
+  const levels = [...new Set(slotItems.map((item) => Math.floor(item.level / 10) * 10))].sort((a, b) => a - b);
+  const levelValues = levels.map(String);
+  if (catalogState.equipmentLevel !== "전체" && !levelValues.includes(catalogState.equipmentLevel)) {
+    catalogState.equipmentLevel = "전체";
+  }
+  els.catalogLevels.hidden = false;
+  els.catalogLevels.innerHTML = [
+    catalogButton("전체 레벨", "equipmentLevel", "전체", catalogState.equipmentLevel === "전체"),
+    ...levels.map((level) => {
+      const label = level === 0 ? "Lv.0–9" : `Lv.${level}–${level + 9}`;
+      return catalogButton(label, "equipmentLevel", String(level), catalogState.equipmentLevel === String(level));
+    }),
+  ].join("");
+
+  const items = slotItems.filter((item) =>
+    catalogState.equipmentLevel === "전체"
+      || Math.floor(item.level / 10) * 10 === Number(catalogState.equipmentLevel));
+  renderCatalogItems(items, (item) => `Lv.${item.level} · ${number.format(item.trades)}건`);
+}
+
+function renderCatalogItems(items, detail) {
+  els.catalogSummary.textContent = `${number.format(items.length)}개 아이템`;
+  els.catalogItems.innerHTML = items.map((item) => `
+    <button type="button" class="catalog-item" data-catalog-item="${escapeHtml(item.name)}">
+      <span>${escapeHtml(item.name)}</span>
+      <small>${escapeHtml(detail(item))}</small>
+    </button>
+  `).join("");
 }
 
 async function discoverLogFiles() {
@@ -734,6 +845,28 @@ els.optionFilters.addEventListener("click", (event) => {
   toggle.setAttribute("aria-pressed", String(useMinimum));
   toggle.textContent = useMinimum ? "이상 포함" : "정확히 일치";
   applyFilters();
+});
+document.querySelector(".catalog-tabs").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-catalog-mode]");
+  if (!button || !catalogData) return;
+  catalogState.mode = button.dataset.catalogMode;
+  renderCatalog();
+});
+els.catalogPanel.addEventListener("click", (event) => {
+  const filter = event.target.closest("button[data-catalog-key]");
+  if (filter) {
+    catalogState[filter.dataset.catalogKey] = filter.dataset.catalogValue;
+    if (filter.dataset.catalogKey === "scrollGroup") catalogState.scrollTarget = "전체";
+    if (filter.dataset.catalogKey === "equipmentJob") {
+      catalogState.equipmentSlot = "투구";
+      catalogState.equipmentLevel = "전체";
+    }
+    if (filter.dataset.catalogKey === "equipmentSlot") catalogState.equipmentLevel = "전체";
+    renderCatalog();
+    return;
+  }
+  const item = event.target.closest("button[data-catalog-item]");
+  if (item) selectItem(item.dataset.catalogItem);
 });
 $("#resetFilters").addEventListener("click", () => {
   optionRanges = {};
