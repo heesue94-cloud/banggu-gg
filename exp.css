@@ -1,4 +1,4 @@
-.exp-main { width: min(980px, calc(100% - 40px)); }
+﻿.exp-main { width: min(980px, calc(100% - 40px)); }
 .exp-hero { padding: 76px 0 42px; text-align: center; }
 .exp-hero h1 { font-size: clamp(42px, 6vw, 68px); }
 .exp-hero > p:last-child { margin: 18px 0 0; color: var(--muted); }
@@ -8,10 +8,10 @@
 .calculator-fields input { width: 100%; height: 44px; padding: 0 12px; color: var(--text); background: #0d141b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
 .calculator-fields input:focus { border-color: var(--accent); }
 .calculator-arrow { align-self: center; margin-top: 20px; color: #5f6b75; }
-#calculateTime { height: 44px; padding: 0 18px; color: #11160c; background: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-weight: 700; cursor: pointer; }
+#calculateTime { height: 44px; padding: 0 18px; color: #06131d; background: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-weight: 700; cursor: pointer; }
 .calculator-result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
-.calculator-result article { padding: 18px; border: 1px solid var(--line); border-radius: 11px; background: #0e151c; }
-.calculator-result article.featured-result { border-color: rgba(226,255,100,.35); background: var(--accent-soft); }
+.calculator-result article { padding: 18px; border: 1px solid var(--line); border-radius: 11px; background: #0b1926; }
+.calculator-result article.featured-result { border-color: rgba(117,217,255,.35); background: var(--accent-soft); }
 .calculator-result span, .calculator-result small { display: block; color: var(--muted); font-size: 11px; }
 .calculator-result strong { display: block; margin: 9px 0 5px; overflow-wrap: anywhere; font-size: clamp(19px, 2.3vw, 27px); }
 .calculator-result .featured-result strong { color: var(--accent); }
@@ -21,21 +21,21 @@
 .accuracy-fields label > span { display: block; margin-bottom: 8px; color: #aeb9c2; font-size: 11px; }
 .accuracy-fields input { width: 100%; height: 44px; padding: 0 12px; color: var(--text); background: #0d141b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
 .accuracy-fields input:focus { border-color: var(--accent); }
-#calculateAccuracy { height: 44px; padding: 0 18px; color: #11160c; background: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-weight: 700; cursor: pointer; }
+#calculateAccuracy { height: 44px; padding: 0 18px; color: #06131d; background: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-weight: 700; cursor: pointer; }
 .accuracy-buffs { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; margin-top: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #0d141b; }
 .buff-heading { margin-right: 2px; color: #aeb9c2; font-size: 12px; font-weight: 700; }
 .buff-toggle { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; user-select: none; }
 .buff-toggle input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .toggle-track { position: relative; width: 38px; height: 22px; border: 1px solid #3a4854; border-radius: 999px; background: #202b34; transition: .2s; }
 .toggle-track i { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #7b8993; transition: .2s; }
-.buff-toggle input:checked + .toggle-track { border-color: var(--accent); background: rgba(226,255,100,.22); }
+.buff-toggle input:checked + .toggle-track { border-color: var(--accent); background: rgba(117,217,255,.22); }
 .buff-toggle input:checked + .toggle-track i { left: 19px; background: var(--accent); }
 .buff-toggle input:focus-visible + .toggle-track { outline: 2px solid var(--accent); outline-offset: 2px; }
 .buff-toggle b { color: #dce4e9; font-size: 12px; }
 .buff-toggle small { color: var(--accent); font-size: 11px; }
 .accuracy-result { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 18px; }
-.accuracy-result article { padding: 18px; border: 1px solid var(--line); border-radius: 11px; background: #0e151c; }
-.accuracy-result .accuracy-main-result { border-color: rgba(226,255,100,.35); background: var(--accent-soft); }
+.accuracy-result article { padding: 18px; border: 1px solid var(--line); border-radius: 11px; background: #0b1926; }
+.accuracy-result .accuracy-main-result { border-color: rgba(117,217,255,.35); background: var(--accent-soft); }
 .accuracy-result span, .accuracy-result small { display: block; color: var(--muted); font-size: 11px; }
 .accuracy-result strong { display: block; margin: 9px 0 5px; overflow-wrap: anywhere; font-size: clamp(19px, 2.3vw, 27px); }
 .accuracy-main-result strong { color: var(--accent); }
@@ -48,7 +48,7 @@
 .level-search input { width: 110px; padding: 10px 12px; color: var(--text); background: #0d141b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
 .level-search input:focus { border-color: var(--accent); }
 .level-search button, .exp-jumps button { padding: 9px 13px; color: #c5ced5; background: #18222c; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
-.level-search button { color: #10160c; border-color: var(--accent); background: var(--accent); font-weight: 700; }
+.level-search button { color: #06131d; border-color: var(--accent); background: var(--accent); font-weight: 700; }
 .exp-jumps { display: flex; gap: 6px; margin-left: auto; }
 .exp-jumps button:hover { color: var(--accent); border-color: var(--accent); }
 .exp-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
@@ -61,8 +61,8 @@
 .exp-table th:first-child, .exp-table td:first-child { width: 100px; text-align: center; }
 .exp-table th:nth-child(2), .exp-table td:nth-child(2) { text-align: center; }
 .exp-table tbody tr { scroll-margin-top: 90px; transition: background .25s; }
-.exp-table tbody tr:hover { background: rgba(226,255,100,.045); }
-.exp-table tbody tr.highlight { background: rgba(226,255,100,.14); }
+.exp-table tbody tr:hover { background: rgba(117,217,255,.045); }
+.exp-table tbody tr.highlight { background: rgba(117,217,255,.14); }
 .exp-table tbody tr.highlight td:first-child { color: var(--accent); font-weight: 700; }
 .exp-table td:last-child { color: #fff; font-size: 16px; font-weight: 700; }
 .exp-note { margin: 18px 0 0; color: var(--muted); font-size: 12px; }

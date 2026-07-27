@@ -1,4 +1,4 @@
-const $ = (selector) => document.querySelector(selector);
+﻿const $ = (selector) => document.querySelector(selector);
 const number = new Intl.NumberFormat("ko-KR");
 const dateTime = new Intl.DateTimeFormat("ko-KR", {
   year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
@@ -766,8 +766,8 @@ function drawChart() {
   });
 
   const gradient = ctx.createLinearGradient(0, pad.top, 0, height - pad.bottom);
-  gradient.addColorStop(0, "rgba(226,255,100,.24)");
-  gradient.addColorStop(1, "rgba(226,255,100,0)");
+  gradient.addColorStop(0, "rgba(117,217,255,.24)");
+  gradient.addColorStop(1, "rgba(117,217,255,0)");
   ctx.beginPath();
   chartPoints.forEach((point, i) => i ? ctx.lineTo(xAt(i), yAt(point.value)) : ctx.moveTo(xAt(i), yAt(point.value)));
   ctx.lineTo(xAt(chartPoints.length - 1), height - pad.bottom);
@@ -776,11 +776,11 @@ function drawChart() {
 
   ctx.beginPath();
   chartPoints.forEach((point, i) => i ? ctx.lineTo(xAt(i), yAt(point.value)) : ctx.moveTo(xAt(i), yAt(point.value)));
-  ctx.strokeStyle = "#e2ff64"; ctx.lineWidth = 2; ctx.stroke();
+  ctx.strokeStyle = "#75d9ff"; ctx.lineWidth = 2; ctx.stroke();
   chartPoints.forEach((point, i) => {
     const x = xAt(i), y = yAt(point.value);
     ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2);
-    ctx.fillStyle = "#0b0f14"; ctx.fill(); ctx.strokeStyle = "#e2ff64"; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = "#070c14"; ctx.fill(); ctx.strokeStyle = "#75d9ff"; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = "#74808a"; ctx.textAlign = "center";
     ctx.fillText(point.label, x, height - 7);
   });
