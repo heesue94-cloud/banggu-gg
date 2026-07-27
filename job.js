@@ -89,7 +89,7 @@ function render() {
     !normalizedQuery || normalize(`${item[0]} ${item[1]}`).includes(normalizedQuery)
   );
 
-  title.textContent = query ? `"${query}" 검색 결과` : "전체 문제";
+  title.textContent = query ? `"${query}" 검색 결과` : "3차 전직 족보";
   summary.textContent = query ? `질문과 정답을 함께 검색했습니다.` : "3차 전직 퀴즈 61문항";
   count.textContent = matches.length;
   clearButton.hidden = !query;
