@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260727-14" />
-    <link rel="stylesheet" href="job.css?v=20260727-2" />
+    <link rel="stylesheet" href="job.css?v=20260727-3" />
   </head>
   <body>
     <header class="topbar">
@@ -48,16 +48,17 @@
         </div>
       </section>
 
-      <section class="second-job-panel">
-        <div class="second-job-heading">
+      <details class="second-job-panel">
+        <summary class="second-job-heading">
           <div>
             <p class="eyebrow">SECOND JOB ADVANCEMENT</p>
             <h2>2차 전직 교관 위치</h2>
             <p>레벨 30 달성 후 먼저 1차 전직 NPC에게 퀘스트를 받고 이동하세요.</p>
           </div>
-          <span>검은 구슬 30개</span>
-        </div>
-        <div class="job-location-grid">
+          <span class="second-job-toggle"></span>
+        </summary>
+        <div class="second-job-content">
+          <div class="job-location-grid">
           <article class="job-location warrior">
             <strong>전사</strong>
             <h3>서쪽바위산 4</h3>
@@ -86,8 +87,8 @@
             <div><b>시작</b> 다크로드</div>
             <small>커닝시티 → 해질녘 하늘 → 북쪽 공사장</small>
           </article>
-        </div>
-        <div class="second-job-flow" aria-label="2차 전직 진행 순서">
+          </div>
+          <div class="second-job-flow" aria-label="2차 전직 진행 순서">
           <span><b>1</b> 1차 전직 NPC에게 퀘스트 받기</span>
           <i>→</i>
           <span><b>2</b> 직업별 교관 찾아가기</span>
@@ -95,8 +96,9 @@
           <span><b>3</b> 검은 구슬 30개 모으기</span>
           <i>→</i>
           <span><b>4</b> 영웅의 증거를 들고 시작 NPC에게 복귀</span>
+          </div>
         </div>
-      </section>
+      </details>
 
       <section class="quiz-panel">
         <div class="quiz-heading">

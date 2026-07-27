@@ -12,11 +12,18 @@
 .quick-keywords button { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; color: #aab8c2; background: transparent; cursor: pointer; font-size: 11px; }
 .quick-keywords button:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 .second-job-panel { margin-bottom: 13px; padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: rgba(12,23,36,.9); }
-.second-job-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+.second-job-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; list-style: none; cursor: pointer; }
+.second-job-heading::-webkit-details-marker { display: none; }
+.second-job-heading:hover h2 { color: var(--accent); }
 .second-job-heading .eyebrow { margin-bottom: 7px; }
 .second-job-heading h2 { margin: 0; font-size: 24px; }
 .second-job-heading p:not(.eyebrow) { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
-.second-job-heading > span { padding: 7px 11px; color: var(--accent); border: 1px solid rgba(117,217,255,.35); border-radius: 999px; background: var(--accent-soft); font-size: 11px; font-weight: 700; }
+.second-job-toggle { flex: 0 0 auto; padding: 8px 12px; color: var(--accent); border: 1px solid rgba(117,217,255,.35); border-radius: 999px; background: var(--accent-soft); font-size: 11px; font-weight: 700; }
+.second-job-toggle::before { content: "펼쳐보기"; }
+.second-job-toggle::after { content: "⌄"; margin-left: 7px; font-size: 13px; }
+.second-job-panel[open] .second-job-toggle::before { content: "접기"; }
+.second-job-panel[open] .second-job-toggle::after { content: "⌃"; }
+.second-job-content { padding-top: 1px; }
 .job-location-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; margin-top: 21px; }
 .job-location { position: relative; overflow: hidden; padding: 17px; border: 1px solid #1e3b51; border-radius: 13px; background: #091522; }
 .job-location::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--job-color, var(--accent)); }
