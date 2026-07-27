@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070c14" />
+    <meta name="description" content="메이플 3차 전직 퀴즈 질문을 검색하고 정답을 빠르게 확인합니다." />
+    <title>방구지지</title>
+    <link rel="icon" type="image/png" href="assets/time-shard.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20260727-14" />
+    <link rel="stylesheet" href="job.css?v=20260727-1" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="방구지지 홈">
+        <span class="brand-mark"><img src="assets/time-shard.png" alt="시간조각" /></span>
+        <span>방구지지</span>
+      </a>
+      <div class="header-actions">
+        <nav class="site-tabs" aria-label="주요 메뉴">
+          <a class="header-link" href="./">옥션 검색</a>
+          <a class="header-link featured" href="exp.html">경험치 계산</a>
+          <a class="header-link featured active" href="job.html" aria-current="page">전직 관련</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="job-main">
+      <section class="job-hero">
+        <p class="eyebrow">THIRD JOB ADVANCEMENT QUIZ</p>
+        <h1>3차 전직 <em>정답 검색</em></h1>
+        <p>문제에서 기억나는 단어만 입력해도 정답을 찾을 수 있습니다.</p>
+        <div class="quiz-search">
+          <span class="quiz-search-icon" aria-hidden="true"></span>
+          <label class="sr-only" for="quizSearch">전직 문제 검색</label>
+          <input id="quizSearch" type="search" autocomplete="off" placeholder="예: 테오, 엘나스, 드롭, 경험치" autofocus />
+          <button id="clearQuizSearch" type="button" hidden>지우기</button>
+        </div>
+        <div class="quick-keywords" aria-label="빠른 검색">
+          <button type="button" data-keyword="NPC">NPC</button>
+          <button type="button" data-keyword="몬스터">몬스터</button>
+          <button type="button" data-keyword="퀘스트">퀘스트</button>
+          <button type="button" data-keyword="아이템">아이템</button>
+          <button type="button" data-keyword="전직">전직</button>
+        </div>
+      </section>
+
+      <section class="quiz-panel">
+        <div class="quiz-heading">
+          <div>
+            <h2 id="quizTitle">전체 문제</h2>
+            <p id="quizSummary">3차 전직 퀴즈 61문항</p>
+          </div>
+          <span class="quiz-count" id="quizCount">61</span>
+        </div>
+        <div id="quizResults" class="quiz-results"></div>
+        <div id="quizEmpty" class="quiz-empty" hidden>
+          <strong>일치하는 문제가 없습니다.</strong>
+          <span>질문에서 기억나는 다른 단어로 검색해보세요.</span>
+        </div>
+      </section>
+
+      <aside class="quiz-notice">
+        <strong>사용 팁</strong>
+        <p>게임에 나온 문제의 핵심 단어 1~2개만 입력하세요. 띄어쓰기 없이 입력해도 검색됩니다.</p>
+        <a href="https://baystory.tistory.com/563865" target="_blank" rel="noopener noreferrer">참고한 3차 전직 퀴즈 족보 ↗</a>
+      </aside>
+    </main>
+
+    <footer><span>THIRD JOB ADVANCEMENT ARCHIVE</span><span>총 61문항</span></footer>
+    <a class="discord-feedback" href="https://discord.com/users/681501120212107319" target="_blank" rel="noopener noreferrer" aria-label="디스코드로 건의사항 보내기">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4A16.4 16.4 0 0 0 4.5 5.35C1.94 9.2 1.25 12.95 1.6 16.65a16.5 16.5 0 0 0 4.98 2.52l1.2-1.65a10.6 10.6 0 0 1-1.88-.9l.46-.36c3.63 1.68 7.56 1.68 11.15 0l.47.36c-.6.36-1.23.66-1.88.9l1.2 1.65a16.4 16.4 0 0 0 4.98-2.52c.42-4.29-.73-8-2.78-11.31ZM8.52 14.4c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.88 2.22-1.98 2.22Zm6.96 0c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.86 2.22-1.98 2.22Z"/></svg>
+      <span>건의사항</span>
+    </a>
+    <script src="job.js?v=20260727-1"></script>
+  </body>
+</html>
