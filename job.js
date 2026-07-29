@@ -59,7 +59,8 @@ const QUIZ = [
   ["알케스터가 있는 마을은?", "엘나스"],
   ["엘나스에서 신발을 만드는 NPC는?", "고든"],
   ["장난감공장은 어느 대륙에 있는가?", "루디브리엄"],
-  ["네미가 있는 마을은?", "루디브리엄"]
+  ["네미가 있는 마을은?", "루디브리엄"],
+  ["다음 중 메이플 아일랜드에서 볼 수 없는 몬스터는? (달팽이·파란 달팽이·주황버섯)", "아이스 센티넬"]
 ];
 
 const input = document.querySelector("#quizSearch");
@@ -90,7 +91,7 @@ function render() {
   );
 
   title.textContent = query ? `"${query}" 검색 결과` : "3차 전직 족보";
-  summary.textContent = query ? `질문과 정답을 함께 검색했습니다.` : "3차 전직 퀴즈 61문항";
+  summary.textContent = query ? `질문과 정답을 함께 검색했습니다.` : `3차 전직 퀴즈 ${QUIZ.length}문항`;
   count.textContent = matches.length;
   clearButton.hidden = !query;
   empty.hidden = matches.length > 0;
