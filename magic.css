@@ -9,7 +9,7 @@
 .spell-tabs button.fire.active { background: #ff8976; }
 .spell-tabs button.ice.active { background: #75d9ff; }
 .spell-tabs button.holy.active { background: #ffe69b; }
-.magic-controls { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 12px; margin-top: 18px; }
+.magic-controls { display: grid; grid-template-columns: 1.25fr 2fr 1fr; gap: 12px; margin-top: 18px; }
 .magic-controls label > span { display: block; margin: 0 0 7px; color: #91a9ba; font-size: 11px; }
 .magic-controls select, .magic-controls input { width: 100%; height: 45px; padding: 0 13px; color: var(--text); border: 1px solid #29465e; border-radius: 9px; outline: 0; background: #091725; }
 .magic-controls select:focus, .magic-controls input:focus { border-color: var(--accent); }
@@ -28,7 +28,17 @@
 .magic-table-wrap { overflow-x: auto; }
 .magic-table { width: 100%; border-collapse: collapse; }
 .magic-table th { padding: 11px 13px; color: #6c879a; border-bottom: 1px solid #244057; font-size: 10px; text-align: left; }
+.magic-table thead tr:first-child th[colspan] { color: #9eb9ca; text-align: center; }
+.magic-table .level-head th { min-width: 82px; color: #8aa4b7; text-align: right; }
 .magic-table td { padding: 13px; border-bottom: 1px solid rgba(255,255,255,.055); color: #cfe0eb; font-size: 12px; }
+.magic-table tr.monster-start td { border-top: 1px solid #29465e; }
+.magic-table .monster-cell { min-width: 145px; vertical-align: middle; }
+.magic-table .monster-cell strong { display: block; color: #f2f8fc; font-size: 13px; }
+.magic-table .monster-cell small { display: block; margin-top: 5px; color: #6f8ca1; font-size: 9px; }
+.magic-table .cut { color: #d9e8f2; font-variant-numeric: tabular-nums; text-align: right; }
+.magic-table .cut.best { color: var(--accent); font-weight: 800; }
+.magic-table .state-cell { min-width: 108px; }
+.amp-disabled { opacity: .48; }
 .magic-table tr:last-child td { border-bottom: 0; }
 .magic-table .monster-name { color: #f2f8fc; font-weight: 700; }
 .magic-table .required { color: var(--accent); font-size: 15px; font-weight: 800; }

@@ -33,7 +33,7 @@
       <section class="magic-hero">
         <p class="eyebrow">AREA SPELL MAGIC TABLE</p>
         <h1>마법사 광역기 <em>마력표</em></h1>
-        <p>스킬과 레벨을 선택해 주요 몬스터의 1킬·2킬 최소 마력을 확인하세요.</p>
+        <p>원문 표 형식으로 스킬 레벨과 앰플리피케이션 레벨별 1킬·2킬 마력컷을 비교하세요.</p>
       </section>
 
       <section class="magic-control-panel">
@@ -43,9 +43,12 @@
           <button type="button" class="holy" data-spell="genesis">제네시스</button>
         </div>
         <div class="magic-controls">
-          <label>
-            <span>스킬 레벨</span>
-            <select id="skillLevel"></select>
+          <label id="ampControl">
+            <span>엘리먼트 앰플리피케이션</span>
+            <select id="ampLevel">
+              <option value="3">3레벨</option>
+              <option value="M" selected>마스터 (M)</option>
+            </select>
           </label>
           <label class="monster-search">
             <span>몬스터 검색</span>
@@ -58,20 +61,23 @@
         </div>
         <div class="spell-summary">
           <article><span>선택 스킬</span><strong id="selectedSpell">메테오</strong></article>
-          <article><span>스킬 공격력</span><strong id="spellPower">—</strong></article>
-          <article><span>MP 소모</span><strong id="spellMp">—</strong></article>
+          <article><span>앰플리피케이션</span><strong id="ampSummary">마스터 (M)</strong></article>
+          <article><span>스킬 레벨 열</span><strong>1 · 10 · 20 · 30</strong></article>
           <article><span>표기 기준</span><strong id="rowCount">—</strong></article>
         </div>
       </section>
 
       <section class="magic-table-panel">
         <div class="magic-table-heading">
-          <div><h2 id="tableTitle">메테오 마력표</h2><p>엘리먼트 앰플리피케이션 적용 기준</p></div>
+          <div><h2 id="tableTitle">메테오 마력표</h2><p id="tableCaption">엘리먼트 앰플리피케이션 마스터(M) 기준</p></div>
           <div class="kill-legend"><span class="one">1킬</span><span class="two">2킬</span></div>
         </div>
         <div class="magic-table-wrap">
           <table class="magic-table">
-            <thead><tr><th>몬스터</th><th>레벨</th><th>목표</th><th>필요 마력</th><th>내 상태</th></tr></thead>
+            <thead>
+              <tr><th rowspan="2">몬스터</th><th rowspan="2">목표</th><th colspan="4">스킬 레벨별 필요 마력</th><th rowspan="2">내 상태</th></tr>
+              <tr class="level-head"><th>1레벨</th><th>10레벨</th><th>20레벨</th><th>30레벨</th></tr>
+            </thead>
             <tbody id="magicRows"></tbody>
           </table>
         </div>

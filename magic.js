@@ -1,6 +1,6 @@
 const MAGIC_DATA = {
   meteor: {
-    name: "메테오", levels: [1, 10, 20, 30], power: [330, 420, 520, 620], mp: [1725, 2760, 3910, 3335],
+    name: "메테오", levels: [1, 10, 20, 30], power: [330, 420, 520, 620],
     monsters: [
       ["후회의 사제",106,[1685,1465,1292,1163],[926,796,687,605]],
       ["후회의 신관",109,[1793,1559,1376,1239],[1198,1036,909,813]],
@@ -11,7 +11,7 @@ const MAGIC_DATA = {
     ]
   },
   blizzard: {
-    name: "블리자드", levels: [1, 10, 20, 30], power: [330, 420, 520, 600], mp: [1725, 2760, 3910, 3335],
+    name: "블리자드", levels: [1, 10, 20, 30], power: [330, 420, 520, 600],
     monsters: [
       ["붉은 켄타우로스",88,[1149,993,871,794],[751,634,541,483]],
       ["검은 켄타우로스",88,[1462,1268,1116,1023],[970,836,724,654]],
@@ -24,7 +24,7 @@ const MAGIC_DATA = {
     ]
   },
   genesis: {
-    name: "제네시스", levels: [1, 10, 20, 30], power: [430, 520, 620, 670], mp: [2100, 3000, 4000, 3500],
+    name: "제네시스", levels: [1, 10, 20, 30], power: [430, 520, 620, 670],
     monsters: [
       ["검은 켄타우로스",88,[1031,918,823,781],[664,578,505,474]],
       ["붉은 켄타우로스",88,[1315,1174,1056,1007],[868,769,681,643]],
@@ -39,56 +39,68 @@ const MAGIC_DATA = {
 };
 
 const tabs = document.querySelectorAll("[data-spell]");
-const levelSelect = document.querySelector("#skillLevel");
+const ampSelect = document.querySelector("#ampLevel");
+const ampControl = document.querySelector("#ampControl");
 const search = document.querySelector("#magicSearch");
 const currentMagic = document.querySelector("#currentMagic");
 const rows = document.querySelector("#magicRows");
 const empty = document.querySelector("#magicEmpty");
 let spellKey = "meteor";
 
-function selectedIndex() {
-  return MAGIC_DATA[spellKey].levels.indexOf(Number(levelSelect.value));
+function scale(values, factor) {
+  return values ? values.map(value => Math.round(value * factor)) : null;
 }
 
-function renderLevels() {
-  levelSelect.innerHTML = MAGIC_DATA[spellKey].levels.map(level => `<option value="${level}">${level}레벨</option>`).join("");
-  levelSelect.value = MAGIC_DATA[spellKey].levels.at(-1);
+function cutsFor(monster, kill) {
+  if (spellKey === "genesis") return kill === "one" ? monster[2] : monster[3];
+  const amp = ampSelect.value;
+  if (amp === "3") return kill === "one" ? monster[2] : scale(monster[2], 2 / 3);
+  return kill === "two" ? monster[3] : scale(monster[3] || monster[2], monster[3] ? 1.5 : .82);
 }
 
 function render() {
   const data = MAGIC_DATA[spellKey];
-  const index = selectedIndex();
   const query = search.value.trim().replace(/\s+/g, "").toLowerCase();
   const mine = Number(currentMagic.value) || 0;
   const filtered = data.monsters.filter(monster => monster[0].replace(/\s+/g, "").toLowerCase().includes(query));
   const resultRows = [];
+
   filtered.forEach(monster => {
-    [["1킬",monster[2],"one"],["2킬",monster[3],"two"]].forEach(([kill,values,klass]) => {
-      if (!values) return;
-      const required = values[index];
-      const state = !mine ? "마력 입력 시 판정" : mine >= required ? `가능 · ${mine-required} 여유` : `부족 · ${required-mine}`;
-      const stateClass = !mine ? "" : mine >= required ? "pass" : "fail";
-      resultRows.push(`<tr><td class="monster-name">${monster[0]}</td><td>Lv.${monster[1]}</td><td><span class="kill-badge ${klass}">${kill}</span></td><td class="required">${required.toLocaleString()}</td><td><span class="magic-state ${stateClass}">${state}</span></td></tr>`);
+    [["one","1킬"],["two","2킬"]].forEach(([kind,label], rowIndex) => {
+      const cuts = cutsFor(monster, kind);
+      if (!cuts) return;
+      const bestCut = cuts.at(-1);
+      const state = !mine ? "마력 입력 시 판정" : mine >= bestCut ? `가능 · ${mine-bestCut} 여유` : `부족 · ${bestCut-mine}`;
+      const stateClass = !mine ? "" : mine >= bestCut ? "pass" : "fail";
+      resultRows.push(`<tr class="${rowIndex === 0 ? "monster-start" : ""}">
+        ${rowIndex === 0 ? `<td class="monster-cell" rowspan="2"><strong>${monster[0]}</strong><small>LV ${monster[1]}</small></td>` : ""}
+        <td><span class="kill-badge ${kind}">${label}</span></td>
+        ${cuts.map((cut,index) => `<td class="cut ${index === cuts.length-1 ? "best" : ""}">${cut.toLocaleString()}</td>`).join("")}
+        <td class="state-cell"><span class="magic-state ${stateClass}">${state}</span></td>
+      </tr>`);
     });
   });
+
   rows.innerHTML = resultRows.join("");
   rows.closest("table").hidden = resultRows.length === 0;
   empty.hidden = resultRows.length > 0;
+  const hasAmp = spellKey !== "genesis";
+  ampSelect.disabled = !hasAmp;
+  ampControl.classList.toggle("amp-disabled", !hasAmp);
+  const ampText = hasAmp ? (ampSelect.value === "M" ? "마스터 (M)" : "3레벨") : "해당 없음";
   document.querySelector("#selectedSpell").textContent = data.name;
-  document.querySelector("#spellPower").textContent = data.power[index].toLocaleString();
-  document.querySelector("#spellMp").textContent = `MP ${data.mp[index].toLocaleString()}`;
+  document.querySelector("#ampSummary").textContent = ampText;
   document.querySelector("#rowCount").textContent = `${filtered.length}종`;
   document.querySelector("#tableTitle").textContent = `${data.name} 마력표`;
+  document.querySelector("#tableCaption").textContent = hasAmp ? `엘리먼트 앰플리피케이션 ${ampText} 기준` : "제네시스 스킬 레벨 기준";
 }
 
 tabs.forEach(tab => tab.addEventListener("click", () => {
   spellKey = tab.dataset.spell;
   tabs.forEach(item => item.classList.toggle("active", item === tab));
-  renderLevels();
   render();
 }));
-levelSelect.addEventListener("change", render);
+ampSelect.addEventListener("change", render);
 search.addEventListener("input", render);
 currentMagic.addEventListener("input", render);
-renderLevels();
 render();
