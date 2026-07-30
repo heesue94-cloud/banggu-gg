@@ -52,6 +52,7 @@ const els = {
   catalogPanel: $("#catalogPanel"), catalogPrimary: $("#catalogPrimary"),
   catalogSecondary: $("#catalogSecondary"), catalogLevels: $("#catalogLevels"),
   catalogItems: $("#catalogItems"), catalogSummary: $("#catalogSummary"),
+  catalogBody: $("#catalogBody"), catalogToggle: $("#catalogToggle"),
 };
 
 const won = (value) => number.format(Math.round(value));
@@ -932,6 +933,12 @@ els.catalogPanel.addEventListener("click", (event) => {
   }
   const item = event.target.closest("button[data-catalog-item]");
   if (item) selectItem(item.dataset.catalogItem);
+});
+els.catalogToggle.addEventListener("click", () => {
+  const collapsed = !els.catalogBody.hidden;
+  els.catalogBody.hidden = collapsed;
+  els.catalogToggle.textContent = collapsed ? "펼치기" : "접기";
+  els.catalogToggle.setAttribute("aria-expanded", String(!collapsed));
 });
 $("#resetFilters").addEventListener("click", () => {
   optionRanges = {};

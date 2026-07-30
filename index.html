@@ -37,7 +37,7 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260727-13" />
+    <link rel="stylesheet" href="styles.css?v=20260730-14" />
   </head>
   <body>
     <header class="topbar">
@@ -90,19 +90,24 @@
             <h2>종류별로 찾아보기</h2>
             <p class="catalog-source">장비 직업·레벨 정보는 <a href="https://mapledb.kr/item.php" target="_blank" rel="noopener noreferrer">MapleDB</a>를 참고했습니다.</p>
           </div>
-          <div class="catalog-tabs" role="tablist" aria-label="아이템 종류">
-            <button type="button" class="active" data-catalog-mode="scroll" role="tab" aria-selected="true">주문서</button>
-            <button type="button" data-catalog-mode="equipment" role="tab" aria-selected="false">장비</button>
+          <div class="catalog-heading-actions">
+            <div class="catalog-tabs" role="tablist" aria-label="아이템 종류">
+              <button type="button" class="active" data-catalog-mode="scroll" role="tab" aria-selected="true">주문서</button>
+              <button type="button" data-catalog-mode="equipment" role="tab" aria-selected="false">장비</button>
+            </div>
+            <button id="catalogToggle" class="catalog-toggle" type="button" aria-expanded="true" aria-controls="catalogBody">접기</button>
           </div>
         </div>
-        <div id="catalogPrimary" class="catalog-filters" aria-label="대분류"></div>
-        <div id="catalogSecondary" class="catalog-filters catalog-secondary" aria-label="소분류"></div>
-        <div id="catalogLevels" class="catalog-filters catalog-levels" aria-label="레벨 구간" hidden></div>
-        <div class="catalog-result-heading">
-          <strong id="catalogSummary"></strong>
-          <span>아이템을 누르면 시세로 이동합니다.</span>
+        <div id="catalogBody">
+          <div id="catalogPrimary" class="catalog-filters" aria-label="대분류"></div>
+          <div id="catalogSecondary" class="catalog-filters catalog-secondary" aria-label="소분류"></div>
+          <div id="catalogLevels" class="catalog-filters catalog-levels" aria-label="레벨 구간" hidden></div>
+          <div class="catalog-result-heading">
+            <strong id="catalogSummary"></strong>
+            <span>아이템을 누르면 시세로 이동합니다.</span>
+          </div>
+          <div id="catalogItems" class="catalog-items"></div>
         </div>
-        <div id="catalogItems" class="catalog-items"></div>
       </section>
 
       <section id="emptyState" class="empty-panel">
@@ -266,6 +271,6 @@
     </a>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260727-16"></script>
+    <script src="app.js?v=20260730-17"></script>
   </body>
 </html>
