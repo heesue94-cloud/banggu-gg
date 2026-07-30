@@ -3,7 +3,7 @@ const ROUTE = [
   ["커닝시티","커닝시티공사장","맵이동(커닝시티) 이후 왼쪽 포탈","LV.16까지 스포아 사냥"],
   ["리스항구","리더 알","맵이동(리스항구) 후 오른쪽 상단","리더 알 퀘스트 끝까지 수행"],
   ["커닝시티","커닝시티공사장","맵이동 후 왼쪽 포탈","LV.20까지 스포아 사냥"],
-  ["SECTION","","","저자본 시작"],
+  ["SECTION","","","1차 전직"],
   ["커닝시티","알렉스","커닝시티 맵 중앙 높은 곳","알렉스의 부탁 퀘스트 받기"],
   ["노틸러스 선착장","아벨","맵이동 후 좌측 이동","안경을 찾아줘 퀘스트 클리어"],
   ["노틸러스호","샤를","하층복도","빛나는 돌 클리어"],
@@ -76,17 +76,15 @@ const CONSUMABLES = [
 ];
 
 const tabs = document.querySelectorAll("[data-panel]");
-const panels = {route:document.querySelector("#routePanel"),materials:document.querySelector("#materialsPanel"),consumables:document.querySelector("#consumablesPanel")};
+const panels = {route:document.querySelector("#routePanel"),materials:document.querySelector("#materialsPanel")};
 const routeRows = document.querySelector("#routeRows");
-const routeSearch = document.querySelector("#routeSearch");
 
 function saved(key) { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
 function store(key,value) { localStorage.setItem(key,JSON.stringify(value)); }
 
 function renderRoute() {
-  const query = routeSearch.value.trim().replace(/\s+/g,"").toLowerCase();
   const done = new Set(saved("banggu-guide-route"));
-  const filtered = ROUTE.map((row,index)=>({row,index})).filter(({row})=>row.join("").replace(/\s+/g,"").toLowerCase().includes(query));
+  const filtered = ROUTE.map((row,index)=>({row,index}));
   routeRows.innerHTML = filtered.map(({row,index}) => {
     if (row[0] === "SECTION") return `<tr class="section-row"><td colspan="5">${row[3]}</td></tr>`;
     const checked = done.has(index);
@@ -96,15 +94,26 @@ function renderRoute() {
   document.querySelector("#routeEmpty").hidden = filtered.length > 0;
 }
 
-function renderItems(target,data,key,checkable=true) {
+function renderSupplyTable(target,data,key) {
   const checked = new Set(saved(key));
-  target.innerHTML = data.map(([name,count],index)=>`<label class="item-card ${checked.has(index) ? "checked" : ""}">
-    ${checkable ? `<input type="checkbox" data-item="${index}" ${checked.has(index) ? "checked" : ""}>` : ""}
-    <span>${name}</span><strong>${count}개</strong>
-  </label>`).join("");
-  if (checkable) target.querySelectorAll("[data-item]").forEach(input=>input.addEventListener("change",()=>{
+  target.innerHTML = data.map(([name,count],index)=>`<tr class="${checked.has(index) ? "checked" : ""}">
+    <td><input class="supply-check" type="checkbox" data-item="${index}" ${checked.has(index) ? "checked" : ""} aria-label="${name} 준비 완료"></td>
+    <td>${name}</td><td>${count}개</td>
+    <td><button class="copy-item" type="button" data-copy="${name}">복사</button></td>
+  </tr>`).join("");
+  target.querySelectorAll("[data-item]").forEach(input=>input.addEventListener("change",()=>{
     const next = new Set(saved(key)); const index = Number(input.dataset.item);
-    input.checked ? next.add(index) : next.delete(index); store(key,[...next]); renderItems(target,data,key,true);
+    input.checked ? next.add(index) : next.delete(index); store(key,[...next]); renderSupplyTable(target,data,key);
+  }));
+  target.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",async()=>{
+    try {
+      await navigator.clipboard.writeText(button.dataset.copy);
+      button.textContent = "복사됨"; button.classList.add("copied");
+      setTimeout(()=>{button.textContent="복사";button.classList.remove("copied");},1200);
+    } catch {
+      button.textContent = "실패";
+      setTimeout(()=>button.textContent="복사",1200);
+    }
   }));
 }
 
@@ -112,14 +121,17 @@ tabs.forEach(tab=>tab.addEventListener("click",()=>{
   tabs.forEach(item=>{const active=item===tab;item.classList.toggle("active",active);item.setAttribute("aria-selected",active);});
   Object.entries(panels).forEach(([key,panel])=>{const active=key===tab.dataset.panel;panel.hidden=!active;panel.classList.toggle("active",active);});
 }));
-routeSearch.addEventListener("input",renderRoute);
 routeRows.addEventListener("change",event=>{
   if (!event.target.matches("[data-route]")) return;
   const done = new Set(saved("banggu-guide-route")); const index=Number(event.target.dataset.route);
   event.target.checked ? done.add(index) : done.delete(index); store("banggu-guide-route",[...done]); renderRoute();
 });
-document.querySelector("#resetMaterials").addEventListener("click",()=>{store("banggu-guide-materials",[]);renderItems(document.querySelector("#materialGrid"),MATERIALS,"banggu-guide-materials");});
+document.querySelector("#resetMaterials").addEventListener("click",()=>{
+  store("banggu-guide-materials",[]); store("banggu-guide-consumables",[]);
+  renderSupplyTable(document.querySelector("#materialRows"),MATERIALS,"banggu-guide-materials");
+  renderSupplyTable(document.querySelector("#consumableRows"),CONSUMABLES,"banggu-guide-consumables");
+});
 
 renderRoute();
-renderItems(document.querySelector("#materialGrid"),MATERIALS,"banggu-guide-materials");
-renderItems(document.querySelector("#consumableGrid"),CONSUMABLES,"banggu-guide-consumables",false);
+renderSupplyTable(document.querySelector("#materialRows"),MATERIALS,"banggu-guide-materials");
+renderSupplyTable(document.querySelector("#consumableRows"),CONSUMABLES,"banggu-guide-consumables");

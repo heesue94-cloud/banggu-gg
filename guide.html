@@ -44,16 +44,14 @@
         <p>육성 순서와 퀘스트 재료·소비 아이템을 한곳에서 확인하세요.</p>
       </section>
 
-      <nav class="guide-tabs" role="tablist" aria-label="육성 가이드 분류">
+      <nav class="guide-tabs two-tabs" role="tablist" aria-label="육성 가이드 분류">
         <button class="active" type="button" data-panel="route" role="tab" aria-selected="true">육성 루트</button>
-        <button type="button" data-panel="materials" role="tab" aria-selected="false">퀘스트 재료</button>
-        <button type="button" data-panel="consumables" role="tab" aria-selected="false">소비 아이템</button>
+        <button type="button" data-panel="materials" role="tab" aria-selected="false">퀘스트 준비물</button>
       </nav>
 
       <section id="routePanel" class="guide-panel active">
         <div class="panel-top">
           <div><p class="eyebrow">ROUTE</p><h2>1~43 육성 루트</h2></div>
-          <label class="guide-search"><span class="sr-only">육성 루트 검색</span><input id="routeSearch" type="search" placeholder="맵·NPC·퀘스트 검색" /></label>
         </div>
         <div class="route-table-wrap">
           <table class="route-table">
@@ -65,13 +63,25 @@
       </section>
 
       <section id="materialsPanel" class="guide-panel" hidden>
-        <div class="panel-top"><div><p class="eyebrow">QUEST MATERIALS</p><h2>퀘스트 필요 재료</h2><p>준비한 재료는 체크해둘 수 있습니다.</p></div><button id="resetMaterials" class="reset-button" type="button">체크 초기화</button></div>
-        <div id="materialGrid" class="item-grid"></div>
-      </section>
-
-      <section id="consumablesPanel" class="guide-panel" hidden>
-        <div class="panel-top"><div><p class="eyebrow">CONSUMABLES</p><h2>퀘스트 필요 소비 아이템</h2><p>출발 전에 아래 수량을 준비하세요.</p></div></div>
-        <div id="consumableGrid" class="item-grid consumable-grid"></div>
+        <div class="panel-top"><div><p class="eyebrow">QUEST CHECKLIST</p><h2>퀘스트 준비물</h2><p>재료와 소비 아이템을 한 번에 확인하고 아이템 이름을 복사할 수 있습니다.</p></div><button id="resetMaterials" class="reset-button" type="button">체크 초기화</button></div>
+        <div class="supply-section">
+          <h3>퀘스트 재료</h3>
+          <div class="supply-table-wrap">
+            <table class="supply-table">
+              <thead><tr><th>준비</th><th>아이템명</th><th>필요 개수</th><th>이름 복사</th></tr></thead>
+              <tbody id="materialRows"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="supply-section">
+          <h3>소비 아이템</h3>
+          <div class="supply-table-wrap">
+            <table class="supply-table">
+              <thead><tr><th>준비</th><th>아이템명</th><th>필요 개수</th><th>이름 복사</th></tr></thead>
+              <tbody id="consumableRows"></tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <aside class="guide-note"><strong>참고</strong><span>서버 패치나 선행 퀘스트 진행 상태에 따라 NPC 대사와 이동 순서가 달라질 수 있습니다.</span></aside>
