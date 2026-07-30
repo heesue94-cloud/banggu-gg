@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260727-13" />
-    <link rel="stylesheet" href="guide.css?v=20260730-2" />
+    <link rel="stylesheet" href="guide.css?v=20260730-3" />
   </head>
   <body>
     <header class="topbar">
@@ -44,11 +44,7 @@
         <p>육성 순서와 퀘스트 재료·소비 아이템을 한곳에서 확인하세요.</p>
       </section>
 
-      <nav class="guide-tabs two-tabs" role="tablist" aria-label="육성 가이드 분류">
-        <button class="active" type="button" data-panel="route" role="tab" aria-selected="true">육성 루트</button>
-        <button type="button" data-panel="materials" role="tab" aria-selected="false">퀘스트 준비물</button>
-      </nav>
-
+      <div class="guide-columns">
       <section id="routePanel" class="guide-panel active">
         <div class="panel-top">
           <div><p class="eyebrow">ROUTE</p><h2>1~43 육성 루트</h2></div>
@@ -62,7 +58,7 @@
         <div id="routeEmpty" class="guide-empty" hidden>일치하는 육성 경로가 없습니다.</div>
       </section>
 
-      <section id="materialsPanel" class="guide-panel" hidden>
+      <section id="materialsPanel" class="guide-panel materials-panel">
         <div class="panel-top"><div><p class="eyebrow">QUEST CHECKLIST</p><h2>퀘스트 준비물</h2><p>재료와 소비 아이템을 한 번에 확인하고 아이템 이름을 복사할 수 있습니다.</p></div><button id="resetMaterials" class="reset-button" type="button">체크 초기화</button></div>
         <div class="supply-section">
           <h3>퀘스트 재료</h3>
@@ -84,6 +80,7 @@
         </div>
       </section>
 
+      </div>
       <aside class="guide-note"><strong>참고</strong><span>서버 패치나 선행 퀘스트 진행 상태에 따라 NPC 대사와 이동 순서가 달라질 수 있습니다.</span></aside>
     </main>
 
@@ -92,6 +89,6 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4A16.4 16.4 0 0 0 4.5 5.35C1.94 9.2 1.25 12.95 1.6 16.65a16.5 16.5 0 0 0 4.98 2.52l1.2-1.65a10.6 10.6 0 0 1-1.88-.9l.46-.36c3.63 1.68 7.56 1.68 11.15 0l.47.36c-.6.36-1.23.66-1.88.9l1.2 1.65a16.4 16.4 0 0 0 4.98-2.52c.42-4.29-.73-8-2.78-11.31ZM8.52 14.4c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.88 2.22-1.98 2.22Zm6.96 0c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.86 2.22-1.98 2.22Z"/></svg>
       <span>건의사항</span>
     </a>
-    <script src="guide.js?v=20260730-2"></script>
+    <script src="guide.js?v=20260730-3"></script>
   </body>
 </html>

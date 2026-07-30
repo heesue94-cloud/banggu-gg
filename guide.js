@@ -75,8 +75,6 @@ const CONSUMABLES = [
   ["마나 엘릭서",1],["맑은 물",2],["마을귀환주문서",3]
 ];
 
-const tabs = document.querySelectorAll("[data-panel]");
-const panels = {route:document.querySelector("#routePanel"),materials:document.querySelector("#materialsPanel")};
 const routeRows = document.querySelector("#routeRows");
 
 function saved(key) { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
@@ -117,10 +115,6 @@ function renderSupplyTable(target,data,key) {
   }));
 }
 
-tabs.forEach(tab=>tab.addEventListener("click",()=>{
-  tabs.forEach(item=>{const active=item===tab;item.classList.toggle("active",active);item.setAttribute("aria-selected",active);});
-  Object.entries(panels).forEach(([key,panel])=>{const active=key===tab.dataset.panel;panel.hidden=!active;panel.classList.toggle("active",active);});
-}));
 routeRows.addEventListener("change",event=>{
   if (!event.target.matches("[data-route]")) return;
   const done = new Set(saved("banggu-guide-route")); const index=Number(event.target.dataset.route);
