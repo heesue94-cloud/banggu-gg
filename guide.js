@@ -117,7 +117,7 @@ function renderSupplyTable(target,data,key) {
   target.innerHTML = data.map(([name,count],index)=>`<tr class="${checked.has(index) ? "checked" : ""}">
     <td><input class="supply-check" type="checkbox" data-item="${index}" ${checked.has(index) ? "checked" : ""} aria-label="${name} 준비 완료"></td>
     <td>${name}</td><td>${count}개</td>
-    <td><button class="copy-item" type="button" data-copy="${name}">복사</button></td>
+    <td><button class="copy-item" type="button" data-copy="${name}" data-copy-index="${index}">복사</button></td>
   </tr>`).join("");
   target.querySelectorAll("[data-item]").forEach(input=>input.addEventListener("change",()=>{
     const next = new Set(saved(key)); const index = Number(input.dataset.item);
@@ -126,8 +126,14 @@ function renderSupplyTable(target,data,key) {
   target.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",async()=>{
     try {
       await navigator.clipboard.writeText(button.dataset.copy);
-      button.textContent = "복사됨"; button.classList.add("copied");
-      setTimeout(()=>{button.textContent="복사";button.classList.remove("copied");},1200);
+      const next = new Set(saved(key));
+      const index = Number(button.dataset.copyIndex);
+      next.add(index);
+      store(key,[...next]);
+      renderSupplyTable(target,data,key);
+      const copiedButton = target.querySelector(`[data-copy-index="${index}"]`);
+      copiedButton.textContent = "복사됨"; copiedButton.classList.add("copied");
+      setTimeout(()=>{copiedButton.textContent="복사";copiedButton.classList.remove("copied");},1200);
     } catch {
       button.textContent = "실패";
       setTimeout(()=>button.textContent="복사",1200);
@@ -139,6 +145,10 @@ routeRows.addEventListener("change",event=>{
   if (!event.target.matches("[data-route]")) return;
   const done = new Set(saved("banggu-guide-route")); const index=Number(event.target.dataset.route);
   event.target.checked ? done.add(index) : done.delete(index); store("banggu-guide-route",[...done]); renderRoute();
+});
+document.querySelector("#resetRoute").addEventListener("click",()=>{
+  store("banggu-guide-route",[]);
+  renderRoute();
 });
 document.querySelector("#resetMaterials").addEventListener("click",()=>{
   store("banggu-guide-materials",[]); store("banggu-guide-consumables",[]);
