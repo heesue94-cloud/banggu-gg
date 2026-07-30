@@ -82,7 +82,6 @@ function store(key,value) { localStorage.setItem(key,JSON.stringify(value)); }
 
 function renderRoute() {
   const done = new Set(saved("banggu-guide-route"));
-  const collapsed = new Set(saved("banggu-guide-collapsed"));
   const filtered = ROUTE.map((row,index)=>({row,index}));
   let group = -1;
   let previousMap = "";
@@ -104,12 +103,10 @@ function renderRoute() {
     if (row[0] === "SECTION") return `<tr class="section-row"><td colspan="5">${row[3]}</td></tr>`;
     const isFirst = !firstInGroup.has(group);
     firstInGroup.add(group);
-    const isCollapsed = collapsed.has(group);
-    if (!isFirst && isCollapsed) return "";
     const checked = done.has(index);
     const key = /2차 전직|43까지|LV\./.test(row[3]) ? " key-step" : "";
     const mapCell = isFirst
-      ? `<td class="route-map-cell" rowspan="${isCollapsed ? 1 : groupSizes[group]}"><button class="route-group-toggle" type="button" data-group="${group}" aria-expanded="${!isCollapsed}"><span>${row[0]}</span><small>${groupSizes[group]}단계</small><b aria-hidden="true">${isCollapsed ? "＋" : "−"}</b></button></td>`
+      ? `<td class="route-map-cell" rowspan="${groupSizes[group]}">${row[0]}</td>`
       : "";
     return `<tr class="${checked ? "done " : ""}${key}">${mapCell}<td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${row[3]}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
   }).join("");
@@ -143,15 +140,6 @@ routeRows.addEventListener("change",event=>{
   if (!event.target.matches("[data-route]")) return;
   const done = new Set(saved("banggu-guide-route")); const index=Number(event.target.dataset.route);
   event.target.checked ? done.add(index) : done.delete(index); store("banggu-guide-route",[...done]); renderRoute();
-});
-routeRows.addEventListener("click",event=>{
-  const button = event.target.closest("[data-group]");
-  if (!button) return;
-  const collapsed = new Set(saved("banggu-guide-collapsed"));
-  const group = Number(button.dataset.group);
-  collapsed.has(group) ? collapsed.delete(group) : collapsed.add(group);
-  store("banggu-guide-collapsed",[...collapsed]);
-  renderRoute();
 });
 document.querySelector("#resetMaterials").addEventListener("click",()=>{
   store("banggu-guide-materials",[]); store("banggu-guide-consumables",[]);

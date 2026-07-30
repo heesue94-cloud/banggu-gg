@@ -24,12 +24,7 @@
 .route-table tr.section-row td { color: var(--accent); background: rgba(198,255,68,.06); font-weight: 800; letter-spacing: .08em; }
 .route-check { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; }
 .route-table tr.done td { opacity: .43; text-decoration: line-through; }
-.route-map-cell { padding: 0 !important; border-right: 1px solid rgba(90,183,255,.18); vertical-align: top !important; background: rgba(90,183,255,.035); }
-.route-group-toggle { display: grid; width: 100%; min-height: 54px; padding: 11px 9px; color: #f1f7fb; border: 0; background: transparent; cursor: pointer; text-align: left; }
-.route-group-toggle span { font-size: 11px; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
-.route-group-toggle small { margin-top: 5px; color: #638aa4; font-size: 9px; font-weight: 600; text-decoration: none; }
-.route-group-toggle b { margin-top: 7px; color: #65d2ff; font-size: 15px; font-weight: 500; line-height: 1; text-decoration: none; }
-.route-group-toggle:hover { background: rgba(90,183,255,.08); }
+.route-map-cell { padding: 12px !important; color: #f1f7fb !important; border-right: 1px solid rgba(90,183,255,.18); vertical-align: middle !important; background: rgba(90,183,255,.035); font-size: 11px; font-weight: 800; line-height: 1.45; overflow-wrap: anywhere; }
 .item-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 9px; }
 .item-card { display: flex; align-items: center; gap: 11px; padding: 14px; border: 1px solid #203d52; border-radius: 11px; background: #091522; cursor: pointer; }
 .item-card:hover { border-color: #3c6681; }
