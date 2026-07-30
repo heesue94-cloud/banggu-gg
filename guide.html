@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260727-13" />
-    <link rel="stylesheet" href="guide.css?v=20260730-6" />
+    <link rel="stylesheet" href="guide.css?v=20260730-7" />
   </head>
   <body>
     <header class="topbar">
@@ -56,6 +56,13 @@
         </div>
         <div class="route-table-wrap">
           <table class="route-table">
+            <colgroup>
+              <col class="route-col-map" />
+              <col class="route-col-npc" />
+              <col class="route-col-location" />
+              <col class="route-col-quest" />
+              <col class="route-col-check" />
+            </colgroup>
             <thead><tr><th>맵</th><th>NPC</th><th>상세 위치</th><th>퀘스트 내용</th><th>완료</th></tr></thead>
             <tbody id="routeRows"></tbody>
           </table>

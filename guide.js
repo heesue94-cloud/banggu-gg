@@ -104,11 +104,10 @@ function renderRoute() {
     const isFirst = !firstInGroup.has(group);
     firstInGroup.add(group);
     const checked = done.has(index);
-    const key = /2차 전직|43까지|LV\./.test(row[3]) ? " key-step" : "";
     const mapCell = isFirst
       ? `<td class="route-map-cell" rowspan="${groupSizes[group]}">${row[0]}</td>`
       : "";
-    return `<tr class="${checked ? "done " : ""}${key}">${mapCell}<td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${row[3]}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
+    return `<tr class="${checked ? "done" : ""}">${mapCell}<td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${row[3]}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
   }).join("");
   document.querySelector("#routeEmpty").hidden = filtered.length > 0;
 }
