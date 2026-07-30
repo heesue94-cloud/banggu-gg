@@ -53,6 +53,8 @@ const els = {
   catalogSecondary: $("#catalogSecondary"), catalogLevels: $("#catalogLevels"),
   catalogItems: $("#catalogItems"), catalogSummary: $("#catalogSummary"),
   catalogBody: $("#catalogBody"), catalogToggle: $("#catalogToggle"),
+  resultHeading: $(".result-heading"), resultStickySentinel: $("#resultStickySentinel"),
+  stickySearch: $("#stickySearchInput"), stickySuggestions: $("#stickySuggestions"),
 };
 
 const won = (value) => number.format(Math.round(value));
@@ -300,12 +302,34 @@ function renderSuggestions() {
   els.suggestions.hidden = false;
 }
 
+function renderStickySuggestions() {
+  const matches = findMatches(els.stickySearch.value).slice(0, 6);
+  if (!matches.length) {
+    els.stickySuggestions.hidden = true;
+    return;
+  }
+  els.stickySuggestions.innerHTML = matches.map((name, index) =>
+    `<button class="suggestion${index === 0 ? " active" : ""}" data-sticky-name="${escapeHtml(name)}">
+      <span>${highlight(name, els.stickySearch.value)}</span>
+      <small>${number.format(dataset.items[name].count ?? dataset.items[name].length)}건</small>
+    </button>`).join("");
+  els.stickySuggestions.hidden = false;
+}
+
+function updateStickyHeaderState() {
+  const stuck = !els.result.hidden && els.resultStickySentinel.getBoundingClientRect().bottom <= 0;
+  els.resultHeading.classList.toggle("is-stuck", stuck);
+  if (!stuck) els.stickySuggestions.hidden = true;
+}
+
 async function selectItem(name) {
   if (!dataset?.items[name]) return;
   const requestedName = name;
   selectedName = name;
   els.search.value = name;
+  els.stickySearch.value = name;
   els.suggestions.hidden = true;
+  els.stickySuggestions.hidden = true;
   els.search.disabled = true;
   els.status.textContent = `${name} 거래 불러오는 중…`;
   try {
@@ -342,6 +366,7 @@ async function selectItem(name) {
   setupOptionFilters(selectedRecords);
   applyFilters();
   els.result.scrollIntoView({ behavior: "smooth", block: "start" });
+  requestAnimationFrame(updateStickyHeaderState);
 }
 
 async function loadItemImage(name) {
@@ -839,6 +864,14 @@ function showToast(message) {
 }
 
 els.search.addEventListener("input", renderSuggestions);
+els.stickySearch.addEventListener("input", renderStickySuggestions);
+els.stickySearch.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    const match = findMatches(els.stickySearch.value)[0];
+    if (match) selectItem(match);
+  }
+  if (event.key === "Escape") els.stickySuggestions.hidden = true;
+});
 els.search.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     const match = findMatches(els.search.value)[0];
@@ -851,8 +884,9 @@ document.addEventListener("keydown", (event) => {
     els.itemInfo.classList.remove("is-open");
     els.itemInfoButton.setAttribute("aria-expanded", "false");
   }
-  if (event.key === "/" && document.activeElement !== els.search) {
-    event.preventDefault(); els.search.focus();
+  if (event.key === "/" && document.activeElement !== els.search && document.activeElement !== els.stickySearch) {
+    event.preventDefault();
+    (els.resultHeading.classList.contains("is-stuck") ? els.stickySearch : els.search).focus();
   }
 });
 document.addEventListener("click", (event) => {
@@ -862,8 +896,13 @@ document.addEventListener("click", (event) => {
   }
   const target = event.target.closest("[data-name]");
   if (target) selectItem(target.dataset.name);
-  else if (!event.target.closest(".search-shell")) els.suggestions.hidden = true;
+  const stickyTarget = event.target.closest("[data-sticky-name]");
+  if (stickyTarget) selectItem(stickyTarget.dataset.stickyName);
+  if (!event.target.closest(".search-shell")) els.suggestions.hidden = true;
+  if (!event.target.closest(".sticky-search")) els.stickySuggestions.hidden = true;
 });
+window.addEventListener("scroll", updateStickyHeaderState, { passive: true });
+window.addEventListener("resize", updateStickyHeaderState);
 els.itemInfoButton.addEventListener("click", () => {
   const isOpen = els.itemInfo.classList.toggle("is-open");
   els.itemInfoButton.setAttribute("aria-expanded", String(isOpen));
