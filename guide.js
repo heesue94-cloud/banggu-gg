@@ -82,12 +82,36 @@ function store(key,value) { localStorage.setItem(key,JSON.stringify(value)); }
 
 function renderRoute() {
   const done = new Set(saved("banggu-guide-route"));
+  const collapsed = new Set(saved("banggu-guide-collapsed"));
   const filtered = ROUTE.map((row,index)=>({row,index}));
-  routeRows.innerHTML = filtered.map(({row,index}) => {
+  let group = -1;
+  let previousMap = "";
+  const grouped = filtered.map(item => {
+    if (item.row[0] === "SECTION") {
+      previousMap = "";
+      return {...item, group: null};
+    }
+    if (item.row[0] !== previousMap) group += 1;
+    previousMap = item.row[0];
+    return {...item, group};
+  });
+  const groupSizes = grouped.reduce((sizes,item)=>{
+    if (item.group !== null) sizes[item.group] = (sizes[item.group] || 0) + 1;
+    return sizes;
+  },{});
+  const firstInGroup = new Set();
+  routeRows.innerHTML = grouped.map(({row,index,group}) => {
     if (row[0] === "SECTION") return `<tr class="section-row"><td colspan="5">${row[3]}</td></tr>`;
+    const isFirst = !firstInGroup.has(group);
+    firstInGroup.add(group);
+    const isCollapsed = collapsed.has(group);
+    if (!isFirst && isCollapsed) return "";
     const checked = done.has(index);
     const key = /2차 전직|43까지|LV\./.test(row[3]) ? " key-step" : "";
-    return `<tr class="${checked ? "done " : ""}${key}"><td>${row[0]}</td><td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${row[3]}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
+    const mapCell = isFirst
+      ? `<td class="route-map-cell" rowspan="${isCollapsed ? 1 : groupSizes[group]}"><button class="route-group-toggle" type="button" data-group="${group}" aria-expanded="${!isCollapsed}"><span>${row[0]}</span><small>${groupSizes[group]}단계</small><b aria-hidden="true">${isCollapsed ? "＋" : "−"}</b></button></td>`
+      : "";
+    return `<tr class="${checked ? "done " : ""}${key}">${mapCell}<td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${row[3]}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
   }).join("");
   document.querySelector("#routeEmpty").hidden = filtered.length > 0;
 }
@@ -119,6 +143,15 @@ routeRows.addEventListener("change",event=>{
   if (!event.target.matches("[data-route]")) return;
   const done = new Set(saved("banggu-guide-route")); const index=Number(event.target.dataset.route);
   event.target.checked ? done.add(index) : done.delete(index); store("banggu-guide-route",[...done]); renderRoute();
+});
+routeRows.addEventListener("click",event=>{
+  const button = event.target.closest("[data-group]");
+  if (!button) return;
+  const collapsed = new Set(saved("banggu-guide-collapsed"));
+  const group = Number(button.dataset.group);
+  collapsed.has(group) ? collapsed.delete(group) : collapsed.add(group);
+  store("banggu-guide-collapsed",[...collapsed]);
+  renderRoute();
 });
 document.querySelector("#resetMaterials").addEventListener("click",()=>{
   store("banggu-guide-materials",[]); store("banggu-guide-consumables",[]);
