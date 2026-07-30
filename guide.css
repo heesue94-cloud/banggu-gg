@@ -8,12 +8,18 @@
 .panel-top h2 { margin: 2px 0 0; font-size: 25px; }
 .panel-top p:not(.eyebrow) { margin: 7px 0 0; color: var(--muted); font-size: 11px; }
 .route-table-wrap { overflow-x: auto; }
-.route-table { width: 100%; min-width: 870px; border-collapse: collapse; }
+.route-table { width: 100%; min-width: 0; border-collapse: collapse; table-layout: fixed; }
 .route-table th { padding: 11px 12px; color: #7894a8; border-bottom: 1px solid #29465e; font-size: 10px; text-align: left; }
-.route-table td { padding: 12px; color: #bdd0dd; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 11px; line-height: 1.55; }
-.route-table td:first-child { width: 120px; color: #f1f7fb; font-weight: 800; }
-.route-table td:nth-child(2) { width: 130px; color: #8bdcff; font-weight: 700; }
-.route-table td:nth-child(3) { width: 255px; color: #8fa8b9; }
+.route-table td { padding: 12px; color: #bdd0dd; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; vertical-align: middle; }
+.route-table th:nth-child(1) { width: 15%; }
+.route-table th:nth-child(2) { width: 17%; }
+.route-table th:nth-child(3) { width: 25%; }
+.route-table th:nth-child(4) { width: 37%; }
+.route-table th:nth-child(5) { width: 6%; text-align: center; }
+.route-table td:first-child { color: #f1f7fb; font-weight: 800; }
+.route-table td:nth-child(2) { color: #8bdcff; font-weight: 700; }
+.route-table td:nth-child(3) { color: #8fa8b9; }
+.route-table td:last-child { text-align: center; }
 .route-table tr.key-step { background: rgba(90,183,255,.065); }
 .route-table tr.section-row td { color: var(--accent); background: rgba(198,255,68,.06); font-weight: 800; letter-spacing: .08em; }
 .route-check { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; }
@@ -29,19 +35,22 @@
 .consumable-grid .item-card { cursor: default; }
 .supply-section + .supply-section { margin-top: 25px; }
 .supply-section h3 { margin: 0 0 10px; color: #eaf4fa; font-size: 17px; }
-.supply-table-wrap { overflow-x: auto; border: 1px solid #203d52; border-radius: 12px; }
-.supply-table { width: 100%; min-width: 520px; border-collapse: collapse; }
+.supply-table-wrap { overflow: hidden; border: 1px solid #203d52; border-radius: 12px; }
+.supply-table { width: 100%; min-width: 0; border-collapse: collapse; table-layout: fixed; }
 .supply-table th { padding: 11px 14px; color: #7894a8; border-bottom: 1px solid #29465e; font-size: 10px; text-align: left; background: #091522; }
-.supply-table td { padding: 11px 14px; color: #c9d9e4; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 12px; }
+.supply-table td { padding: 11px 10px; color: #c9d9e4; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 12px; overflow-wrap: anywhere; vertical-align: middle; }
 .supply-table tr:last-child td { border-bottom: 0; }
 .supply-table tr.checked td { opacity: .42; }
-.supply-table td:nth-child(1) { width: 58px; }
-.supply-table td:nth-child(3) { width: 110px; color: var(--accent); font-size: 14px; font-weight: 800; }
-.supply-table td:nth-child(4) { width: 100px; }
+.supply-table th:nth-child(1) { width: 14%; text-align: center; }
+.supply-table th:nth-child(2) { width: 43%; }
+.supply-table th:nth-child(3) { width: 22%; }
+.supply-table th:nth-child(4) { width: 21%; text-align: center; }
+.supply-table td:nth-child(1), .supply-table td:nth-child(4) { text-align: center; }
+.supply-table td:nth-child(3) { color: var(--accent); font-size: 14px; font-weight: 800; }
 .supply-check { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; }
 .copy-item { padding: 6px 10px; color: #8bdcff; border: 1px solid #2a4b62; border-radius: 7px; background: #0a1a28; cursor: pointer; font-size: 10px; }
 .copy-item.copied { color: #07131c; border-color: var(--accent); background: var(--accent); }
-.reset-button { padding: 9px 12px; color: #8da7b8; border: 1px solid #2a485e; border-radius: 8px; background: transparent; cursor: pointer; }
+.reset-button { flex: 0 0 auto; padding: 9px 12px; color: #8da7b8; border: 1px solid #2a485e; border-radius: 8px; background: transparent; cursor: pointer; white-space: nowrap; }
 .guide-empty { padding: 55px; color: var(--muted); text-align: center; }
 .guide-note { display: flex; gap: 12px; margin-top: 12px; padding: 15px 18px; color: #7891a3; border: 1px solid #1e3a50; border-radius: 12px; font-size: 10px; background: rgba(9,21,34,.7); }
 .guide-note strong { color: #8adfff; }
