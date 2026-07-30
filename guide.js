@@ -20,7 +20,7 @@ const ROUTE = [
   ["페리온","만지","","만지와 비밀조직 퀘스트 클리어"],
   ["슬리피우드","기억하고 있는 자","","연구용뿔버섯의 갓 클리어"],
   ["노틸러스","바르톨","중앙복도","게으른 캘리코 퀘스트 클리어"],
-  ["노틸러스","샤를","하층복도","바다의 성기 퀘스트 수령"],
+  ["노틸러스","샤를","하층복도","바다의 정기 퀘스트 수령"],
   ["노틸러스","탕윤","상층복도","이상한 요리1 퀘스트 클리어"],
   ["노틸러스","리드","","노틸러스호 깨끗이하기 3가지 클리어"],
   ["아쿠아리움","켄타","","포쉐의 편지 퀘스트 클리어"],
@@ -55,7 +55,7 @@ const ROUTE = [
   ["아랫마을","놀부","","놀부의 박따기 퀘스트"],
   ["아랫마을","연이할머니","","태공의 아내사랑 퀘스트 클리어"],
   ["아랫마을","콩쥐","","밑빠진독 퀘스트 클리어"],
-  ["아랫마을","사서 위즈","도서관","흥부놀부 위즈 요청지"],
+  ["아랫마을","사서 위즈","도서관","흥부놀부, 의좋은 형제"],
   ["노틸러스","블랙바크","중앙복도","카이린을 위한 드레스"],
   ["노틸러스","탕윤","상층복도","이상한요리 2~3"],
   ["커닝스퀘어","전구 아이콘","좌측 전구 아이콘 클릭","혁이의 소원 퀘스트 후 커닝스퀘어 퀘스트 43까지"]
@@ -107,7 +107,8 @@ function renderRoute() {
     const mapCell = isFirst
       ? `<td class="route-map-cell" rowspan="${groupSizes[group]}">${row[0]}</td>`
       : "";
-    return `<tr class="${checked ? "done" : ""}">${mapCell}<td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${row[3]}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
+    const questText = row[3].replace("브루스와의 우정 나중에 받기", '<span class="route-warning">브루스와의 우정 나중에 받기</span>');
+    return `<tr class="${checked ? "done" : ""}">${mapCell}<td>${row[1] || "—"}</td><td>${row[2] || "—"}</td><td>${questText}</td><td><input class="route-check" type="checkbox" data-route="${index}" ${checked ? "checked" : ""} aria-label="${row[3]} 완료"></td></tr>`;
   }).join("");
   document.querySelector("#routeEmpty").hidden = filtered.length > 0;
 }
