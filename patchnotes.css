@@ -1,0 +1,32 @@
+.patch-main { width: min(980px, calc(100% - 40px)); padding-bottom: 90px; }
+.patch-hero { padding: 82px 0 58px; text-align: center; }
+.patch-hero h1 { font-size: clamp(42px, 6vw, 68px); }
+.patch-hero > p:not(.eyebrow) { margin: 20px 0 18px; color: var(--muted); font-size: 15px; }
+.latest-badge { display: inline-flex; padding: 7px 12px; color: var(--accent); border: 1px solid rgba(117,217,255,.28); border-radius: 999px; background: rgba(117,217,255,.07); font-size: 11px; font-weight: 700; }
+.timeline { position: relative; display: grid; gap: 22px; }
+.timeline::before { content: ""; position: absolute; top: 12px; bottom: 12px; left: 73px; width: 1px; background: linear-gradient(var(--accent), rgba(117,217,255,.08)); }
+.timeline-entry { position: relative; display: grid; grid-template-columns: 112px minmax(0,1fr); gap: 22px; }
+.timeline-entry::before { content: ""; position: absolute; top: 28px; left: 68px; width: 9px; height: 9px; border: 2px solid var(--bg); border-radius: 50%; background: #5b7990; box-shadow: 0 0 0 1px var(--line); }
+.timeline-entry.latest::before { background: var(--accent); box-shadow: 0 0 15px rgba(117,217,255,.7); }
+.timeline-date { display: flex; align-items: flex-end; flex-direction: column; gap: 5px; padding-top: 17px; }
+.timeline-date time { color: #b9d3e1; font-size: 17px; font-weight: 700; letter-spacing: -.02em; }
+.timeline-date span { padding: 2px 6px; color: var(--accent); border: 1px solid rgba(117,217,255,.24); border-radius: 999px; font-size: 9px; font-weight: 700; }
+.patch-card { padding: 25px 29px; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(145deg, rgba(17,35,55,.78), rgba(10,21,33,.9)); box-shadow: 0 12px 34px rgba(0,0,0,.12); }
+.latest .patch-card { border-color: rgba(117,217,255,.42); box-shadow: 0 14px 40px rgba(38,138,185,.08); }
+.patch-card h2 { margin: 0 0 15px; font-size: 21px; letter-spacing: -.035em; }
+.patch-card ul { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.patch-card li { position: relative; padding-left: 16px; color: #a8bdca; font-size: 14px; line-height: 1.65; }
+.patch-card li::before { content: ""; position: absolute; top: .72em; left: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.patch-card code { padding: 2px 6px; color: #bdeaff; border-radius: 5px; background: rgba(117,217,255,.09); font-family: inherit; font-size: .92em; }
+
+@media (max-width: 650px) {
+  .patch-main { width: min(100% - 24px, 980px); }
+  .patch-hero { padding: 58px 0 40px; }
+  .timeline::before { left: 17px; }
+  .timeline-entry { grid-template-columns: 1fr; gap: 9px; padding-left: 35px; }
+  .timeline-entry::before { top: 17px; left: 12px; }
+  .timeline-date { align-items: center; flex-direction: row; padding-top: 0; }
+  .patch-card { padding: 21px 19px; }
+  .patch-card h2 { font-size: 18px; }
+  .patch-card li { font-size: 13px; }
+}
