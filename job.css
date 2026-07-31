@@ -12,6 +12,7 @@
 .quick-keywords button { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; color: #aab8c2; background: transparent; cursor: pointer; font-size: 11px; }
 .quick-keywords button:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 .second-job-panel { margin-bottom: 13px; padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: rgba(12,23,36,.9); }
+.third-job-panel { border-color: rgba(117,217,255,.28); background: linear-gradient(145deg, rgba(12,28,43,.95), rgba(12,23,36,.9)); }
 .second-job-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; list-style: none; cursor: pointer; }
 .second-job-heading::-webkit-details-marker { display: none; }
 .second-job-heading:hover h2 { color: var(--accent); }
