@@ -61,6 +61,7 @@ mark { padding: 0 2px; color: #07111a; background: var(--accent); border-radius:
 .quiz-notice strong { flex: 0 0 auto; color: var(--accent); font-size: 12px; }
 .quiz-notice p { flex: 1; margin: 0; color: var(--muted); font-size: 11px; }
 .quiz-notice a { flex: 0 0 auto; color: #a9bac6; font-size: 11px; }
+.quiz-source-links { display: flex; flex: 0 0 auto; align-items: center; gap: 10px; }
 .location-source { margin: 10px 3px 0; color: #536c7e; font-size: 9px; text-align: right; }
 .location-source a { color: #718da1; }
 @media (max-width: 650px) {
