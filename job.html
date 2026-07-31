@@ -31,6 +31,213 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20260731-17" />
+    <link rel="stylesheet" href="job.css?v=20260731-1" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="방구지지 홈">
+        <span class="brand-mark"><img src="assets/time-shard.png" alt="시간조각" /></span>
+        <span>방구지지</span>
+      </a>
+      <a class="patch-link" href="patchnotes.html">패치노트</a>
+      <div class="header-actions">
+        <nav class="site-tabs" aria-label="주요 메뉴">
+          <a class="header-link" href="./">옥션 검색</a>
+          <a class="header-link featured" href="exp.html">경험치 계산</a>
+          <a class="header-link featured active" href="job.html" aria-current="page">전직 관련</a>
+          <a class="header-link featured" href="guide.html">1~43 육성</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="job-main">
+      <section class="job-hero">
+        <p class="eyebrow">THIRD JOB ADVANCEMENT QUIZ</p>
+        <h1>전직 <em>TIP</em></h1>
+        <p>문제에서 기억나는 단어만 입력해도 정답을 찾을 수 있습니다.</p>
+        <div class="quiz-search">
+          <span class="quiz-search-icon" aria-hidden="true"></span>
+          <label class="sr-only" for="quizSearch">전직 문제 검색</label>
+          <input id="quizSearch" type="search" autocomplete="off" placeholder="예: 테오, 엘나스, 드롭, 경험치" autofocus />
+          <button id="clearQuizSearch" type="button" hidden>지우기</button>
+        </div>
+        <div class="quick-keywords" aria-label="빠른 검색">
+          <button type="button" data-keyword="NPC">NPC</button>
+          <button type="button" data-keyword="몬스터">몬스터</button>
+          <button type="button" data-keyword="퀘스트">퀘스트</button>
+          <button type="button" data-keyword="아이템">아이템</button>
+          <button type="button" data-keyword="전직">전직</button>
+        </div>
+      </section>
+
+      <details class="second-job-panel">
+        <summary class="second-job-heading">
+          <div>
+            <p class="eyebrow">SECOND JOB ADVANCEMENT</p>
+            <h2>2차 전직 교관 위치</h2>
+            <p>레벨 30 달성 후 먼저 1차 전직 NPC에게 퀘스트를 받고 이동하세요.</p>
+          </div>
+          <span class="second-job-toggle"></span>
+        </summary>
+        <div class="second-job-content">
+          <div class="job-location-grid">
+          <article class="job-location warrior">
+            <strong>전사</strong>
+            <h3>서쪽바위산 4</h3>
+            <div><b>시작</b> 주먹펴고 일어서</div>
+            <small>페리온 → 서쪽령 → 서쪽바위산 1 → 2 → 3 → 4</small>
+          </article>
+          <article class="job-location magician">
+            <strong>마법사</strong>
+            <h3>엘리니아 북쪽숲</h3>
+            <div><b>시작</b> 하인즈</div>
+            <small>엘리니아 → 북쪽 필드 → 솟아오른나무 방향 → 북쪽숲</small>
+          </article>
+          <article class="job-location bowman">
+            <strong>궁수</strong>
+            <h3>던전으로 가는 길</h3>
+            <div><b>시작</b> 헬레나</div>
+            <small>헤네시스 → 던전 방향 → 던전으로 가는 길</small>
+          </article>
+          <article class="job-location thief">
+            <strong>도적</strong>
+            <h3>북쪽 공사장</h3>
+            <div><b>시작</b> 다크로드</div>
+            <small>커닝시티 → 해질녘 하늘 → 북쪽 공사장</small>
+          </article>
+          </div>
+          <div class="second-job-flow" aria-label="2차 전직 진행 순서">
+          <span><b>1</b> 1차 전직 NPC에게 퀘스트 받기</span>
+          <i>→</i>
+          <span><b>2</b> 직업별 교관 찾아가기</span>
+          <i>→</i>
+          <span><b>3</b> 검은 구슬 30개 모으기</span>
+          <i>→</i>
+          <span><b>4</b> 영웅의 증거를 들고 시작 NPC에게 복귀</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="second-job-panel third-job-panel">
+        <summary class="second-job-heading">
+          <div>
+            <p class="eyebrow">THIRD JOB ADVANCEMENT</p>
+            <h2>3차 전직 차원의 문 위치</h2>
+            <p>레벨 70 달성 후 엘나스 장로의 관저에서 퀘스트를 받고, 1차 전직관과 대화한 다음 이동하세요.</p>
+          </div>
+          <span class="second-job-toggle"></span>
+        </summary>
+        <div class="second-job-content">
+          <div class="job-location-grid">
+          <article class="job-location warrior">
+            <strong>전사</strong>
+            <h3>개미굴 광장</h3>
+            <div><b>분신</b> 주먹펴고 일어서</div>
+            <small>슬리피우드 던전 → 개미굴 광장 → 차원의 문</small>
+          </article>
+          <article class="job-location magician">
+            <strong>마법사</strong>
+            <h3>사악한 기운의 숲2</h3>
+            <div><b>분신</b> 하인즈</div>
+            <small>엘리니아 북쪽 숲 → 사악한 기운의 숲2 → 차원의 문</small>
+          </article>
+          <article class="job-location bowman">
+            <strong>궁수</strong>
+            <h3>슬리피 던전5</h3>
+            <div><b>분신</b> 헬레나</div>
+            <small>슬리피우드 던전 → 슬리피 던전5 → 차원의 문</small>
+          </article>
+          <article class="job-location thief">
+            <strong>도적</strong>
+            <h3>원숭이의 늪2</h3>
+            <div><b>분신</b> 다크로드</div>
+            <small>커닝시티 늪지대 → 원숭이의 늪2 → 차원의 문</small>
+          </article>
+          </div>
+          <div class="second-job-flow" aria-label="3차 전직 첫 번째 시험 진행 순서">
+          <span><b>1</b> 엘나스 3차 전직관에게 퀘스트 받기</span>
+          <i>→</i>
+          <span><b>2</b> 1차 전직관과 대화하기</span>
+          <i>→</i>
+          <span><b>3</b> 차원의 문에서 분신 처치</span>
+          <i>→</i>
+          <span><b>4</b> 검은 부적을 1차 전직관에게 전달</span>
+          </div>
+        </div>
+      </details>
+
+      <section class="quiz-panel">
+        <div class="quiz-heading">
+          <div>
+            <h2 id="quizTitle">3차 전직 족보</h2>
+            <p id="quizSummary">3차 전직 퀴즈 65문항</p>
+          </div>
+          <span class="quiz-count" id="quizCount">65</span>
+        </div>
+        <div id="quizResults" class="quiz-results"></div>
+        <div id="quizEmpty" class="quiz-empty" hidden>
+          <strong>일치하는 문제가 없습니다.</strong>
+          <span>질문에서 기억나는 다른 단어로 검색해보세요.</span>
+        </div>
+      </section>
+
+      <aside class="quiz-notice">
+        <strong>사용 팁</strong>
+        <p>게임에 나온 문제의 핵심 단어 1~2개만 입력하세요. 띄어쓰기 없이 입력해도 검색됩니다.</p>
+        <div class="quiz-source-links">
+          <a href="https://baystory.tistory.com/563865" target="_blank" rel="noopener noreferrer">기존 족보 ↗</a>
+          <a href="https://blog.naver.com/12512512/224285760869?isInf=true" target="_blank" rel="noopener noreferrer">추가 족보 ↗</a>
+        </div>
+      </aside>
+      <p class="location-source">전직 위치 참고:
+        <a href="https://m.blog.naver.com/kkb031/223311761557" target="_blank" rel="noopener noreferrer">2차 전직 원문 ↗</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://blog.naver.com/kkb031/223383418346" target="_blank" rel="noopener noreferrer">3차 전직 원문 ↗</a>
+      </p>
+    </main>
+
+    <footer><span>THIRD JOB ADVANCEMENT ARCHIVE</span><span>총 65문항</span></footer>
+    <a class="discord-feedback" href="https://discord.com/users/681501120212107319" target="_blank" rel="noopener noreferrer" aria-label="디스코드로 건의사항 보내기">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4A16.4 16.4 0 0 0 4.5 5.35C1.94 9.2 1.25 12.95 1.6 16.65a16.5 16.5 0 0 0 4.98 2.52l1.2-1.65a10.6 10.6 0 0 1-1.88-.9l.46-.36c3.63 1.68 7.56 1.68 11.15 0l.47.36c-.6.36-1.23.66-1.88.9l1.2 1.65a16.4 16.4 0 0 0 4.98-2.52c.42-4.29-.73-8-2.78-11.31ZM8.52 14.4c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.88 2.22-1.98 2.22Zm6.96 0c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.86 2.22-1.98 2.22Z"/></svg>
+      <span>건의사항</span>
+    </a>
+    <script src="job.js?v=20260731-2"></script>
+  </body>
+</html>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYNKXT0ZE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NYNKXT0ZE3');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070c14" />
+    <meta name="description" content="방구지지에서 로나월드 2차 전직 교관 위치, 3차 전직 차원의 문 위치와 퀴즈 족보 및 정답을 빠르게 확인하세요." />
+    <title>로나월드 전직 TIP·3차 전직 족보 - 방구지지</title>
+    <link rel="canonical" href="https://rona-gg.com/job.html" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="방구지지" />
+    <meta property="og:title" content="로나월드 전직 TIP·3차 전직 족보 - 방구지지" />
+    <meta property="og:description" content="2차 전직 교관 위치, 3차 전직 차원의 문 위치와 퀴즈 질문·정답 검색" />
+    <meta property="og:url" content="https://rona-gg.com/job.html" />
+    <meta property="og:image" content="https://rona-gg.com/assets/time-shard.png" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebPage","name":"로나월드 전직 TIP·3차 전직 족보","url":"https://rona-gg.com/job.html","isPartOf":{"@type":"WebSite","name":"방구지지","url":"https://rona-gg.com/"},"inLanguage":"ko-KR"}
+    </script>
+    <link rel="icon" type="image/png" href="assets/time-shard.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260727-14" />
     <link rel="stylesheet" href="job.css?v=20260731-1" />
   </head>
