@@ -31,6 +31,218 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20260731-17" />
+    <link rel="stylesheet" href="exp.css?v=20260727-5" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="로나옥션검색기 홈">
+        <span class="brand-mark"><img src="assets/time-shard.png" alt="시간조각" /></span>
+        <span>방구지지</span>
+      </a>
+      <a class="patch-link" href="patchnotes.html">패치노트</a>
+      <div class="header-actions">
+        <nav class="site-tabs" aria-label="주요 메뉴">
+          <a class="header-link" href="./">옥션 검색</a>
+          <a class="header-link featured active" href="exp.html" aria-current="page">경험치 계산</a>
+          <a class="header-link featured" href="job.html">전직 관련</a>
+          <a class="header-link featured" href="guide.html">1~43 육성</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="exp-main">
+      <section class="exp-hero">
+        <p class="eyebrow">LEVEL EXPERIENCE TABLE</p>
+        <h1>로나월드 <em>경험치표</em></h1>
+        <p>현재 레벨에서 다음 레벨까지 필요한 경험치입니다.</p>
+      </section>
+
+      <section class="panel exp-calculator">
+        <div class="panel-heading">
+          <div>
+            <h3>목표 레벨 예상 시간</h3>
+            <p>현재 레벨 경험치 0% 기준으로 계산합니다.</p>
+          </div>
+          <span class="unit-label">10분 측정 기준</span>
+        </div>
+        <div class="calculator-fields">
+          <label>
+            <span>현재 레벨</span>
+            <input id="currentLevel" type="number" min="1" max="199" value="100" />
+          </label>
+          <span class="calculator-arrow">→</span>
+          <label>
+            <span>목표 레벨</span>
+            <input id="targetLevel" type="number" min="2" max="200" value="101" />
+          </label>
+          <label class="exp-gain-field">
+            <span>10분당 획득 경험치</span>
+            <input id="expPerTenMinutes" type="text" inputmode="numeric" placeholder="예: 1,000,000" />
+          </label>
+          <button id="calculateTime" type="button">계산하기</button>
+        </div>
+        <div id="calculatorResult" class="calculator-result" hidden>
+          <article>
+            <span>목표까지 필요 경험치</span>
+            <strong id="requiredExp">—</strong>
+            <small>EXP</small>
+          </article>
+          <article class="featured-result">
+            <span>예상 소요시간</span>
+            <strong id="estimatedTime">—</strong>
+            <small id="estimatedDetail">—</small>
+          </article>
+          <article>
+            <span>필요한 10분 사냥 횟수</span>
+            <strong id="requiredSessions">—</strong>
+            <small>회</small>
+          </article>
+        </div>
+        <p id="calculatorError" class="calculator-error" role="alert"></p>
+      </section>
+
+      <section class="panel accuracy-calculator">
+        <div class="panel-heading">
+          <div>
+            <h3>몬스터 필요 명중률 계산</h3>
+            <p>내 레벨과 사냥할 몬스터를 선택하면 100% 명중에 필요한 수치를 계산합니다.</p>
+          </div>
+          <span class="unit-label">물리 공격 기준</span>
+        </div>
+        <div class="accuracy-fields">
+          <label>
+            <span>내 레벨</span>
+            <input id="accuracyLevel" type="number" min="1" max="200" value="100" />
+          </label>
+          <label class="monster-field">
+            <span>몬스터 선택</span>
+            <input id="monsterSearch" type="search" list="monsterOptions" placeholder="몬스터 이름을 검색하세요" autocomplete="off" />
+            <datalist id="monsterOptions"></datalist>
+          </label>
+          <button id="calculateAccuracy" type="button">필요 명중률 계산</button>
+        </div>
+        <div class="accuracy-buffs" aria-label="명중률 버프">
+          <span class="buff-heading">명중 버프</span>
+          <label class="buff-toggle">
+            <input type="checkbox" value="20" data-buff-name="블레스" />
+            <span class="toggle-track" aria-hidden="true"><i></i></span>
+            <b>블레스</b><small>+20</small>
+          </label>
+          <label class="buff-toggle">
+            <input type="checkbox" value="10" data-buff-name="명중 알약" />
+            <span class="toggle-track" aria-hidden="true"><i></i></span>
+            <b>명중 알약</b><small>+10</small>
+          </label>
+          <label class="buff-toggle">
+            <input type="checkbox" value="40" data-buff-name="레인보우 우유" />
+            <span class="toggle-track" aria-hidden="true"><i></i></span>
+            <b>레인보우 우유</b><small>+40</small>
+          </label>
+        </div>
+        <div id="accuracyResult" class="accuracy-result" hidden>
+          <article class="accuracy-main-result">
+            <span>필요 명중률</span>
+            <div class="required-accuracy-line">
+              <strong id="requiredAccuracy">—</strong>
+              <em id="buffReduction" hidden>—</em>
+            </div>
+            <small>이 수치 이상이면 100% 명중</small>
+          </article>
+          <article>
+            <span>선택 몬스터</span>
+            <strong id="selectedMonster">—</strong>
+            <small id="monsterStats">—</small>
+          </article>
+          <article>
+            <span>레벨 차이 보정</span>
+            <strong id="accuracyPenalty">—</strong>
+            <small id="accuracyFormula">—</small>
+          </article>
+        </div>
+        <p id="accuracyError" class="calculator-error" role="alert"></p>
+        <p class="accuracy-note">몬스터와 같은 레벨 이상이면 기본 필요 명중률만 적용됩니다. 몬스터보다 낮은 레벨이면 레벨 차이와 회피율에 따른 패널티가 추가됩니다.</p>
+      </section>
+
+      <section class="exp-tools panel">
+        <label for="levelSearch">레벨 바로 찾기</label>
+        <div class="level-search">
+          <input id="levelSearch" type="number" min="1" max="200" placeholder="1~200" />
+          <button id="findLevel" type="button">찾기</button>
+        </div>
+        <div class="exp-jumps" aria-label="레벨 구간 바로가기">
+          <button data-level="1">1</button><button data-level="50">50</button>
+          <button data-level="100">100</button><button data-level="150">150</button>
+          <button data-level="200">200</button>
+        </div>
+      </section>
+
+      <section class="exp-summary">
+        <article><span>100만 돌파</span><strong>57레벨</strong><small>1,031,036 EXP</small></article>
+        <article><span>1,000만 돌파</span><strong>100레벨</strong><small>10,223,168 EXP</small></article>
+        <article><span>1억 돌파</span><strong>143레벨</strong><small>101,367,883 EXP</small></article>
+        <article><span>10억 돌파</span><strong>186레벨</strong><small>1,005,114,529 EXP</small></article>
+      </section>
+
+      <section class="panel exp-table-panel">
+        <div class="panel-heading">
+          <div><h3>레벨 1–200</h3><p>각 행은 현재 레벨 → 다음 레벨 기준</p></div>
+          <span class="unit-label">단위: EXP</span>
+        </div>
+        <div class="exp-table-wrap">
+          <table class="exp-table">
+            <thead><tr><th>레벨</th><th>구간</th><th>필요 경험치</th></tr></thead>
+            <tbody id="expRows"></tbody>
+          </table>
+        </div>
+        <p class="exp-note">※ 200레벨 수치는 참고값입니다. 만렙 달성에는 199 → 200 경험치가 사용됩니다.</p>
+      </section>
+    </main>
+
+    <footer><span>LEVEL EXPERIENCE ARCHIVE</span><span>레벨 1–200</span></footer>
+    <a class="discord-feedback" href="https://discord.com/users/681501120212107319" target="_blank" rel="noopener noreferrer" aria-label="디스코드로 건의사항 보내기">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19.5 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4A16.4 16.4 0 0 0 4.5 5.35C1.94 9.2 1.25 12.95 1.6 16.65a16.5 16.5 0 0 0 4.98 2.52l1.2-1.65a10.6 10.6 0 0 1-1.88-.9l.46-.36c3.63 1.68 7.56 1.68 11.15 0l.47.36c-.6.36-1.23.66-1.88.9l1.2 1.65a16.4 16.4 0 0 0 4.98-2.52c.42-4.29-.73-8-2.78-11.31ZM8.52 14.4c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.88 2.22-1.98 2.22Zm6.96 0c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.86 2.22-1.98 2.22Z"/>
+      </svg>
+      <span>건의사항</span>
+    </a>
+    <script src="monster-data.js?v=20260727-1"></script>
+    <script src="exp.js?v=20260727-5"></script>
+  </body>
+</html>
+﻿<!doctype html>
+<html lang="ko">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYNKXT0ZE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NYNKXT0ZE3');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070c14" />
+    <meta name="description" content="방구지지에서 로나월드 레벨 1~200 필요 경험치표, 목표 레벨 예상 소요시간과 몬스터 필요 명중률을 계산하세요." />
+    <title>로나월드 경험치 계산기·경험치표 - 방구지지</title>
+    <link rel="canonical" href="https://rona-gg.com/exp.html" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="방구지지" />
+    <meta property="og:title" content="로나월드 경험치 계산기·경험치표 - 방구지지" />
+    <meta property="og:description" content="레벨 1~200 경험치표와 목표 레벨 소요시간, 몬스터 필요 명중률 계산" />
+    <meta property="og:url" content="https://rona-gg.com/exp.html" />
+    <meta property="og:image" content="https://rona-gg.com/assets/time-shard.png" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebPage","name":"로나월드 경험치 계산기·경험치표","url":"https://rona-gg.com/exp.html","isPartOf":{"@type":"WebSite","name":"방구지지","url":"https://rona-gg.com/"},"inLanguage":"ko-KR"}
+    </script>
+    <link rel="icon" type="image/png" href="assets/time-shard.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260727-13" />
     <link rel="stylesheet" href="exp.css?v=20260727-5" />
   </head>
