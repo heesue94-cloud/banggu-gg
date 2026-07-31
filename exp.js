@@ -16,6 +16,7 @@ const experience = [
   502347192,529875818,558913012,589541445,621848316,655925603,691870326,729784819,769777027,811960808,
   856456260,903390063,952895838,1005114529,1060194805,1118293480,1179575962,1244216724,1312399800,
   1384319309,1460180007,1540197871,1624600714,1713628833,1807535693,1906588648,2011069705,2121276324,
+  2237522267,2360138487,2489474076,2625897256,2769796425,2921581270,3081683923,3250560202,3428690901,
 ];
 
 const rows = document.querySelector("#expRows");
@@ -37,7 +38,7 @@ rows.innerHTML = experience.map((value, index) => {
 }).join("");
 
 function goToLevel(rawLevel) {
-  const level = Math.max(1, Math.min(200, Number(rawLevel) || 1));
+  const level = Math.max(1, Math.min(209, Number(rawLevel) || 1));
   search.value = level;
   document.querySelector(".exp-table tr.highlight")?.classList.remove("highlight");
   const row = document.querySelector(`#level-${level}`);
@@ -60,13 +61,13 @@ function calculateEstimatedTime() {
   const gain = Number(expPerTenMinutes.value.replace(/[^0-9]/g, ""));
 
   calculatorError.textContent = "";
-  if (!Number.isInteger(current) || current < 1 || current > 199) {
-    calculatorError.textContent = "현재 레벨은 1~199 사이로 입력하세요.";
+  if (!Number.isInteger(current) || current < 1 || current > 209) {
+    calculatorError.textContent = "현재 레벨은 1~209 사이로 입력하세요.";
     calculatorResult.hidden = true;
     return;
   }
-  if (!Number.isInteger(target) || target <= current || target > 200) {
-    calculatorError.textContent = "목표 레벨은 현재 레벨보다 높고 200 이하여야 합니다.";
+  if (!Number.isInteger(target) || target <= current || target > 210) {
+    calculatorError.textContent = "목표 레벨은 현재 레벨보다 높고 210 이하여야 합니다.";
     calculatorResult.hidden = true;
     return;
   }
