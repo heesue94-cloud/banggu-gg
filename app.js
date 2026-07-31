@@ -275,14 +275,16 @@ function renderPopular() {
     `<button class="chip" data-name="${escapeHtml(name)}">${escapeHtml(name)}</button>`).join("")}`;
 }
 
+const normalizeItemSearch = (value) => value.toLocaleLowerCase("ko").replace(/\s+/g, "");
+
 function findMatches(query) {
-  const q = query.trim().toLocaleLowerCase("ko");
+  const q = normalizeItemSearch(query);
   if (!q) return [];
   return itemNames
-    .filter((name) => name.toLocaleLowerCase("ko").includes(q))
+    .filter((name) => normalizeItemSearch(name).includes(q))
     .sort((a, b) => {
-      const ax = a.toLocaleLowerCase("ko").startsWith(q) ? 0 : 1;
-      const bx = b.toLocaleLowerCase("ko").startsWith(q) ? 0 : 1;
+      const ax = normalizeItemSearch(a).startsWith(q) ? 0 : 1;
+      const bx = normalizeItemSearch(b).startsWith(q) ? 0 : 1;
       return ax - bx || (dataset.items[b].count ?? dataset.items[b].length) - (dataset.items[a].count ?? dataset.items[a].length);
     })
     .slice(0, 12);
