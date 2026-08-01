@@ -1,3 +1,9 @@
 .sub-tabs[hidden] {
   display: none !important;
 }
+
+.kill-legend .three,
+.kill-badge.three {
+  color: #ffd36a;
+  background: rgba(255, 211, 106, 0.12);
+}
