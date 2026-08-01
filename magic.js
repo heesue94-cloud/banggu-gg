@@ -81,12 +81,33 @@ const MAGIC_DATA = {
   }
 };
 
+const MONSTER_IMAGES = {
+  "후회의 사제": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjg0/MDAxNzU1MTczODY1MTc5.tA7ww5v6NMW2laGk58hqAZHZjuO0BkTHyUU6dkezAFEg.GEZpWpolUVBWI8AhzOVkMHYZwYWrP3DVh58oEugP9Ewg.PNG/%ED%9B%84%ED%9A%8C%EC%9D%98_%EC%82%AC%EC%A0%9C.png?type=w1",
+  "후회의 신관": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjgx/MDAxNzU1MTczODgzNjg3.kmxrsSZ6R6aClwHK8dy_i3kvXSEbQP5y6Muf7xQPP0Ig.oGp19URKvZkP9uHefRupXm0_nVRvcSCNwzrEXYoluNkg.PNG/%ED%9B%84%ED%9A%8C%EC%9D%98_%EC%8B%A0%EA%B4%80.png?type=w1",
+  "후회의 수호병": "https://blogfiles.pstatic.net/MjAyNTA4MTRfNjgg/MDAxNzU1MTczOTMzNzQ2.kcgVMqzN86uBqjmH1Mxk8gf9gRBLVEky_2ceXrZd4tYg.XNTbFdVju22qfvwiV8XggenPgE-eqU8_B0i00GpRXQ4g.PNG/%ED%9B%84%ED%9A%8C%EC%9D%98_%EC%88%98%ED%98%B8%EB%B3%91.png?type=w1",
+  "후회의 수호대장": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjgy/MDAxNzU1MTc0MDUxNTY5.fkU86M4lAySme0j38CVV0VtiJZV5JjRFsZIajFo6Nn8g.2km3EmqOKNSjp9d-kn8AgiLrt1KlV5RZPpHuP-ekkwAg.PNG/%ED%9B%84%ED%9A%8C%EC%9D%98_%EC%88%98%ED%98%B8%EB%8C%80%EC%9E%A5.png?type=w1",
+  "다크 코니언": "https://blogfiles.pstatic.net/MjAyNTA5MjdfMjgw/MDAxNzU4OTMzMTI3NDIx.--_dzA15saJXnwrYpIKha4Y_JRWDfnWlmghniKJJeiog.N0Ocz-ql-BEnZwVD6cgG_OfWp0rugfiPTuYRrgSqICAg.PNG/%EB%8B%A4%ED%81%AC_%EC%BD%94%EB%8B%88%EC%96%B8.png?type=w1",
+  "네스트 골렘": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMzAg/MDAxNzU1MTc0NDczNzAz.DJf-dG0MP_Y4QvCoUZgbXoZZBpI3P2n9pqS8AO9aq2wg.8FlLlmkw9XEUrOvtds2F2bormcGzwb9StcmJr6luy0Ag.PNG/%EB%84%A4%EC%8A%A4%ED%8A%B8_%EA%B3%A8%EB%A0%98.png?type=w1",
+  "변형된 주황버섯": "https://blogfiles.pstatic.net/MjAyNTA4MTRfNTkg/MDAxNzU1MTY5Nzg2MTIz.SMn3PQK1hxEhPYc-zyTlXKEy23rQt5KScr7QSkCiCQ4g.157V543T-lzZdKn_gx-ODIDSFVg8wrBUjBvssAkj_4Ug.PNG/%EB%B3%80%ED%98%95%EB%90%9C_%EC%A3%BC%ED%99%A9%EB%B2%84%EC%84%AF.png?type=w1",
+  "변형된 티구르": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMTY2/MDAxNzU1MTY5OTg3Mjg2.Fr8pqluABLGoxgngB-bhMTVRlLJwy4jVJH8gS__PiD8g.sI0aLw8cApkjjVVuEPtl1rjDn8KoMCutP-qWVTDg2gUg.PNG/%EB%B3%80%ED%98%95%EB%90%9C_%ED%8B%B0%EA%B5%AC%EB%A5%B4.png?type=w1",
+  "붉은 켄타우로스": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjg5/MDAxNzU1MTc0NjUzOTgx.UOHJpmfiNKudNkk-09FRRXKNLVd5eTS74sI7tZ7U1kUg.BUN6hKmLpCONfUCBnuJ4u3lge0aFWDbMeFcx4rezjRkg.PNG/%EB%B6%89%EC%9D%80_%EC%BC%84%ED%83%80%EC%9A%B0%EB%A1%9C%EC%8A%A4.png?type=w1",
+  "검은 켄타우로스": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMTY3/MDAxNzU1MTc0Njk1NDM5.L7dAYTsrkS-4y6Zk2m37XD6E4wH-E3a13D4ttFB5wH0g.bzsfj_l9lkwgPgP8CVNSeiBk6DrZB8ArTBoV6vtaTN0g.PNG/%EA%B2%80%EC%9D%80_%EC%BC%84%ED%83%80%EC%9A%B0%EB%A1%9C%EC%8A%A4.png?type=w1",
+  "리셀 스퀴드": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMTIy/MDAxNzU1MTc1NTY5ODgy.CqJHT3ns0uy4AkV6XEUoXZzEP6BjS8ivrBad73Wk2zIg.OtTtGiPs4Xd6VU-g9vq3y-jmBA4KFnfe2Ece8ho2s00g.PNG/%EB%A6%AC%EC%85%80_%EC%8A%A4%ED%80%B4%EB%93%9C.png?type=w1",
+  "망각의 사제": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMzAw/MDAxNzU1MTc1Nzc5NzE2.bweREz1WGs3PyNQbgIRy6snXq6pxpmYgD4ThPTeWqvIg.PVCg0FBNb2PuJzRd4pykLsjzy9yANkOmpKAfniVTIokg.PNG/%EB%A7%9D%EA%B0%81%EC%9D%98_%EC%82%AC%EC%A0%9C.png?type=w1",
+  "망각의 신관": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjc5/MDAxNzU1MTc1ODA3NzUx.nV2VdD9LUMaqOzqqGCky2MpOXe-6RNXURami91M0hogg.tAxaRCKUkumnjk1YDMW4firw7CqV2KW_YLbtJioHQYcg.PNG/%EB%A7%9D%EA%B0%81%EC%9D%98_%EC%8B%A0%EA%B4%80.png?type=w1",
+  "망각의 수호병": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMTEg/MDAxNzU1MTc1ODE4MDAx.EzU7FpY5TpkD7rc2c8apTW-Dcu5LYNUH75p4-_3PneQg.yG7NKEIjEGhiG0_RYMsm6UTYV_6Nvh11yswb8lipfnEg.PNG/%EB%A7%9D%EA%B0%81%EC%9D%98_%EC%88%98%ED%98%B8%EB%B3%91.png?type=w1",
+  "망각의 수호대장": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMTMz/MDAxNzU1MTc1ODM5MTA4.FDzFROoBK_Gvkoy893GXaE7XRjwLkP2pnpu60-TMuvgg.Cb9x-89smRRG1RFn9C18FYh7MZoeT4qT2AXDrHkHQzwg.PNG/%EB%A7%9D%EA%B0%81%EC%9D%98_%EC%88%98%ED%98%B8%EB%8C%80%EC%9E%A5.png?type=w1",
+  "스켈로스": "https://blogfiles.pstatic.net/MjAyNTA4MTRfNDMg/MDAxNzU1MTc2MDE1NTc5.2O9GNum-udR_6up6GDGZApYm3WX-bM8kvVdQuFkNVZMg.K8bZWu75dPq3jFlbsE1Gtyzff1idn5ESJOzDCL5GZ9kg.PNG/%EC%8A%A4%EC%BC%88%EB%A1%9C%EC%8A%A4.png?type=w1",
+  "폭렬 망둥이집": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjcx/MDAxNzU1MTc2MDI4NDY5.nKwYcSUN4Fjao_2RGb7079JJ4l9_nBARVQMBlKN-Jnkg.SqcwLb1Fv_sElZbjfZRjV9RhSSk8jdgyFfXHayFfc0wg.PNG/%ED%8F%AD%EB%A0%AC_%EB%A7%9D%EB%91%A5%EC%9D%B4%EC%A7%91.png?type=w1",
+  "콜드 샤크": "https://blogfiles.pstatic.net/MjAyNTA4MTRfMjU3/MDAxNzU1MTc2MDgzMTYx.op-U9TzuOVk7os_J9PrW9AxMF_QViXpVFeb1wLzR5-cg.NYfzyg8A76xHBNWuQsdHuvDMcHzG5LNyLV7ZhOrS1qAg.PNG/%EC%BD%9C%EB%93%9C_%EC%83%A4%ED%81%AC.png?type=w1",
+  "동굴 다크 와이번": "https://blogfiles.pstatic.net/MjAyNTA4MTRfNDYg/MDAxNzU1MTc2MjAwMjI2.ZWbN-A8KyNQ41e9Uf4B2N1d_-SfYArXrvQuiSmJGdGMg.L72v-B7GGZOwB8HDEJ2NdTzeaNc00izdDBp-8XUl1SYg.PNG/%EB%8B%A4%ED%81%AC_%EC%99%80%EC%9D%B4%EB%B2%88.png?type=w1"
+};
+
 const jobTabs = document.querySelectorAll("[data-job]");
-const ampTabs = document.querySelectorAll("[data-amp]");
+const ampToggle = document.querySelector("#ampToggle");
 const ampWrap = document.querySelector("#ampTabs");
 const genesisTab = document.querySelector("#genesisTab");
 const search = document.querySelector("#magicSearch");
-const currentMagic = document.querySelector("#currentMagic");
 const rows = document.querySelector("#magicRows");
 const empty = document.querySelector("#magicEmpty");
 let jobKey = "fp";
@@ -101,24 +122,15 @@ function render() {
   const mode = jobKey === "bishop" ? "genesis" : ampKey;
   const list = data.modes[mode];
   const query = search.value.trim().replace(/\s+/g, "").toLowerCase();
-  const mine = Number(currentMagic.value) || 0;
   const filtered = list.filter(item => item.name.replace(/\s+/g, "").toLowerCase().includes(query));
   const html = [];
 
   filtered.forEach(item => {
     item.targets.forEach((entry, index) => {
-      const targetMagic = entry.cuts?.filter(value => value != null).at(-1);
-      const state = !mine || !targetMagic
-        ? "마력 입력 후 판정"
-        : mine >= targetMagic
-          ? `가능 · ${mine - targetMagic} 여유`
-          : `부족 · ${targetMagic - mine}`;
-      const stateClass = !mine || !targetMagic ? "" : mine >= targetMagic ? "pass" : "fail";
       html.push(`<tr class="${index === 0 ? "monster-start" : ""}">
-        ${index === 0 ? `<td class="monster-cell" rowspan="${item.targets.length}"><strong>${item.name}</strong><small>LV ${item.level}</small></td>` : ""}
+        ${index === 0 ? `<td class="monster-cell" rowspan="${item.targets.length}"><div class="monster-cell-content"><img class="monster-image" src="${MONSTER_IMAGES[item.name] || ""}" alt="${item.name}" loading="lazy" referrerpolicy="no-referrer" /><div class="monster-name-text"><strong>${item.name}</strong><small>LV ${item.level}</small></div></div></td>` : ""}
         <td><span class="kill-badge ${entry.label === "3킬" ? "three" : entry.label.includes("1킬") ? "one" : "two"}">${entry.label}</span></td>
         ${LEVELS.map((_, levelIndex) => cell(entry.cuts?.[levelIndex] ?? null, levelIndex)).join("")}
-        <td class="state-cell"><span class="magic-state ${stateClass}">${state}</span></td>
       </tr>`);
     });
   });
@@ -128,10 +140,6 @@ function render() {
   empty.hidden = Boolean(html.length);
   ampWrap.hidden = jobKey === "bishop";
   genesisTab.hidden = jobKey !== "bishop";
-  document.querySelector("#selectedJob").textContent = data.job;
-  document.querySelector("#selectedSpell").textContent = data.spell;
-  document.querySelector("#selectedAmp").textContent = jobKey === "bishop" ? "제네시스" : `앰플리피케이션 ${ampKey}`;
-  document.querySelector("#rowCount").textContent = `${filtered.length}종 · ${filtered.reduce((sum, item) => sum + item.targets.length, 0)}행`;
   document.querySelector("#tableTitle").textContent = `${data.job} · ${data.spell}`;
   document.querySelector("#tableCaption").textContent = jobKey === "bishop" ? "제네시스 스킬 레벨 기준" : `앰플리피케이션 ${ampKey} 기준`;
 }
@@ -142,12 +150,10 @@ jobTabs.forEach(tab => tab.addEventListener("click", () => {
   render();
 }));
 
-ampTabs.forEach(tab => tab.addEventListener("click", () => {
-  ampKey = tab.dataset.amp;
-  ampTabs.forEach(item => item.classList.toggle("active", item === tab));
+ampToggle.addEventListener("change", () => {
+  ampKey = ampToggle.checked ? "M" : "3";
   render();
-}));
+});
 
 search.addEventListener("input", render);
-currentMagic.addEventListener("input", render);
 render();

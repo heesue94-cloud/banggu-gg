@@ -12,8 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260731-17" />
-    <link rel="stylesheet" href="magic.css?v=20260801-1" />
-    <link rel="stylesheet" href="magic-fix.css?v=20260801-1" />
+    <link rel="stylesheet" href="magic.css?v=20260801-2" />
+    <link rel="stylesheet" href="magic-fix.css?v=20260801-2" />
   </head>
   <body>
     <header class="topbar">
@@ -46,33 +46,29 @@
           <button type="button" class="ice" data-job="il">썬콜</button>
           <button type="button" class="holy" data-job="bishop">비숍</button>
         </div>
-        <div class="sub-tabs" id="ampTabs" role="tablist" aria-label="앰플리피케이션 레벨 선택">
-          <button type="button" class="active" data-amp="M">앰플리피케이션 M</button>
-          <button type="button" data-amp="3">앰플리피케이션 3</button>
+        <div class="amp-toggle" id="ampTabs">
+          <span>앰플리피케이션 3</span>
+          <label class="toggle-switch">
+            <input id="ampToggle" type="checkbox" checked aria-label="앰플리피케이션 M 사용" />
+            <span class="toggle-track" aria-hidden="true"></span>
+          </label>
+          <span>M</span>
         </div>
         <div class="sub-tabs single" id="genesisTab" hidden>
           <span>제네시스</span>
         </div>
         <div class="magic-controls">
           <label class="monster-search"><span>몬스터 검색</span><input id="magicSearch" type="search" placeholder="예: 후회의 사제, 켄타우로스" /></label>
-          <label><span>내 마력</span><input id="currentMagic" type="number" min="0" placeholder="선택 입력" /></label>
-        </div>
-        <div class="spell-summary">
-          <article><span>직업</span><strong id="selectedJob">불독</strong></article>
-          <article><span>스킬</span><strong id="selectedSpell">메테오</strong></article>
-          <article><span>적용 기준</span><strong id="selectedAmp">앰플리피케이션 M</strong></article>
-          <article><span>몬스터</span><strong id="rowCount">—</strong></article>
         </div>
       </section>
 
       <section class="magic-table-panel">
         <div class="magic-table-heading">
           <div><h2 id="tableTitle">불독 · 메테오</h2><p id="tableCaption">앰플리피케이션 M 기준</p></div>
-          <div class="kill-legend"><span class="one">1킬</span><span class="two">2킬</span><span class="three">3킬</span></div>
         </div>
         <div class="magic-table-wrap">
           <table class="magic-table">
-            <thead><tr><th rowspan="2">몬스터</th><th rowspan="2">목표</th><th colspan="4">스킬 레벨별 필요 마력</th><th rowspan="2">내 상태</th></tr><tr class="level-head"><th>1</th><th>10</th><th>20</th><th>30</th></tr></thead>
+            <thead><tr><th rowspan="2">몬스터</th><th rowspan="2">목표</th><th colspan="4">스킬 레벨별 필요 마력</th></tr><tr class="level-head"><th>1</th><th>10</th><th>20</th><th>30</th></tr></thead>
             <tbody id="magicRows"></tbody>
           </table>
         </div>
@@ -84,6 +80,6 @@
     </main>
     <footer><span>AREA SPELL MAGIC ARCHIVE</span><span>26.06.23 패치 기준</span></footer>
     <a class="discord-feedback" href="https://discord.com/users/681501120212107319" target="_blank" rel="noopener noreferrer" aria-label="디스코드로 건의사항 보내기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4A16.4 16.4 0 0 0 4.5 5.35C1.94 9.2 1.25 12.95 1.6 16.65a16.5 16.5 0 0 0 4.98 2.52l1.2-1.65a10.6 10.6 0 0 1-1.88-.9l.46-.36c3.63 1.68 7.56 1.68 11.15 0l.47.36c-.6.36-1.23.66-1.88.9l1.2 1.65a16.4 16.4 0 0 0 4.98-2.52c.42-4.29-.73-8-2.78-11.31ZM8.52 14.4c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.88 2.22-1.98 2.22Zm6.96 0c-1.09 0-1.98-1-1.98-2.22 0-1.23.87-2.23 1.98-2.23 1.12 0 2 1.01 1.98 2.23 0 1.22-.86 2.22-1.98 2.22Z"/></svg><span>건의사항</span></a>
-    <script src="magic.js?v=20260801-1"></script>
+    <script src="magic.js?v=20260801-2"></script>
   </body>
 </html>

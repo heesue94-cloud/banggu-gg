@@ -7,3 +7,97 @@
   color: #ffd36a;
   background: rgba(255, 211, 106, 0.12);
 }
+
+.amp-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  margin-top: 14px;
+  padding: 9px 12px;
+  border: 1px solid #29465e;
+  border-radius: 10px;
+  color: #91a9ba;
+  background: #091725;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.amp-toggle[hidden] {
+  display: none !important;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  border: 1px solid #31536d;
+  border-radius: 999px;
+  background: #102335;
+  transition: .18s ease;
+}
+
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #75d9ff;
+  box-shadow: 0 0 12px rgba(117, 217, 255, .45);
+  transition: .18s ease;
+}
+
+.toggle-switch input:checked + .toggle-track {
+  border-color: #65c8ee;
+  background: rgba(117, 217, 255, .18);
+}
+
+.toggle-switch input:checked + .toggle-track::after {
+  transform: translateX(20px);
+}
+
+.magic-controls {
+  grid-template-columns: 1fr;
+}
+
+.monster-cell-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.monster-image {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .38));
+}
+
+.monster-name-text {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .monster-image {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+}
