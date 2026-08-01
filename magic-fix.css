@@ -32,6 +32,25 @@
   margin: 0;
 }
 
+.magic-title-wrap {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 16px;
+}
+
+.spell-icon {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  border: 1px solid rgba(117, 217, 255, .22);
+  border-radius: 13px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  background: rgba(8, 19, 31, .72);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .24);
+}
+
 .magic-table .target-cell {
   width: 112px;
   min-width: 112px;
@@ -84,6 +103,16 @@
     min-width: 84px;
     padding-right: 10px;
     padding-left: 10px;
+  }
+
+  .magic-title-wrap {
+    gap: 11px;
+  }
+
+  .spell-icon {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
   }
 }
 

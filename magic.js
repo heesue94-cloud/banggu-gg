@@ -103,6 +103,12 @@ const MONSTER_IMAGES = {
   "동굴 다크 와이번": "https://blogfiles.pstatic.net/MjAyNTA4MTRfNDYg/MDAxNzU1MTc2MjAwMjI2.ZWbN-A8KyNQ41e9Uf4B2N1d_-SfYArXrvQuiSmJGdGMg.L72v-B7GGZOwB8HDEJ2NdTzeaNc00izdDBp-8XUl1SYg.PNG/%EB%8B%A4%ED%81%AC_%EC%99%80%EC%9D%B4%EB%B2%88.png?type=w1"
 };
 
+const SPELL_IMAGES = {
+  fp: "https://mblogthumb-phinf.pstatic.net/MjAyNjAyMjFfMjIz/MDAxNzcxNjUwNTQ5NjUy.Zr7C3D-ujWgU8DLktHBwMt1hvN5f16hJ_x5H4RBD8dsg.U3eSXsUh8QJDG_lkaDv7VM0aHJVkbMS-Aa9XvRR-lYwg.PNG/%EB%A9%94%ED%85%8C%EC%98%A4.png?type=w800",
+  il: "https://mblogthumb-phinf.pstatic.net/MjAyNjAyMjFfMTk0/MDAxNzcxNjUwNTYxNDMy.C1hhtjjt73JkIgNVqXi-AP2UnTbXKnW1xoY0poOs_38g.HmZy85T-DtvxwfvYfmQ44uG5wu3z_AZoUUC1Wpur25og.PNG/%EB%B8%94%EB%A6%AC%EC%9E%90%EB%93%9C.png?type=w800",
+  bishop: "https://mblogthumb-phinf.pstatic.net/MjAyNjAyMjFfMTY1/MDAxNzcxNjUwNTc1NzA4.XIcLKaegxhvO4PP--2TSrBdJ4l97pm6PY0ab6QfVNzsg.g47V5ayBDgomnOWSQYaKaHv7768Nfk9oQVU9hDJYVMEg.PNG/%EC%A0%9C%EB%84%A4%EC%8B%9C%EC%8A%A4.png?type=w800"
+};
+
 MONSTER_IMAGES["후회의 사제"] = "assets/regret-priest.png";
 MONSTER_IMAGES["후회의 신관"] = "assets/regret-priest-officer.png";
 
@@ -114,7 +120,9 @@ const search = document.querySelector("#magicSearch");
 const rows = document.querySelector("#magicRows");
 const empty = document.querySelector("#magicEmpty");
 const tableHeading = document.querySelector(".magic-table-heading");
-tableHeading.append(ampWrap, genesisTab);
+const spellIcon = document.querySelector("#spellIcon");
+tableHeading.append(ampWrap);
+genesisTab.remove();
 let jobKey = "fp";
 let ampKey = "M";
 
@@ -145,7 +153,8 @@ function render() {
   rows.closest("table").hidden = !html.length;
   empty.hidden = Boolean(html.length);
   ampWrap.hidden = jobKey === "bishop";
-  genesisTab.hidden = jobKey !== "bishop";
+  spellIcon.src = SPELL_IMAGES[jobKey];
+  spellIcon.alt = `${data.spell} 스킬 아이콘`;
   document.querySelector("#tableTitle").textContent = `${data.job} · ${data.spell}`;
   document.querySelector("#tableCaption").textContent = jobKey === "bishop" ? "제네시스 스킬 레벨 기준" : `앰플리피케이션 ${ampKey} 기준`;
 }
