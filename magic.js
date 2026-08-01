@@ -123,6 +123,22 @@ const tableHeading = document.querySelector(".magic-table-heading");
 const spellIcon = document.querySelector("#spellIcon");
 tableHeading.append(ampWrap);
 genesisTab.remove();
+
+function updateStickyOffsets() {
+  const topbarHeight = document.querySelector(".topbar")?.getBoundingClientRect().height || 64;
+  const controlHeight = document.querySelector(".magic-control-panel")?.getBoundingClientRect().height || 0;
+  const headingHeight = tableHeading.getBoundingClientRect().height || 0;
+  document.documentElement.style.setProperty("--magic-topbar-height", `${Math.ceil(topbarHeight)}px`);
+  document.documentElement.style.setProperty("--magic-control-height", `${Math.ceil(controlHeight)}px`);
+  document.documentElement.style.setProperty("--magic-heading-height", `${Math.ceil(headingHeight)}px`);
+}
+
+window.addEventListener("resize", updateStickyOffsets);
+if ("ResizeObserver" in window) {
+  const stickyObserver = new ResizeObserver(updateStickyOffsets);
+  stickyObserver.observe(document.querySelector(".magic-control-panel"));
+  stickyObserver.observe(tableHeading);
+}
 let jobKey = "fp";
 let ampKey = "M";
 
@@ -172,3 +188,4 @@ ampToggle.addEventListener("change", () => {
 
 search.addEventListener("input", render);
 render();
+updateStickyOffsets();
