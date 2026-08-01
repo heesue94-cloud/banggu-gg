@@ -103,6 +103,9 @@ const MONSTER_IMAGES = {
   "동굴 다크 와이번": "https://blogfiles.pstatic.net/MjAyNTA4MTRfNDYg/MDAxNzU1MTc2MjAwMjI2.ZWbN-A8KyNQ41e9Uf4B2N1d_-SfYArXrvQuiSmJGdGMg.L72v-B7GGZOwB8HDEJ2NdTzeaNc00izdDBp-8XUl1SYg.PNG/%EB%8B%A4%ED%81%AC_%EC%99%80%EC%9D%B4%EB%B2%88.png?type=w1"
 };
 
+MONSTER_IMAGES["후회의 사제"] = "assets/regret-priest.png";
+MONSTER_IMAGES["후회의 신관"] = "assets/regret-priest-officer.png";
+
 const jobTabs = document.querySelectorAll("[data-job]");
 const ampToggle = document.querySelector("#ampToggle");
 const ampWrap = document.querySelector("#ampTabs");
@@ -110,6 +113,8 @@ const genesisTab = document.querySelector("#genesisTab");
 const search = document.querySelector("#magicSearch");
 const rows = document.querySelector("#magicRows");
 const empty = document.querySelector("#magicEmpty");
+const tableHeading = document.querySelector(".magic-table-heading");
+tableHeading.append(ampWrap, genesisTab);
 let jobKey = "fp";
 let ampKey = "M";
 
@@ -127,9 +132,10 @@ function render() {
 
   filtered.forEach(item => {
     item.targets.forEach((entry, index) => {
-      html.push(`<tr class="${index === 0 ? "monster-start" : ""}">
+      const killClass = entry.label === "3킬" ? "kill-three-row" : entry.label.includes("1킬") ? "kill-one-row" : "kill-two-row";
+      html.push(`<tr class="${index === 0 ? "monster-start " : ""}${killClass}">
         ${index === 0 ? `<td class="monster-cell" rowspan="${item.targets.length}"><div class="monster-cell-content"><img class="monster-image" src="${MONSTER_IMAGES[item.name] || ""}" alt="${item.name}" loading="lazy" referrerpolicy="no-referrer" /><div class="monster-name-text"><strong>${item.name}</strong><small>LV ${item.level}</small></div></div></td>` : ""}
-        <td><span class="kill-badge ${entry.label === "3킬" ? "three" : entry.label.includes("1킬") ? "one" : "two"}">${entry.label}</span></td>
+        <td class="target-cell"><span class="kill-badge ${entry.label === "3킬" ? "three" : entry.label.includes("1킬") ? "one" : "two"}">${entry.label}</span></td>
         ${LEVELS.map((_, levelIndex) => cell(entry.cuts?.[levelIndex] ?? null, levelIndex)).join("")}
       </tr>`);
     });

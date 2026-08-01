@@ -13,7 +13,7 @@
   align-items: center;
   gap: 10px;
   width: max-content;
-  margin-top: 14px;
+  margin: 0;
   padding: 9px 12px;
   border: 1px solid #29465e;
   border-radius: 10px;
@@ -21,6 +21,70 @@
   background: #091725;
   font-size: 12px;
   font-weight: 800;
+}
+
+.magic-table-heading > .amp-toggle,
+.magic-table-heading > .sub-tabs {
+  flex: 0 0 auto;
+}
+
+.magic-table-heading > .sub-tabs {
+  margin: 0;
+}
+
+.magic-table .target-cell {
+  width: 112px;
+  min-width: 112px;
+  padding-right: 16px;
+  padding-left: 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.magic-table .target-cell .kill-badge {
+  display: inline-flex;
+  min-width: 42px;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.magic-table tr.kill-one-row > td:not(.monster-cell) {
+  background: rgba(255, 137, 118, .055);
+}
+
+.magic-table tr.kill-two-row > td:not(.monster-cell) {
+  background: rgba(117, 217, 255, .045);
+}
+
+.magic-table tr.kill-three-row > td:not(.monster-cell) {
+  background: rgba(255, 211, 106, .045);
+}
+
+.magic-table tr.kill-one-row:hover > td:not(.monster-cell) {
+  background: rgba(255, 137, 118, .1);
+}
+
+.magic-table tr.kill-two-row:hover > td:not(.monster-cell) {
+  background: rgba(117, 217, 255, .09);
+}
+
+.magic-table tr.kill-three-row:hover > td:not(.monster-cell) {
+  background: rgba(255, 211, 106, .09);
+}
+
+@media (max-width: 700px) {
+  .magic-table-heading {
+    align-items: flex-start;
+  }
+
+  .magic-table .target-cell {
+    width: 84px;
+    min-width: 84px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
 }
 
 .amp-toggle[hidden] {
