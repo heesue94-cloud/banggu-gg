@@ -318,6 +318,24 @@ function renderStickySuggestions() {
   els.stickySuggestions.hidden = false;
 }
 
+function moveSuggestionSelection(container, direction) {
+  const suggestions = [...container.querySelectorAll(".suggestion")];
+  if (!suggestions.length || container.hidden) return false;
+  const currentIndex = suggestions.findIndex((suggestion) => suggestion.classList.contains("active"));
+  const nextIndex = currentIndex < 0
+    ? (direction > 0 ? 0 : suggestions.length - 1)
+    : (currentIndex + direction + suggestions.length) % suggestions.length;
+  suggestions.forEach((suggestion, index) => suggestion.classList.toggle("active", index === nextIndex));
+  suggestions[nextIndex].scrollIntoView({ block: "nearest" });
+  return true;
+}
+
+function selectActiveSuggestion(container, fallbackInput) {
+  const active = container.querySelector(".suggestion.active");
+  const name = active?.dataset.name || active?.dataset.stickyName || findMatches(fallbackInput.value)[0];
+  if (name) selectItem(name);
+}
+
 function updateStickyHeaderState() {
   const stuck = !els.result.hidden && els.resultStickySentinel.getBoundingClientRect().bottom <= 0;
   els.resultHeading.classList.toggle("is-stuck", stuck);
@@ -868,16 +886,28 @@ function showToast(message) {
 els.search.addEventListener("input", renderSuggestions);
 els.stickySearch.addEventListener("input", renderStickySuggestions);
 els.stickySearch.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault();
+    if (els.stickySuggestions.hidden) renderStickySuggestions();
+    moveSuggestionSelection(els.stickySuggestions, event.key === "ArrowDown" ? 1 : -1);
+    return;
+  }
   if (event.key === "Enter") {
-    const match = findMatches(els.stickySearch.value)[0];
-    if (match) selectItem(match);
+    event.preventDefault();
+    selectActiveSuggestion(els.stickySuggestions, els.stickySearch);
   }
   if (event.key === "Escape") els.stickySuggestions.hidden = true;
 });
 els.search.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault();
+    if (els.suggestions.hidden) renderSuggestions();
+    moveSuggestionSelection(els.suggestions, event.key === "ArrowDown" ? 1 : -1);
+    return;
+  }
   if (event.key === "Enter") {
-    const match = findMatches(els.search.value)[0];
-    if (match) selectItem(match);
+    event.preventDefault();
+    selectActiveSuggestion(els.suggestions, els.search);
   }
   if (event.key === "Escape") els.suggestions.hidden = true;
 });
