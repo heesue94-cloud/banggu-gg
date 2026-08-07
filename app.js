@@ -499,7 +499,7 @@ function setupOptionFilters(records) {
   const derivedFilters = [];
   if (valuesByKey.has("마력")) {
     derivedFilters.push(`<label class="option-filter derived-option-filter">
-      <span>합마력 <small>마력 + INT + 주스탯</small></span>
+      <span>합마력 <small>마력 + INT + 주스텟</small></span>
       <span class="derived-filter-input">
         <input type="number" step="any" data-option="__totalMagic" data-bound="exact" placeholder="합마력 입력" aria-label="합마력">
         <button type="button" class="derived-mode-toggle" data-derived-mode="__totalMagic" aria-pressed="false">정확히 일치</button>
@@ -510,7 +510,7 @@ function setupOptionFilters(records) {
     derivedFilters.push(`<label class="option-filter derived-option-filter">
       <span class="derived-filter-title">
         <b>합공격력</b>
-        <select id="attackMainStat" aria-label="합공격력 주스탯">
+        <select id="attackMainStat" aria-label="합공격력 주스텟">
           <option value="STR">STR</option>
           <option value="DEX">DEX</option>
           <option value="LUK">LUK</option>
@@ -542,7 +542,7 @@ function setupOptionFilters(records) {
 function optionValueForFilter(options, key) {
   if (key === "__totalMagic") {
     if (options.마력 === undefined) return undefined;
-    const commonMainStat = options.주스탯 ?? options.주스텟 ?? 0;
+    const commonMainStat = options.주스텟 ?? 0;
     return options.마력 + (options.INT || 0) + commonMainStat;
   }
   if (key === "__totalAttack") {
