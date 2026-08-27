@@ -53,7 +53,9 @@
   main { width: calc(100% - 24px); }
 
   .topbar {
-    position: relative;
+    position: sticky;
+    z-index: 70;
+    top: 0;
     height: 60px;
     padding: 0 14px;
   }
