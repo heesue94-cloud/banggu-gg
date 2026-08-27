@@ -1,5 +1,6 @@
 .mobile-menu-button,
-.mobile-drawer { display: none; }
+.mobile-drawer,
+.mobile-content-tabs { display: none; }
 
 @media (max-width: 640px) {
   body { padding-top: 60px; }
@@ -68,4 +69,59 @@
   .mobile-drawer-nav a::after { content: "›"; position: absolute; right: 15px; color: #54758c; }
   .mobile-drawer-nav a.active { color: #06131d; border-color: var(--accent); background: var(--accent); }
   .mobile-drawer-nav a.active::after { color: #1b5269; }
+
+  .mobile-content-tabs {
+    position: sticky;
+    z-index: 24;
+    top: 68px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    margin: 0 0 12px;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(8, 19, 31, .95);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(12px);
+  }
+
+  .mobile-content-tabs button {
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 8px;
+    overflow: hidden;
+    color: #8fa7b8;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .mobile-content-tabs button.active { color: #06131d; background: var(--accent); box-shadow: 0 5px 14px rgba(117, 217, 255, .15); }
+  [data-pane-group].mobile-pane-hidden { display: none !important; }
+
+  .exp-hero h1,
+  .job-hero h1,
+  .guide-hero h1,
+  .magic-hero h1,
+  .patch-hero h1 {
+    font-size: clamp(38px, 11vw, 50px);
+    line-height: 1.18;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+  .exp-hero > p:last-child,
+  .job-hero > p,
+  .guide-hero > p,
+  .magic-hero > p,
+  .patch-hero > p {
+    line-height: 1.65;
+    word-break: keep-all;
+  }
 }

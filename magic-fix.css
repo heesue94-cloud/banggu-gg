@@ -224,6 +224,15 @@
 }
 
 @media (max-width: 700px) {
+  .magic-hero h1 { word-break: keep-all; }
+  .magic-hero > p { line-height: 1.65; word-break: keep-all; }
+  .magic-control-panel { padding: 12px; }
+  .job-tabs { position: sticky; z-index: 24; top: 68px; }
+  .job-tabs button { min-height: 44px; padding: 10px 6px; font-size: 13px; }
+  .amp-toggle { justify-content: center; }
+  .magic-table-heading h2 { font-size: 19px; line-height: 1.25; word-break: keep-all; }
+  .magic-table-heading p { line-height: 1.5; word-break: keep-all; }
+  .magic-table-wrap { margin-right: -16px; margin-left: -16px; padding: 0 16px 7px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .monster-image {
     width: 46px;
     height: 46px;

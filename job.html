@@ -33,8 +33,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260731-17" />
     <link rel="stylesheet" href="job.css?v=20260731-1" />
-    <link rel="stylesheet" href="mobile-nav.css?v=20260828-2" />
+    <link rel="stylesheet" href="mobile-nav.css?v=20260828-3" />
     <script src="mobile-nav.js?v=20260828-1" defer></script>
+    <script src="mobile-sections.js?v=20260828-1" defer></script>
   </head>
   <body>
     <header class="topbar">
@@ -59,6 +60,11 @@
         <p class="eyebrow">THIRD JOB ADVANCEMENT QUIZ</p>
         <h1>전직 <em>TIP</em></h1>
         <p>문제에서 기억나는 단어만 입력해도 정답을 찾을 수 있습니다.</p>
+        <nav class="mobile-content-tabs" data-tab-group="job" data-default-tab="quiz" role="tablist" aria-label="전직 콘텐츠 선택">
+          <button class="active" type="button" role="tab" data-mobile-tab="quiz" aria-selected="true">3차 전직 족보</button>
+          <button type="button" role="tab" data-mobile-tab="location" aria-selected="false">전직 위치</button>
+        </nav>
+        <div data-pane-group="job" data-mobile-pane="quiz">
         <div class="quiz-search">
           <span class="quiz-search-icon" aria-hidden="true"></span>
           <label class="sr-only" for="quizSearch">전직 문제 검색</label>
@@ -72,9 +78,10 @@
           <button type="button" data-keyword="아이템">아이템</button>
           <button type="button" data-keyword="전직">전직</button>
         </div>
+        </div>
       </section>
 
-      <details class="second-job-panel">
+      <details class="second-job-panel" data-pane-group="job" data-mobile-pane="location">
         <summary class="second-job-heading">
           <div>
             <p class="eyebrow">SECOND JOB ADVANCEMENT</p>
@@ -122,7 +129,7 @@
         </div>
       </details>
 
-      <details class="second-job-panel third-job-panel">
+      <details class="second-job-panel third-job-panel" data-pane-group="job" data-mobile-pane="location">
         <summary class="second-job-heading">
           <div>
             <p class="eyebrow">THIRD JOB ADVANCEMENT</p>
@@ -170,7 +177,7 @@
         </div>
       </details>
 
-      <section class="quiz-panel">
+      <section class="quiz-panel" data-pane-group="job" data-mobile-pane="quiz">
         <div class="quiz-heading">
           <div>
             <h2 id="quizTitle">3차 전직 족보</h2>
@@ -185,7 +192,7 @@
         </div>
       </section>
 
-      <aside class="quiz-notice">
+      <aside class="quiz-notice" data-pane-group="job" data-mobile-pane="quiz">
         <strong>사용 팁</strong>
         <p>게임에 나온 문제의 핵심 단어 1~2개만 입력하세요. 띄어쓰기 없이 입력해도 검색됩니다.</p>
         <div class="quiz-source-links">
@@ -193,7 +200,7 @@
           <a href="https://blog.naver.com/12512512/224285760869?isInf=true" target="_blank" rel="noopener noreferrer">추가 족보 ↗</a>
         </div>
       </aside>
-      <p class="location-source">전직 위치 참고:
+      <p class="location-source" data-pane-group="job" data-mobile-pane="location">전직 위치 참고:
         <a href="https://m.blog.naver.com/kkb031/223311761557" target="_blank" rel="noopener noreferrer">2차 전직 원문 ↗</a>
         <span aria-hidden="true">·</span>
         <a href="https://blog.naver.com/kkb031/223383418346" target="_blank" rel="noopener noreferrer">3차 전직 원문 ↗</a>
