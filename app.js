@@ -111,7 +111,7 @@ async function loadBuiltIn() {
 
 async function loadCatalog() {
   try {
-    const response = await fetch("data/catalog.json", { cache: "no-store" });
+    const response = await fetch("data/catalog.json?v=20260828-1", { cache: "no-store" });
     if (!response.ok) return;
     catalogData = await response.json();
     els.catalogPanel.hidden = false;

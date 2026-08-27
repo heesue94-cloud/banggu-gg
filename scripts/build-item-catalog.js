@@ -25,16 +25,46 @@ const slotNames = {
 };
 const jobNames = { 법사: "마법사", 전사: "전사", 궁수: "궁수", 도적: "도적", 해적: "해적", 공용: "공용" };
 
-const equipment = Object.entries(icons)
-  .filter(([name, id]) => auctionNames.has(name) && id >= 1000000 && id < 2000000)
+// MapleDB 원본에 없는 리버스 장비 중 옥션 로그에 실제 등장한 아이템만 보완한다.
+const equipmentOverrides = {
+  "리버스 그라베": { job: "전사", slot: "신발", level: 120 },
+  "리버스 니플하임": { job: "전사", slot: "두손검", level: 120 },
+  "리버스 람피온": { job: "도적", slot: "아대", level: 120 },
+  "리버스 론타노": { job: "궁수", slot: "신발", level: 120 },
+  "리버스 문스티드": { job: "도적", slot: "신발", level: 120 },
+  "리버스 블라인드니스": { job: "해적", slot: "건", level: 120 },
+  "리버스 블랙뷰티": { job: "궁수", slot: "석궁", level: 120 },
+  "리버스 알슈피스": { job: "전사", slot: "창", level: 120 },
+  "리버스 에버뉴": { job: "궁수", slot: "전신", level: 120 },
+  "리버스 에아스 핸드": { job: "마법사", slot: "스태프", level: 120 },
+  "리버스 에퀴녹스": { job: "해적", slot: "너클", level: 120 },
+  "리버스 엔가우": { job: "궁수", slot: "활", level: 120 },
+  "리버스 엔릴 티어": { job: "마법사", slot: "완드", level: 120 },
+  "리버스 카바티나": { job: "마법사", slot: "신발", level: 120 },
+  "리버스 코션": { job: "도적", slot: "블레이드", level: 120 },
+  "리버스 타라곤": { job: "전사", slot: "전신", level: 120 },
+  "리버스 파라온": { job: "해적", slot: "신발", level: 120 },
+  "리버스 페스카즈": { job: "도적", slot: "단검", level: 120 },
+  "리버스 헤르모사": { job: "마법사", slot: "장갑", level: 120 },
+};
+
+const equipmentCandidates = new Map(Object.entries(icons));
+Object.keys(equipmentOverrides).forEach((name) => {
+  if (!equipmentCandidates.has(name)) equipmentCandidates.set(name, 0);
+});
+
+const equipment = [...equipmentCandidates.entries()]
+  .filter(([name, id]) => auctionNames.has(name)
+    && ((id >= 1000000 && id < 2000000) || equipmentOverrides[name]))
   .map(([name, id]) => {
     const source = equipmentByName.get(name);
+    const override = equipmentOverrides[name];
     return {
       name,
       id,
-      job: jobNames[source?.job] || "기타",
-      slot: slotNames[Math.floor(id / 10000)] || "기타",
-      level: source?.level || 0,
+      job: override?.job || jobNames[source?.job] || "기타",
+      slot: override?.slot || slotNames[Math.floor(id / 10000)] || "기타",
+      level: override?.level || source?.level || 0,
       trades: index.items[name].count,
     };
   })
