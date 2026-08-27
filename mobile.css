@@ -49,13 +49,17 @@
     overflow-x: hidden;
   }
 
+  body { padding-top: 60px; }
   body.mobile-menu-open { overflow: hidden; }
   main { width: calc(100% - 24px); }
 
   .topbar {
-    position: sticky;
+    position: fixed;
     z-index: 70;
     top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
     height: 60px;
     padding: 0 14px;
   }
