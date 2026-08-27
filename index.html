@@ -37,7 +37,8 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260828-1" />
+    <link rel="stylesheet" href="styles.css?v=20260828-2" />
+    <link rel="stylesheet" href="mobile.css?v=20260828-1" />
   </head>
   <body>
     <header class="topbar">
@@ -45,6 +46,9 @@
         <span class="brand-mark"><img src="assets/time-shard.png" alt="시간조각" /></span>
         <span>방구지지</span>
       </a>
+      <button class="mobile-menu-button" type="button" aria-label="메뉴 열기" aria-controls="mobileDrawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
       <a class="patch-link" href="patchnotes.html">패치노트</a>
       <div class="header-actions">
         <nav class="site-tabs" aria-label="주요 메뉴">
@@ -64,10 +68,31 @@
       </div>
     </header>
 
+    <div id="mobileMenuBackdrop" class="mobile-menu-backdrop" hidden></div>
+    <aside id="mobileDrawer" class="mobile-drawer" aria-label="모바일 메뉴" aria-hidden="true">
+      <div class="mobile-drawer-head">
+        <a class="brand" href="./"><span class="brand-mark"><img src="assets/time-shard.png" alt="" /></span><span>방구지지</span></a>
+        <button class="mobile-menu-close" type="button" aria-label="메뉴 닫기">×</button>
+      </div>
+      <nav class="mobile-drawer-nav" aria-label="주요 메뉴">
+        <a class="active" href="./">옥션 검색</a>
+        <a href="exp.html">경험치 계산</a>
+        <a href="job.html">전직 관련</a>
+        <a href="guide.html">1~43 육성</a>
+        <a href="magic.html">마력표</a>
+        <a href="patchnotes.html">패치노트</a>
+      </nav>
+    </aside>
+
     <main>
       <section class="hero">
         <p class="eyebrow">OFFICIAL AUCTION LOG ANALYTICS</p>
-        <h1><em>로나월드 옥션기록 검색기</em></h1>
+        <h1><em class="desktop-hero-title">로나월드 옥션기록 검색기</em><em class="mobile-hero-title">로나월드<br />옥션기록</em></h1>
+        <div class="mobile-data-status" aria-live="polite">
+          <span id="mobileHeaderStatus">데이터 준비 중</span>
+          <i aria-hidden="true"></i>
+          <span id="mobileHeaderLatest">최신 로그 확인 중</span>
+        </div>
         <div class="search-shell">
           <label class="sr-only" for="searchInput">아이템 이름 검색</label>
           <span class="search-icon" aria-hidden="true"></span>
@@ -279,6 +304,6 @@
     </a>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260828-4"></script>
+    <script src="app.js?v=20260828-5"></script>
   </body>
 </html>

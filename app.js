@@ -58,6 +58,36 @@ const els = {
 };
 
 const won = (value) => number.format(Math.round(value));
+
+const mobileMenuButton = document.querySelector(".mobile-menu-button");
+const mobileMenuClose = document.querySelector(".mobile-menu-close");
+const mobileDrawer = document.querySelector("#mobileDrawer");
+const mobileMenuBackdrop = document.querySelector("#mobileMenuBackdrop");
+const setMobileMenu = (open) => {
+  if (!mobileDrawer || !mobileMenuBackdrop) return;
+  mobileDrawer.classList.toggle("is-open", open);
+  mobileDrawer.setAttribute("aria-hidden", String(!open));
+  mobileMenuBackdrop.hidden = !open;
+  mobileMenuButton?.setAttribute("aria-expanded", String(open));
+  document.body.classList.toggle("mobile-menu-open", open);
+};
+mobileMenuButton?.addEventListener("click", () => setMobileMenu(true));
+mobileMenuClose?.addEventListener("click", () => setMobileMenu(false));
+mobileMenuBackdrop?.addEventListener("click", () => setMobileMenu(false));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setMobileMenu(false);
+});
+
+const syncMobileHeaderStatus = () => {
+  const mobileStatus = document.querySelector("#mobileHeaderStatus");
+  const mobileLatest = document.querySelector("#mobileHeaderLatest");
+  if (mobileStatus) mobileStatus.textContent = els.status.textContent;
+  if (mobileLatest) mobileLatest.textContent = els.latest.textContent;
+};
+new MutationObserver(syncMobileHeaderStatus).observe(els.status, { childList: true, subtree: true, characterData: true });
+new MutationObserver(syncMobileHeaderStatus).observe(els.latest, { childList: true, subtree: true, characterData: true });
+syncMobileHeaderStatus();
+
 const koreanPrice = (value) => {
   let remaining = Math.round(value);
   const parts = [];
