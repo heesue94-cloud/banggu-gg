@@ -138,11 +138,11 @@
   .mobile-data-status i { width: 3px; height: 3px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
   .search-shell { height: 56px; margin-top: 42px; padding: 0 14px; border-radius: 11px; }
   .search-shell input { font-size: 15px; }
-  .popular { gap: 5px; margin-top: 14px; justify-content: center; }
-  .popular-label, .popular-divider { width: auto; line-height: 34px; }
+  .popular { display: grid; min-height: 62px; margin-top: 14px; grid-template-columns: auto auto; justify-content: center; gap: 0 4px; }
+  .popular-label, .popular-divider { width: auto; line-height: 22px; }
   .popular-label { font-size: 10px; }
-  .popular-ticker { max-width: 62%; padding-right: 3px; padding-left: 3px; grid-template-columns: 15px minmax(0, 1fr); gap: 4px; }
-  .popular-ticker strong { font-size: 12px; }
+  .popular-ticker { width: 100%; max-width: 100%; padding: 5px 4px; grid-column: 1 / -1; grid-template-columns: 18px minmax(0, 1fr); justify-self: stretch; gap: 6px; }
+  .popular-ticker strong { overflow: visible; font-size: 12px; text-align: center; text-overflow: clip; }
   .popular-ticker small { display: none; }
 
   .catalog-panel { margin: 0 0 20px; padding: 16px; border-radius: 14px; }
