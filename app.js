@@ -27,7 +27,7 @@ const catalogState = {
   scrollGroup: "무기",
   scrollTarget: "전체",
   equipmentJob: "전사",
-  equipmentSlot: "투구",
+  equipmentSlot: "전체",
   equipmentLevel: "전체",
 };
 
