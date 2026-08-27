@@ -296,13 +296,36 @@ function applyDataset(data) {
   if (requested && data.items[requested]) selectItem(requested);
 }
 
+let popularTickerTimer;
 function renderPopular() {
   const tradeCount = (name) => dataset.items[name].count ?? dataset.items[name].length;
   const names = [...itemNames]
     .sort((a, b) => tradeCount(b) - tradeCount(a))
-    .slice(0, 5);
-  els.popular.innerHTML = `<span>거래 많은 아이템</span>${names.map((name) =>
-    `<button class="chip" data-name="${escapeHtml(name)}">${escapeHtml(name)}</button>`).join("")}`;
+    .slice(0, 10);
+  if (!names.length) return;
+
+  clearInterval(popularTickerTimer);
+  els.popular.innerHTML = `
+    <span class="popular-label">거래량 많은 아이템</span>
+    <span class="popular-divider" aria-hidden="true">:</span>
+    <button class="popular-ticker is-visible" type="button" data-name="${escapeHtml(names[0])}">
+      <b>1</b><strong>${escapeHtml(names[0])}</strong><small>${number.format(tradeCount(names[0]))}건</small>
+    </button>`;
+
+  let index = 0;
+  const ticker = els.popular.querySelector(".popular-ticker");
+  popularTickerTimer = setInterval(() => {
+    ticker.classList.remove("is-visible");
+    setTimeout(() => {
+      index = (index + 1) % names.length;
+      const name = names[index];
+      ticker.dataset.name = name;
+      ticker.querySelector("b").textContent = index + 1;
+      ticker.querySelector("strong").textContent = name;
+      ticker.querySelector("small").textContent = `${number.format(tradeCount(name))}건`;
+      ticker.classList.add("is-visible");
+    }, 180);
+  }, 3200);
 }
 
 const normalizeItemSearch = (value) => value.toLocaleLowerCase("ko").replace(/\s+/g, "");
