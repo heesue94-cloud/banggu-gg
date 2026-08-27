@@ -167,7 +167,7 @@ function renderEquipmentCatalog() {
   const jobItems = catalogData.equipment.filter((item) => item.job === catalogState.equipmentJob);
   const slots = [...new Set(jobItems.map((item) => item.slot))].sort((a, b) => a.localeCompare(b, "ko"));
   if (catalogState.equipmentSlot !== "전체" && !slots.includes(catalogState.equipmentSlot)) {
-    catalogState.equipmentSlot = slots.includes("투구") ? "투구" : "전체";
+    catalogState.equipmentSlot = "전체";
   }
   els.catalogSecondary.innerHTML = [
     catalogButton("전체", "equipmentSlot", "전체", catalogState.equipmentSlot === "전체"),
@@ -996,7 +996,7 @@ els.catalogPanel.addEventListener("click", (event) => {
     catalogState[filter.dataset.catalogKey] = filter.dataset.catalogValue;
     if (filter.dataset.catalogKey === "scrollGroup") catalogState.scrollTarget = "전체";
     if (filter.dataset.catalogKey === "equipmentJob") {
-      catalogState.equipmentSlot = "투구";
+      catalogState.equipmentSlot = "전체";
       catalogState.equipmentLevel = "전체";
     }
     if (filter.dataset.catalogKey === "equipmentSlot") catalogState.equipmentLevel = "전체";
