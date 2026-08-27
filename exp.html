@@ -32,7 +32,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=20260731-17" />
-    <link rel="stylesheet" href="exp.css?v=20260727-5" />
+    <link rel="stylesheet" href="exp.css?v=20260828-1" />
     <link rel="stylesheet" href="mobile-nav.css?v=20260828-2" />
     <script src="mobile-nav.js?v=20260828-1" defer></script>
   </head>
@@ -61,7 +61,12 @@
         <p>현재 레벨에서 다음 레벨까지 필요한 경험치입니다.</p>
       </section>
 
-      <section class="panel exp-calculator">
+      <nav class="mobile-calculator-tabs" role="tablist" aria-label="계산기 선택">
+        <button class="active" type="button" role="tab" data-calculator-tab="experience" aria-selected="true">경험치 계산기</button>
+        <button type="button" role="tab" data-calculator-tab="accuracy" aria-selected="false">명중률 계산기</button>
+      </nav>
+
+      <section class="panel exp-calculator" data-calculator-pane="experience">
         <div class="panel-heading">
           <div>
             <h3>목표 레벨 예상 시간</h3>
@@ -105,7 +110,7 @@
         <p id="calculatorError" class="calculator-error" role="alert"></p>
       </section>
 
-      <section class="panel accuracy-calculator">
+      <section class="panel accuracy-calculator" data-calculator-pane="accuracy">
         <div class="panel-heading">
           <div>
             <h3>몬스터 필요 명중률 계산</h3>
@@ -167,7 +172,7 @@
         <p class="accuracy-note">몬스터와 같은 레벨 이상이면 기본 필요 명중률만 적용됩니다. 몬스터보다 낮은 레벨이면 레벨 차이와 회피율에 따른 패널티가 추가됩니다.</p>
       </section>
 
-      <section class="exp-tools panel">
+      <section class="exp-tools panel" data-calculator-pane="experience">
         <label for="levelSearch">레벨 바로 찾기</label>
         <div class="level-search">
           <input id="levelSearch" type="number" min="1" max="209" placeholder="1~209" />
@@ -180,14 +185,14 @@
         </div>
       </section>
 
-      <section class="exp-summary">
+      <section class="exp-summary" data-calculator-pane="experience">
         <article><span>100만 돌파</span><strong>57레벨</strong><small>1,031,036 EXP</small></article>
         <article><span>1,000만 돌파</span><strong>100레벨</strong><small>10,223,168 EXP</small></article>
         <article><span>1억 돌파</span><strong>143레벨</strong><small>101,367,883 EXP</small></article>
         <article><span>10억 돌파</span><strong>186레벨</strong><small>1,005,114,529 EXP</small></article>
       </section>
 
-      <section class="panel exp-table-panel">
+      <section class="panel exp-table-panel" data-calculator-pane="experience">
         <div class="panel-heading">
           <div><h3>레벨 1–210</h3><p>각 행은 현재 레벨 → 다음 레벨 기준</p></div>
           <span class="unit-label">단위: EXP</span>
@@ -210,6 +215,6 @@
       <span>건의사항</span>
     </a>
     <script src="monster-data.js?v=20260731-2"></script>
-    <script src="exp.js?v=20260731-6"></script>
+    <script src="exp.js?v=20260828-1"></script>
   </body>
 </html>

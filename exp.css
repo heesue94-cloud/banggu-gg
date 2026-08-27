@@ -66,6 +66,7 @@
 .exp-table tbody tr.highlight td:first-child { color: var(--accent); font-weight: 700; }
 .exp-table td:last-child { color: #fff; font-size: 16px; font-weight: 700; }
 .exp-note { margin: 18px 0 0; color: var(--muted); font-size: 12px; }
+.mobile-calculator-tabs { display: none; }
 @media (max-width: 720px) {
   .exp-main { width: min(100% - 24px, 980px); }
   .exp-hero { padding: 55px 0 32px; }
@@ -84,4 +85,8 @@
   .exp-jumps button { flex: 1; padding-inline: 5px; }
   .exp-summary { grid-template-columns: 1fr 1fr; }
   .exp-table-panel { padding: 17px; }
+  .mobile-calculator-tabs { position: sticky; z-index: 20; top: 68px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 0 0 12px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: rgba(8, 19, 31, .94); box-shadow: 0 10px 26px rgba(0,0,0,.2); backdrop-filter: blur(12px); }
+  .mobile-calculator-tabs button { min-height: 44px; padding: 0 10px; color: #8fa7b8; border: 0; border-radius: 8px; background: transparent; font-size: 13px; font-weight: 800; cursor: pointer; }
+  .mobile-calculator-tabs button.active { color: #06131d; background: var(--accent); box-shadow: 0 5px 14px rgba(117,217,255,.15); }
+  [data-calculator-pane].mobile-pane-hidden { display: none !important; }
 }

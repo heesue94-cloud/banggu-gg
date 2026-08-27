@@ -28,6 +28,23 @@ const expPerTenMinutes = document.querySelector("#expPerTenMinutes");
 const calculatorResult = document.querySelector("#calculatorResult");
 const calculatorError = document.querySelector("#calculatorError");
 
+const calculatorTabs = document.querySelector(".mobile-calculator-tabs");
+const setCalculatorTab = (selected) => {
+  calculatorTabs?.querySelectorAll("button[data-calculator-tab]").forEach((button) => {
+    const active = button.dataset.calculatorTab === selected;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  document.querySelectorAll("[data-calculator-pane]").forEach((pane) => {
+    pane.classList.toggle("mobile-pane-hidden", pane.dataset.calculatorPane !== selected);
+  });
+};
+calculatorTabs?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-calculator-tab]");
+  if (button) setCalculatorTab(button.dataset.calculatorTab);
+});
+setCalculatorTab("experience");
+
 rows.innerHTML = experience.map((value, index) => {
   const level = index + 1;
   return `<tr id="level-${level}" data-level="${level}">
