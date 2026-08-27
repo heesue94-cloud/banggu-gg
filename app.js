@@ -185,7 +185,7 @@ function renderEquipmentCatalog() {
   els.catalogLevels.innerHTML = [
     catalogButton("전체 레벨", "equipmentLevel", "전체", catalogState.equipmentLevel === "전체"),
     ...levels.map((level) => {
-      const label = level === 0 ? "Lv.0–9" : `Lv.${level}–${level + 9}`;
+      const label = level === 120 ? "리버스" : level === 0 ? "Lv.0–9" : `Lv.${level}–${level + 9}`;
       return catalogButton(label, "equipmentLevel", String(level), catalogState.equipmentLevel === String(level));
     }),
   ].join("");

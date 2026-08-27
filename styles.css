@@ -107,6 +107,21 @@ kbd { padding: 3px 8px; border: 1px solid #cbd1ce; border-radius: 5px; color: #7
 .catalog-secondary, .catalog-levels { margin-top: 10px; padding-top: 0; border-top: 0; }
 .catalog-filters button { padding: 7px 11px; border-color: var(--line); border-radius: 999px; font-size: 12px; }
 .catalog-filters button:hover, .catalog-filters button.active { color: var(--accent); border-color: rgba(117,217,255,.55); background: rgba(117,217,255,.07); }
+
+#catalogLevels button[data-catalog-value="120"] {
+  color: #ffd166;
+  border-color: rgba(255, 209, 102, .72);
+  background: rgba(255, 209, 102, .1);
+  box-shadow: 0 0 18px rgba(255, 209, 102, .08);
+  font-weight: 700;
+}
+#catalogLevels button[data-catalog-value="120"]:hover,
+#catalogLevels button[data-catalog-value="120"].active {
+  color: #08111c;
+  border-color: #ffd166;
+  background: #ffd166;
+  box-shadow: 0 0 22px rgba(255, 209, 102, .22);
+}
 .catalog-result-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
 .catalog-result-heading strong { font-size: 14px; }
 .catalog-result-heading span { color: var(--muted); font-size: 11px; }
