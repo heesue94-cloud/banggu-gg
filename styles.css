@@ -50,13 +50,12 @@ button { color: inherit; }
 .header-link.active { color: #06131d; background: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 5px 16px rgba(117,217,255,.14); }
 .header-link.featured:not(.active) { color: var(--accent); }
 .header-link.featured:not(.active)::after { content: ""; position: absolute; top: 6px; right: 6px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 7px var(--accent); }
-.desktop-nav-toggle { display: grid; width: 32px; height: 32px; padding: 0; place-items: center; border: 0; border-left: 1px solid var(--line); border-radius: 0 7px 7px 0; background: transparent; color: var(--accent); cursor: pointer; }
-.desktop-nav-toggle span { display: block; font-size: 19px; line-height: 1; transition: transform .2s ease; transform: translateY(-2px); }
 .site-tabs.desktop-nav-collapsed .header-link:not(.active) { display: none; }
-.site-tabs.desktop-nav-collapsed.is-open .header-link { display: block; }
-.site-tabs.desktop-nav-collapsed.is-open .desktop-nav-toggle span { transform: rotate(180deg) translateY(2px); }
+.site-tabs.desktop-nav-collapsed:hover .header-link,
+.site-tabs.desktop-nav-collapsed:focus-within .header-link { display: block; }
 .site-tabs.desktop-nav-collapsed { position: relative; }
-.site-tabs.desktop-nav-collapsed.is-open { box-shadow: 0 10px 30px rgba(0, 0, 0, .32); }
+.site-tabs.desktop-nav-collapsed:hover,
+.site-tabs.desktop-nav-collapsed:focus-within { box-shadow: 0 10px 30px rgba(0, 0, 0, .32); }
 .data-status { display: flex; gap: 10px; align-items: center; color: var(--muted); font-size: 13px; }
 .status-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 12px var(--accent); }
 .status-copy { display: flex; flex-direction: column; gap: 3px; text-align: right; }
@@ -365,7 +364,6 @@ footer { display: flex; justify-content: space-between; padding: 25px clamp(24px
 
 /* Final mobile overrides: keep these after the legacy duplicated rules above. */
 @media (max-width: 640px) {
-  .desktop-nav-toggle { display: none; }
   html, body { max-width: 100%; overflow-x: hidden; }
   body.mobile-menu-open { overflow: hidden; }
   main { width: calc(100% - 24px); }
